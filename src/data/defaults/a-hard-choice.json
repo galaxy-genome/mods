@@ -1,0 +1,9 @@
+{
+  "id": "sample-choice",
+  "title": "A Hard Choice",
+  "author": "Galaxy Genome Quest Editor team",
+  "licence": "MIT",
+  "source": "Editor template",
+  "role": "default",
+  "template": "choice"
+}

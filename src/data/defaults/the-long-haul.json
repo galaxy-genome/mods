@@ -1,0 +1,235 @@
+{
+  "id": "sample-long-haul",
+  "title": "The Long Haul",
+  "author": "Galaxy Genome Quest Editor team",
+  "licence": "MIT",
+  "source": "Written for the editor",
+  "role": "default",
+  "quest": {
+    "settings": {
+      "QuestName": "The Long Haul",
+      "QuestDescription": "Mara Voss needs a cargo run across six systems, no questions asked.",
+      "ID": 7700001,
+      "StationName": "Thunder Station",
+      "Lang": "en",
+      "isRandomStationQuest": false,
+      "isRandomSpaceQuest": false,
+      "RandomQuestX": 0,
+      "RandomQuestY": 0,
+      "RandomQuestRadius": 50,
+      "RandomSpaceQuestChance": 0.25,
+      "RandomSpaceQuestTrigger": "warp",
+      "CharName": "Mara Voss",
+      "CharImage": "Tourist1",
+      "MinKarma": -101,
+      "MaxKarma": 101,
+      "Faction": "",
+      "FactionMinRep": 0,
+      "RequestedQuestIDCompleted": "",
+      "OwnStationRequired": false,
+      "Reward": 0,
+      "KarmaReward": 0
+    },
+    "BarRumors": [
+      {
+        "text": "A courier at Thunder Station is looking for a pilot with a big cargo hold and no schedule.",
+        "type": "local"
+      }
+    ],
+    "questParts": [
+      {
+        "name": "Mara: the job",
+        "TODO": "Hear Mara Voss out at Thunder Station.",
+        "questID": 0,
+        "isCheckPoint": false,
+        "dialogText": [
+          {
+            "Name": "Mara Voss",
+            "showTimeSec": 8,
+            "text": "Six drops, six systems, one manifest nobody reads too closely.",
+            "character": "Tourist1",
+            "options": ""
+          },
+          {
+            "Name": "Mara Voss",
+            "showTimeSec": 99999999,
+            "text": "Pay's good. In or out?",
+            "character": "Tourist1",
+            "options": "1=Take the job;0=Ask about the pay;"
+          }
+        ],
+        "completeAction": "ACTION_DIALOG_COMPLETE",
+        "dialogTextRepeat": [],
+        "repeatTextTimeSec": 999999999,
+        "shipSpawn": [],
+        "shipControl": [],
+        "task_on_station": null,
+        "failureActions": ""
+      },
+      {
+        "name": "Dock at Cooper City",
+        "TODO": "Warp to Sirius and dock at Cooper City for the first drop.",
+        "questID": 1,
+        "isCheckPoint": true,
+        "dialogText": [],
+        "completeAction": "ACTION_CLICK_STATION_Cooper City",
+        "dialogTextRepeat": [],
+        "repeatTextTimeSec": 999999999,
+        "shipSpawn": [],
+        "shipControl": [],
+        "task_on_station": null,
+        "failureActions": ""
+      },
+      {
+        "name": "Ambush in Capella",
+        "TODO": "Warp into Capella. A pirate drops out of warp with you. Destroy it.",
+        "questID": 2,
+        "isCheckPoint": true,
+        "dialogText": [],
+        "completeAction": "ACTION_SHIP_DESTROYED_Draeg",
+        "dialogTextRepeat": [],
+        "repeatTextTimeSec": 999999999,
+        "shipSpawn": [
+          {
+            "Name": "Draeg",
+            "shipLevel": "Novice",
+            "shipModel": "hawk",
+            "distanceFromPlayer": 400,
+            "spawnX": 0,
+            "spawnY": 0,
+            "shipBehavior": "Pirate",
+            "autoLVL": false,
+            "color": "0xFFFFFFFF"
+          }
+        ],
+        "shipControl": [
+          {
+            "ShipName": "Draeg",
+            "SetTarget": "player",
+            "shipBehavior": "Pirate",
+            "Destroy": false,
+            "Attack": true
+          }
+        ],
+        "task_on_station": null,
+        "failureActions": ""
+      },
+      {
+        "name": "Dock at Qiufen Platform",
+        "TODO": "Dock at Qiufen Platform in Capella to unload.",
+        "questID": 3,
+        "isCheckPoint": false,
+        "dialogText": [],
+        "completeAction": "ACTION_CLICK_STATION_Qiufen Platform",
+        "dialogTextRepeat": [],
+        "repeatTextTimeSec": 999999999,
+        "shipSpawn": [],
+        "shipControl": [],
+        "task_on_station": null,
+        "failureActions": ""
+      },
+      {
+        "name": "Choose the route",
+        "TODO": "Pick a route out of Capella.",
+        "questID": 4,
+        "isCheckPoint": false,
+        "dialogText": [
+          {
+            "Name": "Mara Voss, on comms",
+            "showTimeSec": 99999999,
+            "text": "Two ways from here. Fast and quiet, or slow and safe.",
+            "character": "Tourist1",
+            "options": "5=Fast route, through The Wheel;6=Safe route, through Meridian City;"
+          }
+        ],
+        "completeAction": "ACTION_DIALOG_COMPLETE",
+        "dialogTextRepeat": [],
+        "repeatTextTimeSec": 999999999,
+        "shipSpawn": [],
+        "shipControl": [],
+        "task_on_station": null,
+        "failureActions": ""
+      },
+      {
+        "name": "Dock at The Wheel",
+        "TODO": "Warp into LHS 1857 and dock at The Wheel.",
+        "questID": 5,
+        "isCheckPoint": false,
+        "dialogText": [
+          {
+            "Name": "Mara Voss, on comms",
+            "showTimeSec": 99999999,
+            "text": "Fast lane, quiet skies. Keep going.",
+            "character": "Tourist1",
+            "options": "7=Continue;"
+          }
+        ],
+        "completeAction": "ACTION_CLICK_STATION_The Wheel",
+        "dialogTextRepeat": [],
+        "repeatTextTimeSec": 999999999,
+        "shipSpawn": [],
+        "shipControl": [],
+        "task_on_station": null,
+        "failureActions": ""
+      },
+      {
+        "name": "Dock at Meridian City",
+        "TODO": "Warp to Ross 720 and dock at Meridian City.",
+        "questID": 6,
+        "isCheckPoint": false,
+        "dialogText": [
+          {
+            "Name": "Mara Voss, on comms",
+            "showTimeSec": 99999999,
+            "text": "Slow lane, but nobody looks twice. Keep going.",
+            "character": "Tourist1",
+            "options": "7=Continue;"
+          }
+        ],
+        "completeAction": "ACTION_CLICK_STATION_Meridian City",
+        "dialogTextRepeat": [],
+        "repeatTextTimeSec": 999999999,
+        "shipSpawn": [],
+        "shipControl": [],
+        "task_on_station": null,
+        "failureActions": ""
+      },
+      {
+        "name": "Scan in GD 219",
+        "TODO": "Warp into GD 219 and scan planet A6.",
+        "questID": 7,
+        "isCheckPoint": true,
+        "dialogText": [],
+        "completeAction": "ACTION_SCAN_PLANET_A6",
+        "dialogTextRepeat": [],
+        "repeatTextTimeSec": 999999999,
+        "shipSpawn": [],
+        "shipControl": [],
+        "task_on_station": null,
+        "failureActions": ""
+      },
+      {
+        "name": "Deliver at Xandar",
+        "TODO": "Dock at Xandar to deliver the last crate and collect payment.",
+        "questID": 8,
+        "isCheckPoint": false,
+        "dialogText": [
+          {
+            "Name": "Mara Voss, on comms",
+            "showTimeSec": 6,
+            "text": "Last stop. Dock and I'll wire the rest.",
+            "character": "Tourist1",
+            "options": ""
+          }
+        ],
+        "completeAction": "ACTION_CLICK_STATION_Xandar",
+        "dialogTextRepeat": [],
+        "repeatTextTimeSec": 999999999,
+        "shipSpawn": [],
+        "shipControl": [],
+        "task_on_station": null,
+        "failureActions": ""
+      }
+    ]
+  }
+}

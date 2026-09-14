@@ -1,0 +1,53 @@
+name: Submit a mod
+description: Add your mod to the community library.
+title: "Submit: "
+labels: [mod-submission]
+body:
+  - type: markdown
+    attributes:
+      value: A check runs on the zip and comments here. When it passes, a pull request adds the mod for a maintainer to review.
+  - type: input
+    id: author
+    attributes:
+      label: Author name
+      description: As it should show in the library.
+    validations:
+      required: true
+  - type: dropdown
+    id: licence
+    attributes:
+      label: Licence
+      options: [MIT, CC BY 4.0, CC BY-SA 4.0, Other]
+    validations:
+      required: true
+  - type: input
+    id: licence-other
+    attributes:
+      label: Other licence
+      description: Only if you chose Other.
+  - type: textarea
+    id: summary
+    attributes:
+      label: Summary
+      description: One or two sentences for the library card.
+    validations:
+      required: true
+  - type: input
+    id: tags
+    attributes:
+      label: Tags
+      description: Combat, Trade, Exploration, Story, Short, Long.
+  - type: textarea
+    id: zip
+    attributes:
+      label: Submission zip
+      description: Drag the zip the editor downloaded into this box.
+    validations:
+      required: true
+  - type: checkboxes
+    id: permission
+    attributes:
+      label: Permission
+      options:
+        - label: I made this mod or have the author's permission to share it.
+          required: true

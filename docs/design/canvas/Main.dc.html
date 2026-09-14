@@ -1,0 +1,83 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Oxanium:wght@400;600;700&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap">
+  <style>
+    body { margin: 0; background: #04060e; }
+    a { color: #35e0f5; } a:hover { color: #ffffff; }
+    * { box-sizing: border-box; }
+  </style>
+</helmet>
+<div style="width: 360px; height: 740px; background: #04060e; color: #bcdbe6; font-family: Oxanium, 'Segoe UI', system-ui, sans-serif; display: flex; flex-direction: column; position: relative; overflow: hidden; background-image: linear-gradient(rgba(23,113,128,.07) 1px, transparent 1px), linear-gradient(90deg, rgba(23,113,128,.07) 1px, transparent 1px); background-size: 40px 40px;">
+
+  <div style="display: flex; align-items: center; justify-content: space-between; padding: 16px 16px 12px 16px; background: #080f1e; border-bottom: 1px solid #16455a;">
+    <div style="display: flex; flex-direction: column; gap: 2px;">
+      <div style="font-weight: 700; font-size: 13px; letter-spacing: .16em; text-transform: uppercase; color: #ffffff;">Galaxy Genome</div>
+      <div style="font-weight: 700; font-size: 13px; letter-spacing: .16em; text-transform: uppercase; color: #35e0f5;">Quest Editor</div>
+    </div>
+    <div style="display: flex; align-items: center; gap: 8px;">
+      <div style="height: 44px; display: flex; align-items: center; gap: 6px; padding: 0 10px; border: 1px solid #16455a; border-radius: 2px; font-family: 'JetBrains Mono', ui-monospace, Menlo, monospace; font-size: 12px; color: #bcdbe6;">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#5f7f8e" stroke-width="1.5"><circle cx="12" cy="12" r="9"></circle><path d="M3 12h18M12 3c3 3.5 3 14.5 0 18M12 3c-3 3.5-3 14.5 0 18"></path></svg>
+        EN
+      </div>
+    </div>
+  </div>
+
+  <div style="flex-grow: 1; display: flex; flex-direction: column; padding: 28px 20px 16px 20px; gap: 24px;">
+    <div style="display: flex; flex-direction: column; gap: 10px;">
+      <div style="font-family: 'JetBrains Mono', ui-monospace, Menlo, monospace; font-size: 11px; letter-spacing: .18em; text-transform: uppercase; color: #5f7f8e;">Side quests · Stars · Stations</div>
+      <div style="font-size: 26px; line-height: 1.2; font-weight: 700; color: #ffffff; text-wrap: pretty;">Write your own side quests for Galaxy Genome.</div>
+      <div style="font-size: 15px; line-height: 1.45; color: #bcdbe6;">No code. Works on your phone.</div>
+    </div>
+
+    <div style="display: flex; flex-direction: column; gap: 10px;">
+      <div style="display: flex; align-items: center; gap: 14px; padding: 16px; min-height: 72px; background: rgba(53,224,245,.08); border: 1px solid #35e0f5; border-radius: 4px;">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#35e0f5" stroke-width="1.5"><path d="M12 3v4M12 17v4M3 12h4M17 12h4M6 6l2.5 2.5M15.5 15.5L18 18M6 18l2.5-2.5M15.5 8.5L18 6"></path></svg>
+        <div style="display: flex; flex-direction: column; gap: 3px; flex-grow: 1;">
+          <div style="font-size: 16px; font-weight: 600; color: #35e0f5;">Start a new quest</div>
+          <div style="font-family: 'JetBrains Mono', ui-monospace, Menlo, monospace; font-size: 12px; color: #bcdbe6;">Guided, about 2 minutes</div>
+        </div>
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#35e0f5" stroke-width="1.5"><path d="M9 6l6 6-6 6"></path></svg>
+      </div>
+
+      <div style="display: flex; align-items: center; gap: 14px; padding: 16px; min-height: 72px; background: rgba(8,18,34,.92); border: 1px solid #16455a; border-radius: 4px;">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#bcdbe6" stroke-width="1.5"><path d="M12 16V4M7 9l5-5 5 5M4 16v4h16v-4"></path></svg>
+        <div style="display: flex; flex-direction: column; gap: 3px; flex-grow: 1;">
+          <div style="font-size: 16px; font-weight: 600; color: #ffffff;">Open a mod file</div>
+          <div style="font-family: 'JetBrains Mono', ui-monospace, Menlo, monospace; font-size: 12px; color: #5f7f8e;">QuestN.json or a bundle</div>
+        </div>
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#5f7f8e" stroke-width="1.5"><path d="M9 6l6 6-6 6"></path></svg>
+      </div>
+
+      <div style="display: flex; align-items: center; gap: 14px; padding: 16px; min-height: 72px; background: rgba(8,18,34,.92); border: 1px solid #16455a; border-radius: 4px;">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#bcdbe6" stroke-width="1.5"><circle cx="12" cy="12" r="9"></circle><path d="M15.5 8.5l-2 5-5 2 2-5z"></path></svg>
+        <div style="display: flex; flex-direction: column; gap: 3px; flex-grow: 1;">
+          <div style="font-size: 16px; font-weight: 600; color: #ffffff;">Explore the game's quests</div>
+          <div style="font-family: 'JetBrains Mono', ui-monospace, Menlo, monospace; font-size: 12px; color: #5f7f8e;">42 real quests to learn from</div>
+        </div>
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#5f7f8e" stroke-width="1.5"><path d="M9 6l6 6-6 6"></path></svg>
+      </div>
+    </div>
+
+    <div style="display: flex; flex-direction: column; gap: 10px; padding: 14px 16px; border-top: 1px solid #16455a;">
+      <div style="display: flex; align-items: center; justify-content: space-between; min-height: 32px;">
+        <div style="font-size: 14px; font-weight: 600; color: #ffffff;">What is a mod?</div>
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#5f7f8e" stroke-width="1.5"><path d="M6 15l6-6 6 6"></path></svg>
+      </div>
+      <div style="font-size: 14px; line-height: 1.5; color: #bcdbe6; text-wrap: pretty;">A mod adds quests or stars to your game. You write it here, save it as a file, and copy it to your phone's Galaxy Genome folder. The Bundler does the copying part for you.</div>
+    </div>
+  </div>
+
+  <div style="padding: 14px 20px 22px 20px; display: flex; justify-content: center; font-family: 'JetBrains Mono', ui-monospace, Menlo, monospace; font-size: 12px; color: #5f7f8e; gap: 6px;">
+    Mods already in the Bundler? <a href="#" style="text-decoration: none;">Open them here</a>
+  </div>
+</div>
+</x-dc>
+</body>
+</html>

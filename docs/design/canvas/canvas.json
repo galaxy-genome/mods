@@ -1,0 +1,887 @@
+{
+ "pages": [
+  {
+   "id": "page-sitemap",
+   "name": "Sitemap"
+  },
+  {
+   "id": "page-design-system",
+   "name": "Design system"
+  },
+  {
+   "id": "page-first-quest",
+   "name": "Journey: First quest"
+  },
+  {
+   "id": "page-branching",
+   "name": "Journey: Branching"
+  },
+  {
+   "id": "page-ships",
+   "name": "Journey: Ships and combat"
+  },
+  {
+   "id": "page-fix-ship",
+   "name": "Journey: Fix and ship"
+  },
+  {
+   "id": "page-space",
+   "name": "Journey: Starts in space"
+  },
+  {
+   "id": "page-translate",
+   "name": "Journey: Translate"
+  },
+  {
+   "id": "page-stars",
+   "name": "Stars and stations"
+  },
+  {
+   "id": "page-reference",
+   "name": "Reference screens"
+  }
+ ],
+ "artboards": [
+  {
+   "file": "MapSitemap.dc.html",
+   "title": "Sitemap",
+   "x": 0,
+   "y": 0,
+   "w": 1800,
+   "h": 1100,
+   "page": "page-sitemap"
+  },
+  {
+   "file": "DsTokens.dc.html",
+   "title": "Tokens",
+   "x": 0,
+   "y": 0,
+   "w": 1200,
+   "h": 2120,
+   "page": "page-design-system"
+  },
+  {
+   "file": "DsControls.dc.html",
+   "title": "Controls",
+   "x": 1280,
+   "y": 0,
+   "w": 1200,
+   "h": 2260,
+   "page": "page-design-system"
+  },
+  {
+   "file": "DsPatterns.dc.html",
+   "title": "Patterns",
+   "x": 2560,
+   "y": 0,
+   "w": 1200,
+   "h": 2140,
+   "page": "page-design-system"
+  },
+  {
+   "file": "DsPickers.dc.html",
+   "title": "Pickers and content cards",
+   "x": 3840,
+   "y": 0,
+   "w": 1200,
+   "h": 1610,
+   "page": "page-design-system"
+  },
+  {
+   "file": "Main.dc.html",
+   "title": "Welcome (first run)",
+   "x": 0,
+   "y": 0,
+   "w": 360,
+   "h": 740,
+   "page": "page-first-quest"
+  },
+  {
+   "file": "FqNewType.dc.html",
+   "title": "New mod: type sheet",
+   "x": 440,
+   "y": 0,
+   "w": 360,
+   "h": 740,
+   "page": "page-first-quest"
+  },
+  {
+   "file": "FqTemplate.dc.html",
+   "title": "Choose a template",
+   "x": 880,
+   "y": 0,
+   "w": 360,
+   "h": 740,
+   "page": "page-first-quest"
+  },
+  {
+   "file": "FqQuickSetup.dc.html",
+   "title": "Quick setup",
+   "x": 1320,
+   "y": 0,
+   "w": 360,
+   "h": 740,
+   "page": "page-first-quest"
+  },
+  {
+   "file": "FqOverview.dc.html",
+   "title": "Overview after setup",
+   "x": 1760,
+   "y": 0,
+   "w": 360,
+   "h": 2040,
+   "page": "page-first-quest"
+  },
+  {
+   "file": "FqStepsList.dc.html",
+   "title": "Steps list",
+   "x": 2200,
+   "y": 0,
+   "w": 360,
+   "h": 740,
+   "page": "page-first-quest"
+  },
+  {
+   "file": "StepEditor.dc.html",
+   "title": "Step editor",
+   "x": 2640,
+   "y": 0,
+   "w": 360,
+   "h": 740,
+   "page": "page-first-quest"
+  },
+  {
+   "file": "ConditionPicker.dc.html",
+   "title": "Condition picker",
+   "x": 3080,
+   "y": 0,
+   "w": 360,
+   "h": 740,
+   "page": "page-first-quest"
+  },
+  {
+   "file": "FqConditionParam.dc.html",
+   "title": "Arrive in a system: pick system",
+   "x": 3520,
+   "y": 0,
+   "w": 360,
+   "h": 740,
+   "page": "page-first-quest"
+  },
+  {
+   "file": "FqConditionSet.dc.html",
+   "title": "Condition confirmed",
+   "x": 3960,
+   "y": 0,
+   "w": 360,
+   "h": 740,
+   "page": "page-first-quest"
+  },
+  {
+   "file": "FqTest.dc.html",
+   "title": "Test mid-quest",
+   "x": 4400,
+   "y": 0,
+   "w": 360,
+   "h": 740,
+   "page": "page-first-quest"
+  },
+  {
+   "file": "FqTestEnd.dc.html",
+   "title": "Test: quest complete",
+   "x": 4840,
+   "y": 0,
+   "w": 360,
+   "h": 740,
+   "page": "page-first-quest"
+  },
+  {
+   "file": "FqExport.dc.html",
+   "title": "Export sheet",
+   "x": 5280,
+   "y": 0,
+   "w": 360,
+   "h": 740,
+   "page": "page-first-quest"
+  },
+  {
+   "file": "FqInstall.dc.html",
+   "title": "Install guide",
+   "x": 5720,
+   "y": 0,
+   "w": 360,
+   "h": 780,
+   "page": "page-first-quest"
+  },
+  {
+   "file": "FqStepsEmpty.dc.html",
+   "title": "Steps empty",
+   "x": 0,
+   "y": 2200,
+   "w": 360,
+   "h": 740,
+   "page": "page-first-quest"
+  },
+  {
+   "file": "FqHomeWithMods.dc.html",
+   "title": "Home with 2 mods",
+   "x": 440,
+   "y": 2200,
+   "w": 360,
+   "h": 740,
+   "page": "page-first-quest"
+  },
+  {
+   "file": "FqExportBlocked.dc.html",
+   "title": "Export blocked by error",
+   "x": 880,
+   "y": 2200,
+   "w": 360,
+   "h": 740,
+   "page": "page-first-quest"
+  },
+  {
+   "file": "BrDialogue.dc.html",
+   "title": "Dialogue list (chat preview)",
+   "x": 0,
+   "y": 0,
+   "w": 360,
+   "h": 740,
+   "page": "page-branching"
+  },
+  {
+   "file": "BrLineEditor.dc.html",
+   "title": "Line editor sheet",
+   "x": 440,
+   "y": 0,
+   "w": 360,
+   "h": 740,
+   "page": "page-branching"
+  },
+  {
+   "file": "BrChoices.dc.html",
+   "title": "Line editor: choices",
+   "x": 880,
+   "y": 0,
+   "w": 360,
+   "h": 740,
+   "page": "page-branching"
+  },
+  {
+   "file": "BrStepPicker.dc.html",
+   "title": "Goes to: step picker",
+   "x": 1320,
+   "y": 0,
+   "w": 360,
+   "h": 740,
+   "page": "page-branching"
+  },
+  {
+   "file": "BrPortraitGrid.dc.html",
+   "title": "Portrait grid",
+   "x": 1760,
+   "y": 0,
+   "w": 360,
+   "h": 740,
+   "page": "page-branching"
+  },
+  {
+   "file": "Flow.dc.html",
+   "title": "Flow with a warning",
+   "x": 2200,
+   "y": 0,
+   "w": 360,
+   "h": 740,
+   "page": "page-branching"
+  },
+  {
+   "file": "BrChoicesFull.dc.html",
+   "title": "3 choices, Add disabled",
+   "x": 0,
+   "y": 900,
+   "w": 360,
+   "h": 740,
+   "page": "page-branching"
+  },
+  {
+   "file": "BrChoiceTextBlocked.dc.html",
+   "title": "Choice text blocks ;",
+   "x": 440,
+   "y": 900,
+   "w": 360,
+   "h": 740,
+   "page": "page-branching"
+  },
+  {
+   "file": "BrFlowFixed.dc.html",
+   "title": "Flow after the fix",
+   "x": 880,
+   "y": 900,
+   "w": 360,
+   "h": 740,
+   "page": "page-branching"
+  },
+  {
+   "file": "ShShipsList.dc.html",
+   "title": "Ships appear list",
+   "x": 0,
+   "y": 0,
+   "w": 360,
+   "h": 740,
+   "page": "page-ships"
+  },
+  {
+   "file": "ShShipEditor.dc.html",
+   "title": "Ship editor, near the player",
+   "x": 440,
+   "y": 0,
+   "w": 360,
+   "h": 740,
+   "page": "page-ships"
+  },
+  {
+   "file": "ShShipPicker.dc.html",
+   "title": "Ship picker",
+   "x": 880,
+   "y": 0,
+   "w": 360,
+   "h": 740,
+   "page": "page-ships"
+  },
+  {
+   "file": "ShBehaviour.dc.html",
+   "title": "Behaviour picker",
+   "x": 1320,
+   "y": 0,
+   "w": 360,
+   "h": 740,
+   "page": "page-ships"
+  },
+  {
+   "file": "ShOrders.dc.html",
+   "title": "Ship orders",
+   "x": 1760,
+   "y": 0,
+   "w": 360,
+   "h": 740,
+   "page": "page-ships"
+  },
+  {
+   "file": "ShOrderEditor.dc.html",
+   "title": "Order editor",
+   "x": 2200,
+   "y": 0,
+   "w": 360,
+   "h": 740,
+   "page": "page-ships"
+  },
+  {
+   "file": "ShMission.dc.html",
+   "title": "Station mission, Pirate hunt",
+   "x": 2640,
+   "y": 0,
+   "w": 360,
+   "h": 740,
+   "page": "page-ships"
+  },
+  {
+   "file": "ShReward.dc.html",
+   "title": "Overview reward estimate",
+   "x": 3080,
+   "y": 0,
+   "w": 360,
+   "h": 740,
+   "page": "page-ships"
+  },
+  {
+   "file": "ShShipAtPosition.dc.html",
+   "title": "Ship editor, at a position",
+   "x": 0,
+   "y": 900,
+   "w": 360,
+   "h": 740,
+   "page": "page-ships"
+  },
+  {
+   "file": "ShAutoLvl.dc.html",
+   "title": "Auto-match player on",
+   "x": 440,
+   "y": 900,
+   "w": 360,
+   "h": 740,
+   "page": "page-ships"
+  },
+  {
+   "file": "ShMissionTypes.dc.html",
+   "title": "Mission type grid",
+   "x": 880,
+   "y": 900,
+   "w": 360,
+   "h": 740,
+   "page": "page-ships"
+  },
+  {
+   "file": "ShMissionCapWarning.dc.html",
+   "title": "Reward over 100,000 warning",
+   "x": 1320,
+   "y": 900,
+   "w": 360,
+   "h": 740,
+   "page": "page-ships"
+  },
+  {
+   "file": "FxImportPick.dc.html",
+   "title": "Open a mod file",
+   "x": 0,
+   "y": 0,
+   "w": 360,
+   "h": 740,
+   "page": "page-fix-ship"
+  },
+  {
+   "file": "FxImportReview.dc.html",
+   "title": "Review import",
+   "x": 440,
+   "y": 0,
+   "w": 360,
+   "h": 740,
+   "page": "page-fix-ship"
+  },
+  {
+   "file": "FxIdChange.dc.html",
+   "title": "Quest ID: 100040 taken",
+   "x": 880,
+   "y": 0,
+   "w": 360,
+   "h": 740,
+   "page": "page-fix-ship"
+  },
+  {
+   "file": "FxIdChangeFree.dc.html",
+   "title": "Quest ID: free",
+   "x": 1320,
+   "y": 0,
+   "w": 360,
+   "h": 740,
+   "page": "page-fix-ship"
+  },
+  {
+   "file": "FxProblems.dc.html",
+   "title": "Problems sheet",
+   "x": 1760,
+   "y": 0,
+   "w": 360,
+   "h": 740,
+   "page": "page-fix-ship"
+  },
+  {
+   "file": "FxJumpToField.dc.html",
+   "title": "Jump to field",
+   "x": 2200,
+   "y": 0,
+   "w": 360,
+   "h": 740,
+   "page": "page-fix-ship"
+  },
+  {
+   "file": "FxExportBlocked.dc.html",
+   "title": "Export blocked",
+   "x": 2640,
+   "y": 0,
+   "w": 360,
+   "h": 740,
+   "page": "page-fix-ship"
+  },
+  {
+   "file": "FxExportWarnings.dc.html",
+   "title": "Download with warnings",
+   "x": 3080,
+   "y": 0,
+   "w": 360,
+   "h": 740,
+   "page": "page-fix-ship"
+  },
+  {
+   "file": "FxAdvancedJson.dc.html",
+   "title": "Step JSON (Advanced)",
+   "x": 3520,
+   "y": 0,
+   "w": 360,
+   "h": 740,
+   "page": "page-fix-ship"
+  },
+  {
+   "file": "FxImportRejected.dc.html",
+   "title": "Import rejected",
+   "x": 0,
+   "y": 900,
+   "w": 360,
+   "h": 740,
+   "page": "page-fix-ship"
+  },
+  {
+   "file": "FxParseError.dc.html",
+   "title": "Parse error",
+   "x": 440,
+   "y": 900,
+   "w": 360,
+   "h": 740,
+   "page": "page-fix-ship"
+  },
+  {
+   "file": "FxProblemsClear.dc.html",
+   "title": "No problems",
+   "x": 880,
+   "y": 900,
+   "w": 360,
+   "h": 740,
+   "page": "page-fix-ship"
+  },
+  {
+   "file": "SpHowItStarts.dc.html",
+   "title": "How it starts: Starts in space",
+   "x": 0,
+   "y": 0,
+   "w": 360,
+   "h": 740,
+   "page": "page-space"
+  },
+  {
+   "file": "SpLocationPicker.dc.html",
+   "title": "Location picker",
+   "x": 440,
+   "y": 0,
+   "w": 360,
+   "h": 740,
+   "page": "page-space"
+  },
+  {
+   "file": "SpRequirements.dc.html",
+   "title": "Requirements",
+   "x": 880,
+   "y": 0,
+   "w": 360,
+   "h": 740,
+   "page": "page-space"
+  },
+  {
+   "file": "SpQuestPicker.dc.html",
+   "title": "Quest picker sheet",
+   "x": 1320,
+   "y": 0,
+   "w": 360,
+   "h": 740,
+   "page": "page-space"
+  },
+  {
+   "file": "SpRumors.dc.html",
+   "title": "Rumors",
+   "x": 1760,
+   "y": 0,
+   "w": 360,
+   "h": 740,
+   "page": "page-space"
+  },
+  {
+   "file": "SpRumorEditor.dc.html",
+   "title": "Rumor editor sheet",
+   "x": 2200,
+   "y": 0,
+   "w": 360,
+   "h": 740,
+   "page": "page-space"
+  },
+  {
+   "file": "SpStationBarMode.dc.html",
+   "title": "How it starts: In a station bar",
+   "x": 0,
+   "y": 900,
+   "w": 360,
+   "h": 740,
+   "page": "page-space"
+  },
+  {
+   "file": "SpNearPointMode.dc.html",
+   "title": "How it starts: Near a point (untested)",
+   "x": 440,
+   "y": 900,
+   "w": 360,
+   "h": 740,
+   "page": "page-space"
+  },
+  {
+   "file": "SpLocalRumorWarning.dc.html",
+   "title": "Local rumor on a space quest",
+   "x": 880,
+   "y": 900,
+   "w": 360,
+   "h": 740,
+   "page": "page-space"
+  },
+  {
+   "file": "SpRumorsEmpty.dc.html",
+   "title": "Rumors: empty",
+   "x": 1320,
+   "y": 900,
+   "w": 360,
+   "h": 740,
+   "page": "page-space"
+  },
+  {
+   "file": "TrMenu.dc.html",
+   "title": "Quest menu",
+   "x": 0,
+   "y": 0,
+   "w": 360,
+   "h": 740,
+   "page": "page-translate"
+  },
+  {
+   "file": "TrVersions.dc.html",
+   "title": "Language versions",
+   "x": 440,
+   "y": 0,
+   "w": 360,
+   "h": 740,
+   "page": "page-translate"
+  },
+  {
+   "file": "TrAddLanguage.dc.html",
+   "title": "Add a language",
+   "x": 880,
+   "y": 0,
+   "w": 360,
+   "h": 740,
+   "page": "page-translate"
+  },
+  {
+   "file": "TrTranslate.dc.html",
+   "title": "Translate (34 of 52)",
+   "x": 1320,
+   "y": 0,
+   "w": 360,
+   "h": 740,
+   "page": "page-translate"
+  },
+  {
+   "file": "TrApplyAll.dc.html",
+   "title": "Apply to all versions?",
+   "x": 1760,
+   "y": 0,
+   "w": 360,
+   "h": 740,
+   "page": "page-translate"
+  },
+  {
+   "file": "TrTranslateDone.dc.html",
+   "title": "Translate: all done",
+   "x": 0,
+   "y": 900,
+   "w": 360,
+   "h": 740,
+   "page": "page-translate"
+  },
+  {
+   "file": "TrSnapshots.dc.html",
+   "title": "Snapshots",
+   "x": 440,
+   "y": 900,
+   "w": 360,
+   "h": 740,
+   "page": "page-translate"
+  },
+  {
+   "file": "StOverview.dc.html",
+   "title": "Overview",
+   "x": 0,
+   "y": 0,
+   "w": 360,
+   "h": 740,
+   "page": "page-stars"
+  },
+  {
+   "file": "StStarsList.dc.html",
+   "title": "Stars list",
+   "x": 440,
+   "y": 0,
+   "w": 360,
+   "h": 740,
+   "page": "page-stars"
+  },
+  {
+   "file": "StStarEditor.dc.html",
+   "title": "Star editor",
+   "x": 880,
+   "y": 0,
+   "w": 360,
+   "h": 740,
+   "page": "page-stars"
+  },
+  {
+   "file": "StStarType.dc.html",
+   "title": "Star type picker",
+   "x": 1320,
+   "y": 0,
+   "w": 360,
+   "h": 740,
+   "page": "page-stars"
+  },
+  {
+   "file": "StPlanetEditor.dc.html",
+   "title": "Planet editor",
+   "x": 1760,
+   "y": 0,
+   "w": 360,
+   "h": 740,
+   "page": "page-stars"
+  },
+  {
+   "file": "StStationEditor.dc.html",
+   "title": "Station editor",
+   "x": 2200,
+   "y": 0,
+   "w": 360,
+   "h": 740,
+   "page": "page-stars"
+  },
+  {
+   "file": "StOrbitsPicker.dc.html",
+   "title": "Orbits picker",
+   "x": 2640,
+   "y": 0,
+   "w": 360,
+   "h": 740,
+   "page": "page-stars"
+  },
+  {
+   "file": "StMap.dc.html",
+   "title": "Map",
+   "x": 3080,
+   "y": 0,
+   "w": 360,
+   "h": 740,
+   "page": "page-stars"
+  },
+  {
+   "file": "StOrbitClash.dc.html",
+   "title": "Duplicate orbit error",
+   "x": 0,
+   "y": 900,
+   "w": 360,
+   "h": 740,
+   "page": "page-stars"
+  },
+  {
+   "file": "StStationOnStar.dc.html",
+   "title": "Station on a star error",
+   "x": 440,
+   "y": 900,
+   "w": 360,
+   "h": 740,
+   "page": "page-stars"
+  },
+  {
+   "file": "StSagittarius.dc.html",
+   "title": "Sagittarius A* error",
+   "x": 880,
+   "y": 900,
+   "w": 360,
+   "h": 740,
+   "page": "page-stars"
+  },
+  {
+   "file": "RfLibrary.dc.html",
+   "title": "Game quests library",
+   "x": 0,
+   "y": 0,
+   "w": 360,
+   "h": 740,
+   "page": "page-reference"
+  },
+  {
+   "file": "RfReadOnly.dc.html",
+   "title": "Game quest, read-only",
+   "x": 440,
+   "y": 0,
+   "w": 360,
+   "h": 740,
+   "page": "page-reference"
+  },
+  {
+   "file": "RfHelpCentre.dc.html",
+   "title": "Help centre",
+   "x": 880,
+   "y": 0,
+   "w": 360,
+   "h": 740,
+   "page": "page-reference"
+  },
+  {
+   "file": "RfArticle.dc.html",
+   "title": "Help article",
+   "x": 1320,
+   "y": 0,
+   "w": 360,
+   "h": 740,
+   "page": "page-reference"
+  },
+  {
+   "file": "RfSettings.dc.html",
+   "title": "Settings",
+   "x": 1760,
+   "y": 0,
+   "w": 360,
+   "h": 740,
+   "page": "page-reference"
+  },
+  {
+   "file": "RfStorageBanner.dc.html",
+   "title": "Home, storage not persistent",
+   "x": 2200,
+   "y": 0,
+   "w": 360,
+   "h": 740,
+   "page": "page-reference"
+  },
+  {
+   "file": "RfStorageFull.dc.html",
+   "title": "Home, storage full",
+   "x": 2640,
+   "y": 0,
+   "w": 360,
+   "h": 740,
+   "page": "page-reference"
+  },
+  {
+   "file": "RfOffline.dc.html",
+   "title": "In quest, offline + Undo toast",
+   "x": 3080,
+   "y": 0,
+   "w": 360,
+   "h": 740,
+   "page": "page-reference"
+  },
+  {
+   "file": "RfSearchNoResults.dc.html",
+   "title": "Home search, no results",
+   "x": 0,
+   "y": 900,
+   "w": 360,
+   "h": 740,
+   "page": "page-reference"
+  },
+  {
+   "file": "RfDeleteUndo.dc.html",
+   "title": "Home after delete, Undo",
+   "x": 440,
+   "y": 900,
+   "w": 360,
+   "h": 740,
+   "page": "page-reference"
+  }
+ ],
+ "launch": {
+  "view": "canvas",
+  "page": "page-first-quest"
+ }
+}

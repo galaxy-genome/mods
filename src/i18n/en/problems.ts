@@ -1,0 +1,17 @@
+export default {
+  title: 'Problems',
+  severity: 'Problem severity',
+  errors: 'Errors',
+  warnings: 'Warnings',
+  tips: 'Tips',
+  none: 'No problems',
+  noneStars: 'The game will load these stars and stations as written.',
+  noneQuest: 'The game will load this quest as written. Test it once, then export.',
+  testIt: 'Test it',
+  no_error: 'No errors.',
+  no_warning: 'No warnings.',
+  no_tip: 'No tips.',
+  goTo: 'Go to',
+  hideTip: 'Hide this tip',
+  hideAllTips: 'Hide all tips',
+}

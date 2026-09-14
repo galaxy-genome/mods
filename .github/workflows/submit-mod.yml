@@ -1,0 +1,64 @@
+name: Submit mod
+on:
+  issues:
+    types: [opened, edited]
+concurrency: submit-mod-${{ github.event.issue.number }}
+permissions: {}
+jobs:
+  validate:
+    if: contains(github.event.issue.labels.*.name, 'mod-submission')
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      issues: write
+    outputs:
+      ok: ${{ steps.check.outputs.ok }}
+    steps:
+      - uses: actions/checkout@v4
+        with: { persist-credentials: false }
+      - uses: actions/setup-node@v4
+        with: { node-version: 24, cache: npm }
+      - run: npm ci --ignore-scripts
+      - id: check
+        run: |
+          if node --import ./scripts/test-hooks.mjs --no-warnings scripts/validate-submission.ts --event "$GITHUB_EVENT_PATH" "$RUNNER_TEMP/report.md"
+          then echo ok=true >> "$GITHUB_OUTPUT"; fi
+      - if: always()
+        env:
+          GH_TOKEN: ${{ github.token }}
+          ISSUE: ${{ github.event.issue.number }}
+        run: gh issue comment "$ISSUE" --repo "$GITHUB_REPOSITORY" --body-file "$RUNNER_TEMP/report.md"
+
+  pull-request:
+    needs: validate
+    if: needs.validate.outputs.ok == 'true'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+    env:
+      GH_TOKEN: ${{ github.token }}
+      ISSUE: ${{ github.event.issue.number }}
+      ISSUE_URL: ${{ github.event.issue.html_url }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: 24, cache: npm }
+      - run: npm ci --ignore-scripts
+      - id: write
+        run: |
+          id=$(node --import ./scripts/test-hooks.mjs --no-warnings scripts/validate-submission.ts --event "$GITHUB_EVENT_PATH" "$RUNNER_TEMP/report.md" --write)
+          [[ "$id" =~ ^[a-z0-9-]+$ ]] || exit 1
+          echo "id=$id" >> "$GITHUB_OUTPUT"
+      - run: npm run credits && npm test
+      - env:
+          ID: ${{ steps.write.outputs.id }}
+        run: |
+          branch="submission-$ISSUE"
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git switch -c "$branch"
+          git add community public CREDITS.md
+          git commit -m "Add $ID to the community library"
+          git push --force origin "$branch"
+          gh pr view "$branch" > /dev/null 2>&1 || gh pr create --head "$branch" --title "Add $ID to the community library" --body "Closes #$ISSUE ($ISSUE_URL). Set its popularity before merging."

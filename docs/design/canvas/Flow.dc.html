@@ -1,0 +1,90 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Oxanium:wght@400;600;700&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap">
+  <style>
+    body { margin: 0; background: #04060e; }
+    a { color: #35e0f5; } a:hover { color: #ffffff; }
+    * { box-sizing: border-box; }
+  </style>
+</helmet>
+<div style="width: 360px; height: 740px; background: #04060e; color: #bcdbe6; font-family: Oxanium, 'Segoe UI', system-ui, sans-serif; display: flex; flex-direction: column; overflow: hidden;">
+
+  <div style="display: flex; align-items: center; gap: 4px; padding: 6px 4px; background: #080f1e; border-bottom: 1px solid #16455a;">
+    <div style="width: 44px; height: 44px; display: flex; align-items: center; justify-content: center;">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#bcdbe6" stroke-width="1.5"><path d="M15 6l-6 6 6 6"></path></svg>
+    </div>
+    <div style="flex-grow: 1; font-size: 17px; font-weight: 600; color: #ffffff;">A Hard Choice</div>
+    <div style="height: 28px; display: flex; align-items: center; gap: 5px; padding: 0 8px; margin-right: 8px; border: 1px solid #ffab3d; border-radius: 2px; font-family: 'JetBrains Mono', ui-monospace, Menlo, monospace; font-size: 12px; color: #ffab3d;">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#ffab3d" stroke-width="1.8"><path d="M12 4l9 16H3z"></path><path d="M12 10v4M12 17v.5"></path></svg>
+      1
+    </div>
+  </div>
+
+  <div style="display: flex; gap: 8px; padding: 10px 12px; border-bottom: 1px solid #16455a; font-family: 'JetBrains Mono', ui-monospace, Menlo, monospace; font-size: 11px; color: #bcdbe6;">
+    <div style="display: flex; align-items: center; gap: 5px;"><div style="width: 14px; height: 0; border-top: 1px solid #1e93a6;"></div>Next step</div>
+    <div style="display: flex; align-items: center; gap: 5px;"><div style="width: 14px; height: 0; border-top: 2px solid #35e0f5;"></div>Choice</div>
+    <div style="display: flex; align-items: center; gap: 5px;"><div style="width: 14px; height: 0; border-top: 2px dashed #ffab3d;"></div>Problem</div>
+  </div>
+
+  <div style="flex-grow: 1; position: relative; background-image: linear-gradient(rgba(23,113,128,.07) 1px, transparent 1px), linear-gradient(90deg, rgba(23,113,128,.07) 1px, transparent 1px); background-size: 24px 24px;">
+
+    <svg width="360" height="560" viewBox="0 0 360 560" fill="none" style="position: absolute; left: 0; top: 0;">
+      <path d="M180 92 C 180 118, 88 118, 88 150" stroke="#35e0f5" stroke-width="2"></path>
+      <path d="M180 92 C 180 118, 272 118, 272 150" stroke="#35e0f5" stroke-width="2"></path>
+      <path d="M88 210 L 88 262" stroke="#1e93a6" stroke-width="1"></path>
+      <path d="M272 210 L 272 262" stroke="#1e93a6" stroke-width="1"></path>
+      <path d="M160 300 C 200 300, 236 260, 236 212" stroke="#ffab3d" stroke-width="2" stroke-dasharray="6 5"></path>
+      <path d="M272 322 C 272 370, 180 360, 180 420" stroke="#35e0f5" stroke-width="2"></path>
+    </svg>
+
+    <div style="position: absolute; left: 92px; top: 32px; width: 176px; height: 60px; display: flex; flex-direction: column; justify-content: center; gap: 3px; padding: 0 12px; background: rgba(8,18,34,.92); border: 1px solid #35e0f5; border-radius: 4px;">
+      <div style="display: flex; align-items: center; gap: 6px;"><span style="font-family: 'JetBrains Mono', ui-monospace, Menlo, monospace; font-size: 11px; color: #5f7f8e;">1</span><span style="font-size: 14px; font-weight: 600; color: #ffffff;">The offer</span>
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#35e0f5" stroke-width="2" style="margin-left: auto;"><path d="M12 3l8 9-8 9-8-9z"></path></svg></div>
+      <div style="font-family: 'JetBrains Mono', ui-monospace, Menlo, monospace; font-size: 11px; color: #bcdbe6;">2 choices</div>
+    </div>
+
+    <div style="position: absolute; left: 34px; top: 120px; font-family: 'JetBrains Mono', ui-monospace, Menlo, monospace; font-size: 11px; color: #35e0f5;">“Fight”</div>
+    <div style="position: absolute; left: 280px; top: 120px; font-family: 'JetBrains Mono', ui-monospace, Menlo, monospace; font-size: 11px; color: #35e0f5;">“Sneak”</div>
+
+    <div style="position: absolute; left: 16px; top: 150px; width: 144px; height: 60px; display: flex; flex-direction: column; justify-content: center; gap: 3px; padding: 0 12px; background: rgba(8,18,34,.92); border: 1px solid #16455a; border-radius: 4px;">
+      <div style="display: flex; gap: 6px;"><span style="font-family: 'JetBrains Mono', ui-monospace, Menlo, monospace; font-size: 11px; color: #5f7f8e;">2</span><span style="font-size: 14px; font-weight: 600; color: #ffffff;">Ambush</span></div>
+      <div style="font-family: 'JetBrains Mono', ui-monospace, Menlo, monospace; font-size: 11px; color: #bcdbe6;">No enemies left</div>
+    </div>
+    <div style="position: absolute; left: 200px; top: 150px; width: 144px; height: 60px; display: flex; flex-direction: column; justify-content: center; gap: 3px; padding: 0 12px; background: rgba(8,18,34,.92); border: 1px solid #16455a; border-radius: 4px;">
+      <div style="display: flex; gap: 6px;"><span style="font-family: 'JetBrains Mono', ui-monospace, Menlo, monospace; font-size: 11px; color: #5f7f8e;">4</span><span style="font-size: 14px; font-weight: 600; color: #ffffff;">Slip past</span></div>
+      <div style="font-family: 'JetBrains Mono', ui-monospace, Menlo, monospace; font-size: 11px; color: #bcdbe6;">Arrive in Ross 128</div>
+    </div>
+
+    <div style="position: absolute; left: 16px; top: 262px; width: 144px; height: 60px; display: flex; flex-direction: column; justify-content: center; gap: 3px; padding: 0 12px; background: rgba(8,18,34,.92); border: 1px solid #ffab3d; border-radius: 4px;">
+      <div style="display: flex; gap: 6px;"><span style="font-family: 'JetBrains Mono', ui-monospace, Menlo, monospace; font-size: 11px; color: #5f7f8e;">3</span><span style="font-size: 14px; font-weight: 600; color: #ffffff;">Aftermath</span></div>
+      <div style="font-family: 'JetBrains Mono', ui-monospace, Menlo, monospace; font-size: 11px; color: #ffab3d;">Runs into step 4</div>
+    </div>
+    <div style="position: absolute; left: 200px; top: 262px; width: 144px; height: 60px; display: flex; flex-direction: column; justify-content: center; gap: 3px; padding: 0 12px; background: rgba(8,18,34,.92); border: 1px solid #16455a; border-radius: 4px;">
+      <div style="display: flex; gap: 6px;"><span style="font-family: 'JetBrains Mono', ui-monospace, Menlo, monospace; font-size: 11px; color: #5f7f8e;">5</span><span style="font-size: 14px; font-weight: 600; color: #ffffff;">Report in</span></div>
+      <div style="font-family: 'JetBrains Mono', ui-monospace, Menlo, monospace; font-size: 11px; color: #bcdbe6;">1 choice</div>
+    </div>
+
+    <div style="position: absolute; left: 92px; top: 420px; width: 176px; height: 60px; display: flex; flex-direction: column; justify-content: center; gap: 3px; padding: 0 12px; background: rgba(8,18,34,.92); border: 1px solid #16455a; border-radius: 4px;">
+      <div style="display: flex; gap: 6px;"><span style="font-family: 'JetBrains Mono', ui-monospace, Menlo, monospace; font-size: 11px; color: #5f7f8e;">6</span><span style="font-size: 14px; font-weight: 600; color: #ffffff;">Shared ending</span></div>
+      <div style="font-family: 'JetBrains Mono', ui-monospace, Menlo, monospace; font-size: 11px; color: #bcdbe6;">Dock at Thunder Station</div>
+    </div>
+  </div>
+
+  <div style="display: flex; flex-direction: column; gap: 10px; margin: 0 12px 12px 12px; padding: 12px; background: rgba(8,18,34,.92); border: 1px solid #ffab3d; border-radius: 4px;">
+    <div style="display: flex; gap: 10px; align-items: flex-start;">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#ffab3d" stroke-width="1.8" style="flex-shrink: 0;"><path d="M12 4l9 16H3z"></path><path d="M12 10v4M12 17v.5"></path></svg>
+      <div style="font-size: 14px; line-height: 1.4; color: #ffffff; text-wrap: pretty;">After <b>Aftermath</b> ends, the quest carries on into <b>Slip past</b>.</div>
+    </div>
+    <div style="height: 44px; display: flex; align-items: center; justify-content: center; border: 1px solid #ffab3d; border-radius: 2px; font-size: 14px; font-weight: 600; color: #ffab3d;">Add a choice to jump to the ending</div>
+  </div>
+</div>
+</x-dc>
+</body>
+</html>
