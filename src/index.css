@@ -1,0 +1,125 @@
+@import "tailwindcss";
+
+@theme {
+  --color-void: #04060e;
+  --color-deep: #080f1e;
+  --color-panel: rgba(8, 18, 34, 0.92);
+  --color-field: rgba(4, 12, 22, 0.9);
+  --color-chip: rgba(10, 24, 40, 0.6);
+  --color-edge: #16455a;
+  --color-grid: #177180;
+  --color-grid-strong: #1e93a6;
+  --color-cyan: #35e0f5;
+  --color-row-active: rgba(255, 255, 255, 0.07);
+  --color-amber: #ffab3d;
+  --color-danger: #ff5a5a;
+  --color-success: #4fe08a;
+  --color-ink: #bcdbe6;
+  --color-dim: #5f7f8e;
+
+  --font-ui: "Oxanium", "Noto Sans SC", "Segoe UI", system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", "Noto Sans SC", ui-monospace, Menlo, monospace;
+
+  --radius-chip: 2px;
+  --radius-card: 4px;
+}
+
+@layer base {
+  html {
+    -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
+    color-scheme: dark;
+  }
+  body {
+    margin: 0;
+    background: var(--color-void);
+    color: var(--color-ink);
+    font-family: var(--font-ui);
+    -webkit-tap-highlight-color: transparent;
+    overscroll-behavior-y: none;
+  }
+  :focus-visible {
+    outline: 2px solid var(--color-cyan);
+    outline-offset: 2px;
+  }
+  ::selection {
+    background: rgba(53, 224, 245, 0.3);
+  }
+  input,
+  textarea,
+  select,
+  button {
+    font: inherit;
+    color: inherit;
+  }
+  /* Phones zoom into inputs under 16px on focus. */
+  @media (max-width: 599px) {
+    input,
+    textarea {
+      font-size: 16px !important;
+    }
+  }
+}
+
+@utility section-label {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--color-dim);
+}
+
+@utility grid-texture {
+  background-image:
+    linear-gradient(rgba(23, 113, 128, 0.07) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(23, 113, 128, 0.07) 1px, transparent 1px);
+  background-size: 40px 40px;
+}
+
+@utility safe-bottom {
+  padding-bottom: env(safe-area-inset-bottom);
+}
+
+@utility scrollbar-none {
+  scrollbar-width: none;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+@keyframes pulse-field {
+  0%, 100% { box-shadow: 0 0 0 0 transparent; }
+  30% { box-shadow: 0 0 0 3px var(--pulse-color, var(--color-amber)); }
+}
+
+.pulse-field {
+  animation: pulse-field 1.4s ease-out 2;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+[data-vaul-drawer] {
+  touch-action: none;
+}
+
+@media (prefers-contrast: more) {
+  :root {
+    --color-edge: #2f7f9c;
+    --color-dim: #9bb8c4;
+  }
+}
+
+/* Keyboard list navigation's active row: a neutral tint and a left bar, apart from the cyan focus ring and the cyan selection tint. Unlayered so it beats row background utilities. */
+[data-opt]:focus-visible {
+  outline: none;
+  background: var(--color-row-active);
+  box-shadow: inset 3px 0 0 var(--color-cyan);
+}
+
+/* A placeholder must read as absent text, not as a filled-in value. */
+input::placeholder, textarea::placeholder { color: color-mix(in srgb, var(--color-dim) 62%, transparent); }

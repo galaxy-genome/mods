@@ -1,0 +1,16 @@
+export default {
+  back: 'Back',
+  close: 'Close',
+  cancel: 'Cancel',
+  undo: 'Undo',
+  more: 'More',
+  open: 'Open',
+  delete: 'Delete',
+  duplicate: 'Duplicate',
+  remove: 'Remove',
+  done: 'Done',
+  favorite: 'Favorite',
+  unfavorite: 'Unfavorite',
+  mods_one: '{count} mod',
+  mods_other: '{count} mods',
+}

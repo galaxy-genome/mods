@@ -1,0 +1,16 @@
+export default {
+  open: 'Quick build systems',
+  help: 'Move the map to put the centre where the systems go.',
+  x: 'X',
+  y: 'Y',
+  radius: 'Radius',
+  lyValue: '{n} ly',
+  count: 'Systems to create',
+  generate: 'Generate',
+  created_one: 'Created 1 system.',
+  created_other: 'Created {count} systems.',
+  shortfall: 'Created {placed} of {requested} systems.',
+  shortfallNear: 'Created {placed} of {requested} systems. The rest of the circle is within 4.37 ly of existing systems.',
+  shortfallOutside: 'Created {placed} of {requested} systems. The rest of the circle is outside the galaxy.',
+  shortfallBatch: 'Created {placed} of {requested} systems. The rest of the circle is within 4.37 ly of the new systems.',
+}

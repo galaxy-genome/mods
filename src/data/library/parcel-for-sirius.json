@@ -1,0 +1,22 @@
+{
+  "id": "parcel-for-sirius",
+  "title": "Parcel for Sirius",
+  "author": "Galaxy Genome Quest Editor team",
+  "summary": "A short delivery run: carry an unmarked parcel to Sirius, no questions asked.",
+  "tags": [
+    "Story"
+  ],
+  "popularity": 0,
+  "files": [
+    {
+      "name": "Quest9002.json",
+      "lang": "en",
+      "text": "{\n  \"settings\": {\n    \"QuestName\": \"Parcel for Sirius\",\n    \"QuestDescription\": \"I need something delivered, no questions asked.\",\n    \"ID\": 9002,\n    \"StationName\": \"Thunder Station\",\n    \"Lang\": \"en\",\n    \"isRandomStationQuest\": false,\n    \"isRandomSpaceQuest\": false,\n    \"RandomQuestX\": 0,\n    \"RandomQuestY\": 0,\n    \"RandomQuestRadius\": 50,\n    \"RandomSpaceQuestChance\": 0.25,\n    \"RandomSpaceQuestTrigger\": \"warp\",\n    \"CharName\": \"Harry\",\n    \"CharImage\": \"Tourist2\",\n    \"MinKarma\": -101,\n    \"MaxKarma\": 101,\n    \"Faction\": \"\",\n    \"FactionMinRep\": 0,\n    \"RequestedQuestIDCompleted\": \"\",\n    \"OwnStationRequired\": false,\n    \"Reward\": 0,\n    \"KarmaReward\": 0\n  },\n  \"BarRumors\": [\n    {\n      \"text\": \"They say couriers to Sirius get paid double and asked nothing.\",\n      \"type\": \"global\"\n    }\n  ],\n  \"questParts\": [\n    {\n      \"name\": \"Briefing\",\n      \"TODO\": \"Take the parcel to Sirius.\",\n      \"questID\": 0,\n      \"isCheckPoint\": false,\n      \"dialogText\": [\n        {\n          \"Name\": \"Harry\",\n          \"showTimeSec\": 5,\n          \"text\": \"Sirius. Don\\u2019t open it.\",\n          \"character\": \"Tourist2\",\n          \"options\": \"\"\n        }\n      ],\n      \"completeAction\": \"ACTION_DIALOG_COMPLETE\",\n      \"dialogTextRepeat\": [],\n      \"repeatTextTimeSec\": 999999999,\n      \"shipSpawn\": [],\n      \"shipControl\": [],\n      \"task_on_station\": null,\n      \"failureActions\": \"\"\n    },\n    {\n      \"name\": \"To Sirius\",\n      \"TODO\": \"Fly to Sirius.\",\n      \"questID\": 0,\n      \"isCheckPoint\": false,\n      \"dialogText\": [],\n      \"completeAction\": \"ACTION_WARP_END_SYSTEM_Sirius\",\n      \"dialogTextRepeat\": [],\n      \"repeatTextTimeSec\": 999999999,\n      \"shipSpawn\": [],\n      \"shipControl\": [],\n      \"task_on_station\": null,\n      \"failureActions\": \"\"\n    },\n    {\n      \"name\": \"Hand over\",\n      \"TODO\": \"Dock at Cooper City.\",\n      \"questID\": 0,\n      \"isCheckPoint\": false,\n      \"dialogText\": [\n        {\n          \"Name\": \"Harry\",\n          \"showTimeSec\": 5,\n          \"text\": \"Good. We never met.\",\n          \"character\": \"Tourist2\",\n          \"options\": \"\"\n        }\n      ],\n      \"completeAction\": \"ACTION_CLICK_STATION_Cooper City\",\n      \"dialogTextRepeat\": [],\n      \"repeatTextTimeSec\": 999999999,\n      \"shipSpawn\": [],\n      \"shipControl\": [],\n      \"task_on_station\": null,\n      \"failureActions\": \"\"\n    }\n  ]\n}"
+    }
+  ],
+  "licence": "MIT",
+  "version": "1.0.0",
+  "updated": 1789407207142,
+  "source": "Editor template",
+  "role": "library"
+}
