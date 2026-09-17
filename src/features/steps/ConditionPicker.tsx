@@ -11,7 +11,7 @@ import { AdvancedKey, Field } from '@/components/ui/field'
 import { Chip, Input, SearchInput, Segmented, Stepper } from '@/components/ui/inputs'
 import { Sheet } from '@/components/ui/sheet'
 import { ListRow, RowGroup, SectionLabel, SentenceCard } from '@/components/ui/surfaces'
-import { CATEGORY_INFO, CONDITIONS, MATERIALS, buildCondition, categoryLabel, describeCondition, parseCondition, type ConditionCategory, type ConditionDef } from '@/lib/conditions'
+import { CATEGORY_INFO, CONDITIONS, MATERIALS, NEVER, buildCondition, categoryLabel, describeCondition, parseCondition, type ConditionCategory, type ConditionDef } from '@/lib/conditions'
 import { t, useT } from '@/i18n'
 import { BEHAVIOURS, GOODS, PLANET_TYPES, STAR_TYPE_GROUPS, SYSTEMS, humanize, shipByKey } from '@/lib/reference'
 import type { Step } from '@/lib/types'
@@ -117,6 +117,8 @@ export function ConditionPicker({ open, onOpenChange, title, value, onSelect, st
                   value={CONDITIONS.filter((x) => x.category === c.name).length}
                   onClick={() => setLevel({ kind: 'category', category: c.name })} />
               ))}
+              <ListRow nav icon={<span aria-hidden>💥</span>} title={t('conditions.neverLabel')} subtitle={<AdvancedKey k={NEVER} />}
+                className={cn(value === NEVER && 'bg-cyan/10')} onClick={() => { onSelect(NEVER); onOpenChange(false) }} />
             </RowGroup>
           </>
         )}

@@ -208,9 +208,26 @@ export function buildCondition(def: ConditionDef, param: string) {
   return def.param === 'none' ? def.action : def.action + param
 }
 
+/** The game's finish condition that never fires: a route to a system named "None", which no route event can send. */
+export const NEVER = 'SCREEN_ACTION_ROUTE_SYSTEM_None'
+
+/** A place condition naming "None" matches no real place, so the step ends only by failing. */
+export function neverFires(raw: string | null) {
+  if (!raw) return false
+  const { def, param } = parseCondition(raw)
+  return !!def && ['system', 'station', 'planet'].includes(def.param) && param === 'None'
+}
+
+/**
+ * A shipControl Destroy on "player" zeroes the player's hull (ShipsManager.onShipControl), which is game over whether or
+ * not the step can still finish; the destruction raises ACTION_SHIP_DESTROYED_player, which fails the quest when listed.
+ */
+export const isGameOver = (step: { orders: { ship: string; destroy: boolean }[] }) => step.orders.some((o) => o.ship === 'player' && o.destroy)
+
 /** "the player arrives in Sirius" */
 export function describeCondition(raw: string | null): string {
   if (!raw) return t('conditions.notSet')
+  if (neverFires(raw)) return t('conditions.never')
   const { def, param } = parseCondition(raw)
   if (!def) return raw
   if (def.param === 'shipStop') {
@@ -220,4 +237,23 @@ export function describeCondition(raw: string | null): string {
   const p = def.action === 'ACTION_CLICK_STATION_' && param === 'OWN' ? t('conditions.ownStation') : param
   const s = def.sentence.replace('{p}', p)
   return s.charAt(0).toUpperCase() + s.slice(1)
+}
+
+type FinishMechanics = { finishWhen: string | null; buttonsTask?: string[]; buttonsTaskOrder?: false; buttonsTaskHold?: string[]; moduleOnStation?: string[] }
+
+/** Steps using main-story-only mechanics (StoryPart fields the mod loader never reads). */
+export const hasMechanics = (step: FinishMechanics) => !!(step.buttonsTask || step.buttonsTaskOrder === false || step.buttonsTaskHold || step.moduleOnStation)
+
+const lowerFirst = (s: string) => s.charAt(0).toLowerCase() + s.slice(1)
+
+/** How a step finishes, including the main story's held controls, several actions and shipyard modules. */
+export function describeFinish(step: FinishMechanics): string {
+  const action = (b: string) => b.replace(/^BUTTON_/, '')
+  const hold = step.buttonsTaskHold?.map((b) => { const k = `conditions.control_${action(b)}`; const s = t(k); return s === k ? lowerFirst(describeCondition(action(b))) : s })
+  const done = hold
+    ? hold.length > 1 ? t('conditions.holdTogether', { controls: hold.join(t('conditions.and')) }) : t('conditions.hold', { control: hold[0] })
+    : step.buttonsTask && step.buttonsTask.length > 1
+      ? t(step.buttonsTaskOrder === false ? 'conditions.allAnyOrder' : 'conditions.allInOrder', { list: step.buttonsTask.map((b) => lowerFirst(describeCondition(action(b)))).join(step.buttonsTaskOrder === false ? ', ' : t('conditions.then')) })
+      : describeCondition(step.finishWhen)
+  return step.moduleOnStation ? `${done}. ${t('conditions.shipyardOffers', { modules: step.moduleOnStation.join(', ') })}` : done
 }

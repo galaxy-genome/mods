@@ -17,6 +17,8 @@ jobs:
       - run: npm ci
       - run: npm test
       - run: npm run build
+      - name: No game text in the site
+        run: '! ls dist/data | grep -E "^game-(quests|story)"'
       - uses: actions/upload-pages-artifact@v3
         with: { path: dist }
       - uses: actions/deploy-pages@v4

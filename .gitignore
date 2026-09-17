@@ -34,3 +34,4 @@ local/
 # README demo recordings
 demo-out/
 .claude/
+public/data/game-story-full.json

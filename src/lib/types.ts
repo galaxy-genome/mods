@@ -156,6 +156,13 @@ export interface Step extends Kept {
   failWhen: string[] // failureActions
   reminder: DialogLine[] // dialogTextRepeat
   reminderEverySec: number // repeatTextTimeSec
+  /** Game behaviour the quest format cannot express, shown read-only on the step. Only the game's main story has these. */
+  notes?: string[] // notes
+  /** Main-story-only mechanics the mod loader ignores (StoryMod.as sets one completion action); read-only, never exported. */
+  buttonsTask?: string[] // buttons_task, when more than one action
+  buttonsTaskOrder?: false // buttons_task_order
+  buttonsTaskHold?: string[] // buttons_task_hold
+  moduleOnStation?: string[] // module_on_station
 }
 
 export interface Rumor extends Kept {

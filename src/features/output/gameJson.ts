@@ -68,7 +68,8 @@ export function stepJson(step: Step, labels: Map<string, number>) {
     shipSpawn: step.ships.map((s) => withKept(s, {
       Name: s.pilot,
       shipLevel: s.level,
-      shipModel: s.model,
+      // A quest file can't name a game-only ship; write the ship the error's Fix offers.
+      shipModel: shipByKey(s.model)?.modFallback ?? s.model,
       distanceFromPlayer: s.placement === 'nearPlayer' ? s.distance : 0,
       spawnX: s.placement === 'position' ? s.x : 0,
       spawnY: s.placement === 'position' ? s.y : 0,

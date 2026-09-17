@@ -8,7 +8,7 @@ import { QuestOverviewMap } from '@/features/map/QuestMaps'
 import { useListParam, useSelectionNav } from '@/components/pickers/common'
 import { Segmented } from '@/components/ui/inputs'
 import { Badge, Card, EmptyState, RowGroup, SectionLabel } from '@/components/ui/surfaces'
-import { describeCondition } from '@/lib/conditions'
+import { describeFinish, isGameOver } from '@/lib/conditions'
 import { newLine, uid } from '@/lib/factory'
 import { gameQuest } from '@/lib/reference'
 import { fallThroughs, MAX_CHOICES, stepGraph } from '@/lib/rules'
@@ -200,12 +200,12 @@ function Graph({ q, selected, onSelect, onOpen }: { q: QuestContent; selected: n
                 className="cursor-pointer outline-none [&:focus-visible>rect]:stroke-white"
                 opacity={unreachable ? 0.45 : 1}
               >
-                <rect width={NODE_W} height={NODE_H} rx={4} fill="var(--color-panel)" stroke={selected === i ? 'var(--color-cyan)' : unreachable ? 'var(--color-dim)' : 'var(--color-edge)'} strokeWidth={selected === i ? 2 : 1} strokeDasharray={unreachable && selected !== i ? '5 4' : undefined} />
+                <rect width={NODE_W} height={NODE_H} rx={4} fill="var(--color-panel)" stroke={selected === i ? 'var(--color-cyan)' : isGameOver(s) ? 'var(--color-danger)' : unreachable ? 'var(--color-dim)' : 'var(--color-edge)'} strokeWidth={selected === i ? 2 : 1} strokeDasharray={unreachable && selected !== i ? '5 4' : undefined} />
                 <text x={12} y={24} fontSize={13} className="fill-white">
                   <tspan className="fill-dim font-mono">{i + 1}</tspan>
                   <tspan dx={8} fontWeight={600}>{clip(s.name || t('output.untitled'), s.checkpoint ? 16 : 22)}</tspan>
                 </text>
-                <text x={12} y={46} fontSize={11} className="fill-ink">{clip(describeCondition(s.finishWhen), 32)}</text>
+                <text x={12} y={46} fontSize={11} className={isGameOver(s) ? 'fill-danger font-semibold' : 'fill-ink'}>{isGameOver(s) ? t('conditions.gameOver') : clip(describeFinish(s), 32)}</text>
                 {s.checkpoint && (
                   <g transform={`translate(${NODE_W - 30},10)`}>
                     <rect width={20} height={18} rx={2} fill="none" stroke="var(--color-success)" />

@@ -9,6 +9,7 @@ build ships without it.
 import json
 import pathlib
 import sqlite3
+import subprocess
 import sys
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent

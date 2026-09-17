@@ -6,7 +6,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite --config scripts/vite.config.ts",
-    "build": "tsc -b scripts/tsconfig.json && vite build --config scripts/vite.config.ts && cp dist/index.html dist/404.html",
+    "build": "tsc -b scripts/tsconfig.json && vite build --config scripts/vite.config.ts && node scripts/strip-private.mjs && cp dist/index.html dist/404.html",
     "lint": "oxlint",
     "preview": "vite preview --config scripts/vite.config.ts",
     "test": "for f in src/lib/*.test.ts src/data/*.test.ts src/features/map/map.test.ts src/features/map/places.test.ts src/features/map/declutter.test.ts src/features/output/flowLabels.test.ts src/features/start/helpSearch.test.ts src/features/quickbuild/generate.test.ts scripts/validate-submission.test.ts; do node --import ./scripts/test-hooks.mjs --no-warnings \"$f\" || exit 1; done",

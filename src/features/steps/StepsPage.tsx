@@ -10,7 +10,7 @@ import { Menu } from '@/components/ui/overlays'
 import { Badge, Card, EmptyState, SectionLabel, SeverityIcon, TipCard } from '@/components/ui/surfaces'
 import { useProblems } from '@/hooks/use-problems'
 import { useT } from '@/i18n'
-import { describeCondition, parseCondition } from '@/lib/conditions'
+import { describeFinish, isGameOver, parseCondition } from '@/lib/conditions'
 import { newMission, newStep } from '@/lib/factory'
 import { stepGraph } from '@/lib/rules'
 import type { Problem, Step } from '@/lib/types'
@@ -193,6 +193,7 @@ function StepCard({ step, index, steps, problem, selected, onSelect, onOpen, onL
           <span className="w-6 font-mono text-[15px] text-cyan">{index + 1}</span>
           <span className={cn('min-w-0 flex-1 truncate text-[16px] font-semibold', step.name ? 'text-white' : 'text-ink')}>{stepName(step, index)}</span>
           {step.checkpoint && <Badge tone="cyan" icon={<Diamond />}>{t('steps.checkpointShort')}</Badge>}
+          {isGameOver(step) && <Badge tone="danger">{t('conditions.gameOver')}</Badge>}
           {problem && <span title={problem.message} aria-label={problem.message} className="grid size-6 place-items-center"><SeverityIcon severity={problem.severity} className="size-4" /></span>}
           <span className="contents" onClick={(e) => e.stopPropagation()} onPointerDown={(e) => e.stopPropagation()} onKeyDown={(e) => e.stopPropagation()}>
           <Menu label={t('steps.stepActions', { n: index + 1 })} items={[
@@ -210,7 +211,7 @@ function StepCard({ step, index, steps, problem, selected, onSelect, onOpen, onL
           {step.mission && <span aria-label={t('steps.stationMission')} className="text-ink [&_svg]:size-3.5"><Landmark /></span>}
           <span className={cn('flex min-w-0 items-center gap-1', step.finishWhen ? 'text-ink' : 'text-danger')}>
             <ArrowRight className="size-3.5 shrink-0 text-cyan" />
-            <span className={cn('truncate', step.finishWhen && !parseCondition(step.finishWhen).def && 'font-mono')}>{describeCondition(step.finishWhen)}</span>
+            <span className={cn('truncate', step.finishWhen && !parseCondition(step.finishWhen).def && 'font-mono')}>{describeFinish(step)}</span>
           </span>
         </div>
         {targets.length > 0 && (

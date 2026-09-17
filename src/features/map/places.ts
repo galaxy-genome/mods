@@ -1,6 +1,6 @@
 // Where a quest happens on the galaxy map: one resolver for system, station and planet names, and pure layers that
 // turn quests into places, step routes and series routes. No drawing and no store access.
-import { parseCondition } from '@/lib/conditions'
+import { parseCondition, neverFires } from '@/lib/conditions'
 import { GENERATED } from '@/lib/dependencies'
 import { BODIES, STATIONS } from '@/lib/reference'
 import { missionNeedsSystem, stepGraph } from '@/lib/rules'
@@ -133,7 +133,7 @@ export function questPlaces(q: QuestContent, resolve: Resolver): QuestPlaces {
   if (s.startMode === 'bar') want(0, 'station', 'offer', s.stationName)
   q.steps.forEach((step, i) => {
     for (const [raw, role] of [[step.finishWhen, 'arrive'], ...step.failWhen.map((f) => [f, 'fail'])] as [string | null, PlaceRole][]) {
-      if (!raw) continue
+      if (!raw || neverFires(raw)) continue
       const { def, param } = parseCondition(raw)
       if (def?.param === 'system' || def?.param === 'station' || def?.param === 'planet') want(i, def.param, role, param)
       if (def?.param === 'shipStop') {

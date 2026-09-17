@@ -1,4 +1,4 @@
-import { AlertTriangle, ArrowRight, BellRing, ChevronLeft, ChevronRight, Diamond, Landmark, MessageSquare, Pencil, Plus, Rocket, Swords, Trash2, X } from 'lucide-react'
+import { AlertTriangle, ArrowRight, BellRing, ChevronLeft, ChevronRight, Diamond, Info, Landmark, MessageSquare, Pencil, Plus, Rocket, Swords, Trash2, X } from 'lucide-react'
 import * as React from 'react'
 import { useNavigate, useSearchParams } from 'react-router-dom'
 import { Page, useShellHeader } from '@/components/layout/shell'
@@ -10,7 +10,7 @@ import { useProblems } from '@/hooks/use-problems'
 import { usePulseField } from '@/hooks/use-pulse-field'
 import { jumpLabels } from '@/features/output/gameJson'
 import { useT } from '@/i18n'
-import { describeCondition, parseCondition } from '@/lib/conditions'
+import { describeCondition, describeFinish, hasMechanics, isGameOver, parseCondition } from '@/lib/conditions'
 import { MISSION_TYPES } from '@/lib/reference'
 import { ConditionPicker } from './ConditionPicker'
 import { updateWithUndo, useEditor } from '@/store/editor'
@@ -42,7 +42,7 @@ export function StepEditorPage() {
 
   useShellHeader({
     back: `${base}/steps`,
-    subtitle: step ? t('steps.stepOf', { n: index + 1, total }) : undefined,
+    subtitle: step ? `${t('steps.stepOf', { n: index + 1, total })}${isGameOver(step) ? ` · ${t('conditions.gameOver')}` : ''}` : undefined,
     title: step ? (
       <input
         aria-label={t('steps.stepName')}
@@ -71,6 +71,17 @@ export function StepEditorPage() {
   return (
     <Page className="pb-28">
       <TipCard tipKey="step-editor">{t('steps.tipStepEditor')}</TipCard>
+
+      {isGameOver(step) && (
+        <Card tone="danger" data-testid="game-over" className="p-4 text-[15px] font-semibold text-white">{t('conditions.gameOverLine')}</Card>
+      )}
+
+      {!!step.notes?.length && (
+        <Card data-testid="step-notes" className="flex flex-col gap-2 p-4">
+          <SectionLabel>{t('steps.gameNotes')}</SectionLabel>
+          {step.notes.map((n) => <p key={n} className="flex items-start gap-1.5 text-[13px] leading-snug text-ink"><Info className="mt-0.5 size-3.5 shrink-0 text-cyan" />{n}</p>)}
+        </Card>
+      )}
 
       <Card className="flex flex-col gap-4 p-4">
         <SectionLabel>{t('steps.journal')}</SectionLabel>
@@ -105,7 +116,7 @@ export function StepEditorPage() {
         <SectionLabel action={<AdvancedKey k="completeAction" />}>{t('steps.finishesWhen')}</SectionLabel>
         <SentenceCard fieldKey="finishWhen" icon={<ArrowRight className={step.finishWhen ? 'text-cyan' : 'text-danger'} />} tone={step.finishWhen ? 'cyan' : 'danger'}
           onClick={() => setPicker({ kind: 'finish' })} trailing={<Pencil className="size-4 text-dim" />}>
-          {step.finishWhen
+          {hasMechanics(step) ? describeFinish(step) : step.finishWhen
             ? parseCondition(step.finishWhen).def ? t('steps.finishesWhenSentence', { condition: lower(describeCondition(step.finishWhen)) }) : <ConditionText action={step.finishWhen} />
             : <span className="text-danger">{t('steps.chooseFinish')}</span>}
         </SentenceCard>

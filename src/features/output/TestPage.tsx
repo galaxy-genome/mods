@@ -6,7 +6,7 @@ import { useNavigate, useParams } from 'react-router-dom'
 import { Page, useShellHeader } from '@/components/layout/shell'
 import { Button } from '@/components/ui/button'
 import { Badge, Card, EmptyState, SectionLabel, TipCard } from '@/components/ui/surfaces'
-import { describeCondition } from '@/lib/conditions'
+import { describeCondition, describeFinish, isGameOver } from '@/lib/conditions'
 import { MISSION_TYPES, humanize, shipByKey } from '@/lib/reference'
 import { MAX_CHOICES, rewardEstimate } from '@/lib/rules'
 import type { Choice, DialogLine, QuestContent, ShipOrder, Step } from '@/lib/types'
@@ -175,17 +175,19 @@ export function TestPage() {
           <motion.div key="wait" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.15 }} className="flex flex-col gap-2">
             {!allShown ? (
               <Button variant="ghost" onClick={() => setSim((s) => ({ ...s, shown: step.dialogue.length }))}>{t('output.teSkip')}</Button>
+            ) : isGameOver(step) ? (
+              <Card tone="danger" data-testid="test-game-over" className="p-5 text-center text-[17px] font-semibold text-white">{t('conditions.gameOverLine')}</Card>
             ) : choices.length === 0 && (
               <>
                 <SectionLabel>{t('output.teWaiting')}</SectionLabel>
-                <Card tone="cyan" className="px-3 py-2.5 text-[15px] text-white">{describeCondition(step.finishWhen)}</Card>
+                <Card tone="cyan" className="px-3 py-2.5 text-[15px] text-white">{describeFinish(step)}</Card>
                 <Button variant="solid" onClick={() => goTo(current.step + 1)} disabled={!step.finishWhen}>
                   <Play className="size-4" />{t('output.tePretend')}
                 </Button>
                 {!step.finishWhen && <p className="text-[12px] text-danger">{t('output.teStuck')}</p>}
               </>
             )}
-            {step.failWhen.length > 0 && (
+            {step.failWhen.length > 0 && !isGameOver(step) && (
               failing ? (
                 <Card tone="danger" className="flex flex-col gap-1 p-2">
                   <span className="px-1 text-[12px] text-dim">{t(step.failWhen.length > 1 ? 'output.teFailAll' : 'output.teFailPick')}</span>

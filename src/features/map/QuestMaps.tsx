@@ -5,7 +5,7 @@ import { AppBar } from '@/components/layout/shell'
 import { Button } from '@/components/ui/button'
 import { Badge, Card, EmptyState } from '@/components/ui/surfaces'
 import { useT } from '@/i18n'
-import { describeCondition } from '@/lib/conditions'
+import { describeFinish, isGameOver } from '@/lib/conditions'
 import { splitViewId } from '@/lib/mods'
 import type { QuestContent, QuestView, Star, StarsView } from '@/lib/types'
 import { cn } from '@/lib/utils'
@@ -18,6 +18,7 @@ import { type MapOverlay, type OverlayPin, StarMap } from './StarMap'
 const START = '#ffb454'
 const NEXT = '#8fb3bf'
 const CHOICE = '#35e0f5'
+const GAME_OVER = '#ff4d4d'
 /** Quest colours in the series map, cycled; readable on the void background and apart from the start-area amber. */
 const SERIES = ['#35e0f5', '#ff6fb1', '#9dff6a', '#b28dff', '#ffd84d', '#4d9dff', '#ff8a4d', '#4dffd2', '#e0e0e0', '#ff4d6a']
 
@@ -56,7 +57,7 @@ export function QuestOverviewMap({ q, modId, selected, onSelect }: { q: QuestCon
       pin.problem ||= problemSteps.has(i)
       pins.set(key, pin)
     }))
-    for (const pin of pins.values()) { pin.text = pin.steps.map((i) => i + 1).join('·'); pin.label = placeLabel(pin.places, t('output.qmStartArea')); if (pin.start) { pin.text = `▶${pin.text}`; pin.label = t('output.qmStartPin', { place: pin.label }) } }
+    for (const pin of pins.values()) { pin.text = pin.steps.map((i) => `${isGameOver(q.steps[i]) ? '💥' : ''}${i + 1}`).join('·'); pin.label = placeLabel(pin.places, t('output.qmStartArea')); if (pin.steps.every((i) => isGameOver(q.steps[i]))) pin.colour = GAME_OVER; if (pin.start) { pin.text = `▶${pin.text}`; pin.label = t('output.qmStartPin', { place: pin.label }) } }
 
     const overlay: MapOverlay = { areas: [], lines: [], pins: [...pins.values()] }
     places.steps[0]?.forEach((p) => { if (p.kind === 'area') overlay.areas.push({ x: p.x, y: p.y, r: p.r ?? 0, colour: START }) })
@@ -140,7 +141,8 @@ export function QuestOverviewMap({ q, modId, selected, onSelect }: { q: QuestCon
               <Button size="icon-sm" variant="ghost" aria-label={t('steps.previousStep')} disabled={selected === 0} onClick={() => setSelected(selected - 1)}><ChevronLeft className="size-4" /></Button>
               <Button size="icon-sm" variant="ghost" aria-label={t('steps.nextStep')} disabled={selected === q.steps.length - 1} onClick={() => setSelected(selected + 1)}><ChevronRight className="size-4" /></Button>
             </p>
-            <p className="text-[13px] text-ink">{describeCondition(step.finishWhen)}</p>
+            {isGameOver(step) && <p className="text-[14px] font-semibold text-danger">{t('conditions.gameOverLine')}</p>}
+            <p className="text-[13px] text-ink">{describeFinish(step)}</p>
             {stepPlaces.length > 0 && <p className="font-mono text-[12px] text-dim">{placeLabel(stepPlaces, t('output.qmStartArea'))}</p>}
             {stepUnresolved.map((u) => <p key={u.place.name} className="flex items-center gap-1.5 text-[12px] text-amber"><AlertTriangle className="size-3.5" />{t('output.qmNotFound', { name: u.place.name })}</p>)}
             <div className="flex gap-2 pt-1">
@@ -157,8 +159,8 @@ export function QuestOverviewMap({ q, modId, selected, onSelect }: { q: QuestCon
           <div className="flex gap-1.5 overflow-x-auto pb-1">
             {strip.map((i) => (
               <button key={q.steps[i].id} type="button" onClick={() => setSelected(i)} aria-pressed={selected === i}
-                className={cn('flex min-h-11 shrink-0 items-center gap-2 rounded-[2px] border px-3 text-[13px]', selected === i ? 'border-cyan text-white' : 'border-edge text-ink')}>
-                <span className="font-mono text-[12px] text-dim">{i + 1}</span>{clip(q.steps[i].name || t('output.untitled'), 22)}
+                className={cn('flex min-h-11 shrink-0 items-center gap-2 rounded-[2px] border px-3 text-[13px]', selected === i ? 'border-cyan text-white' : isGameOver(q.steps[i]) ? 'border-danger text-ink' : 'border-edge text-ink')}>
+                <span className="font-mono text-[12px] text-dim">{isGameOver(q.steps[i]) && '💥'}{i + 1}</span>{clip(q.steps[i].name || t('output.untitled'), 22)}
                 {model.problemSteps.has(i) && <AlertTriangle className="size-3.5 text-amber" />}
               </button>
             ))}

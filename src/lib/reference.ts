@@ -68,6 +68,9 @@ export interface ShipModel {
   internal: string // TargetShipType name
   size: 'Small' | 'Medium' | 'Large'
   alwaysHostile?: boolean
+  /** Spawned only by the game's own quests: StoryMod's shipModel switch has no key for it. `modFallback` is the closest ship a mod can spawn. */
+  gameOnly?: boolean
+  modFallback?: string
 }
 
 export const SHIP_MODELS: ShipModel[] = [
@@ -78,6 +81,7 @@ export const SHIP_MODELS: ShipModel[] = [
   { key: 'vortex', name: 'Vortex', internal: 'Vertex', size: 'Small' },
   { key: 'hawk', name: 'Hawk', internal: 'Hawk', size: 'Small' },
   { key: 'wasp', name: 'Wasp', internal: 'Wasp', size: 'Small' },
+  { key: 'falcon', name: 'Falcon', internal: 'Falcon', size: 'Medium', gameOnly: true, modFallback: 'hawk' },
   { key: 'pangolin', name: 'Pangolin', internal: 'KLA-6', size: 'Medium' },
   { key: 'pangolinmk2', name: 'Pangolin MK2', internal: 'PangolinMK2', size: 'Medium' },
   { key: 'phoenix', name: 'Phoenix', internal: 'Phoenix', size: 'Medium' },

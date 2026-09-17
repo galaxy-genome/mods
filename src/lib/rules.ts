@@ -1,6 +1,6 @@
 import { t } from '@/i18n'
 import { updateQuest } from '@/store/editor'
-import { describeCondition, parseCondition } from './conditions'
+import { describeCondition, hasMechanics, isGameOver, neverFires, parseCondition } from './conditions'
 import { type PlaceSource, gameSystemTest, modDependencies, questPlaceUses, satisfies } from './dependencies'
 import { modDeps } from './modDeps'
 import { newStep } from './factory'
@@ -219,6 +219,15 @@ export function questProblems(mod: QuestView, all: ModPart[], galaxy = getGalaxy
     const n = i + 1
     const path = `steps/${step.id}`
     const label = t('rules.labelStep', { n, name: step.name || t('rules.untitled') })
+    if (hasMechanics(step) && mod.meta.origin !== 'game') {
+      add('error', `story-only-${step.id}`, t('rules.storyOnly'), path, label, undefined, {
+        label: t('rules.storyOnlyFix'),
+        apply: () => updateQuest(mod.meta.id, (d) => {
+          const x = d.steps.find((st) => st.id === step.id)
+          if (x) { delete x.buttonsTask; delete x.buttonsTaskOrder; delete x.buttonsTaskHold; delete x.moduleOnStation }
+        }),
+      })
+    }
 
     /** Checks one "Finishes when" or "Fails when" condition; `key` makes the problem ids unique per condition. */
     const checkCondition = (raw: string, field: 'finishWhen' | 'failWhen', key: string, remove: (st: Step) => void) => {
@@ -236,6 +245,10 @@ export function questProblems(mod: QuestView, all: ModPart[], galaxy = getGalaxy
           label: t('rules.chooseCondition'),
           apply: () => { history.pushState(null, '', `/mod/${mod.meta.id}/${path}?field=${field}&pick=${field === 'finishWhen' ? 'finish' : key.split('-fail')[1]}`); dispatchEvent(new PopStateEvent('popstate')) },
         })
+        return
+      }
+      if (neverFires(raw)) {
+        if (field === 'finishWhen' && !isGameOver(step)) add('error', `never-${key}`, t('rules.neverFires'), path, label, field)
         return
       }
       const sys = def.param === 'system' && systemProblem(param, false)
@@ -301,6 +314,13 @@ export function questProblems(mod: QuestView, all: ModPart[], galaxy = getGalaxy
       if (!sh.pilot) add('warning', `pilot-${sh.id}`, t('ships.pilotRequired'), shipPath, label, 'pilot')
       const model = shipByKey(sh.model)
       if (!model) add('warning', `model-${sh.id}`, t('rules.modelUnknown', { name: sh.model, fallback: 'Ion' }), shipPath, label, 'model')
+      if (model?.gameOnly && mod.meta.origin !== 'game') {
+        const alt = shipByKey(model.modFallback!)!
+        add('error', `game-only-${sh.id}`, t('rules.modelGameOnly', { name: model.name, fallback: alt.name }), shipPath, label, 'model', {
+          label: t('rules.modelGameOnlyFix', { fallback: alt.name }),
+          apply: () => updateQuest(mod.meta.id, (d) => { const x = d.steps.flatMap((st) => st.ships).find((y) => y.id === sh.id); if (x) x.model = alt.key }),
+        })
+      }
       if (!BEHAVIOURS.some((b) => b.key === sh.behaviour)) add('warning', `behaviour-${sh.id}`, t('rules.behaviourUnknown', { name: sh.behaviour, fallback: 'Trader' }), shipPath, label, 'behaviour')
       if (model?.alwaysHostile && !BEHAVIOURS.find((b) => b.key === sh.behaviour)?.hostile)
         add('tip', `hostile-${sh.id}`, t('rules.alwaysHostile', { name: model.name }), shipPath, label)

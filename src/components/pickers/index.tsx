@@ -81,7 +81,7 @@ export function ShipPicker({ open, onOpenChange, nested, value, mode, onSelect }
   const valOf = (s: (typeof SHIP_MODELS)[number]) => (mode === 'model' ? s.key : s.internal)
   const pick = (v: string) => { pushRecent(v); onSelect(v); onOpenChange(false) }
   const nameOf = (v: string) => SHIP_MODELS.find((s) => valOf(s) === v)?.name ?? v
-  const ships = SHIP_MODELS.filter((s) => (!size || s.size === size) && matches(q, s.name, s.key, s.internal))
+  const ships = SHIP_MODELS.filter((s) => !s.gameOnly && (!size || s.size === size) && matches(q, s.name, s.key, s.internal))
   return (
     <Sheet open={open} onOpenChange={onOpenChange} nested={nested} title={t('pickers.ship')} full>
       <div>

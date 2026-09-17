@@ -686,18 +686,38 @@ export async function refreshStaleCopies(entryId?: string) {
 }
 
 let gameFiles: Promise<Record<string, string> | null> | null = null
+let storyFiles: Promise<Record<string, string> | null> | null = null
+const localJson = (file: string) => fetch(`${import.meta.env.BASE_URL}data/${file}`)
+  .then((r) => (r.ok && r.headers.get('content-type')?.includes('json') ? r.json() : null)).catch(() => null)
+
+/** The game's main story, quest 0: one quest file per language from the local-only data/game-story-full.json, English first. */
+async function importStory() {
+  storyFiles ??= localJson('game-story-full.json')
+  const files = await storyFiles
+  const results = Object.values(files ?? {}).map((text) => importText(text))
+  const [primary, ...others] = results.map((r) => (r.kind === 'ok' ? (r.mod as QuestView) : null))
+  if (!primary || others.includes(null)) return null
+  const base = primary.versions[primary.primaryLang]!
+  base.settings.questId = 0
+  for (const o of others as QuestView[]) primary.versions[o.primaryLang] = syncVersion(base, o.versions[o.primaryLang]!)
+  return primary
+}
 
 /** Opens one of the game's own quests read-only as `game-<questId>`, from the local-only data/game-quests-full.json. Resolves null when it isn't there. */
 export async function openGameQuest(questId: string) {
   const id = `game-${questId}`
   const open = state.gameMods.find((b) => b.meta.id === id)
   if (open) return open
-  gameFiles ??= fetch(`${import.meta.env.BASE_URL}data/game-quests-full.json`)
-    .then((r) => (r.ok && r.headers.get('content-type')?.includes('json') ? r.json() : null)).catch(() => null)
-  const text = (await gameFiles)?.[questId]
-  const result = text ? importText(text) : null
-  if (result?.kind !== 'ok') return null
-  const mod = state.gameMods.find((b) => b.meta.id === id) ?? modFromParts([result.mod], { id, origin: 'game', favorite: false })
+  let part: ModPart | null
+  if (questId === '100000') part = await importStory()
+  else {
+    gameFiles ??= localJson('game-quests-full.json')
+    const text = (await gameFiles)?.[questId]
+    const result = text ? importText(text) : null
+    part = result?.kind === 'ok' ? result.mod : null
+  }
+  if (!part) return null
+  const mod = state.gameMods.find((b) => b.meta.id === id) ?? modFromParts([part], { id, origin: 'game', favorite: false })
   if (!state.gameMods.includes(mod)) patch({ gameMods: [...state.gameMods, mod] })
   return mod
 }

@@ -199,6 +199,14 @@ export function importText(raw: string): ImportOutcome {
     step.dialogue = lines(list(get(p, 'dialogText')), where, true)
     const reminder = list(get(p, 'dialogTextRepeat'))
     if (reminder.length) { step.reminder = lines(reminder, tr('whereReminder', { where }), false); kept.push(tr('keptReminder', { where })) }
+    const notes = get(p, 'notes')
+    if (Array.isArray(notes)) step.notes = notes.map(str)
+    const strs = (k: string) => { const v = get(p, k); return Array.isArray(v) && v.length ? v.map(str) : null }
+    const buttons = strs('buttons_task'), hold = strs('buttons_task_hold'), modules = strs('module_on_station')
+    if (buttons) step.buttonsTask = buttons
+    if (get(p, 'buttons_task_order') === false) step.buttonsTaskOrder = false
+    if (hold) step.buttonsTaskHold = hold
+    if (modules) step.moduleOnStation = modules
     step.reminderEverySec = num(get(p, 'repeatTextTimeSec'), 999999999, tr('labelReminderInterval', { where }))
     let action = str(get(p, 'completeAction')).trim()
     if (action.startsWith('BUTTON_')) { action = action.slice(7); fixed.add(tr('fixButton', { where })) }
@@ -247,7 +255,7 @@ export function importText(raw: string): ImportOutcome {
         goods: str(get(task, 'TargetGoods')) || 'Water', goodsCount: num(get(task, 'TargetGoodsCount'), 0, tr('labelCargo', { where: w })), credits, reputation,
       })
     }
-    const known = new Set(['name', 'todo', 'questid', 'ischeckpoint', 'dialogtext', 'dialogtextrepeat', 'repeattexttimesec', 'completeaction', 'failureactions', 'shipspawn', 'shipcontrol', 'task_on_station'])
+    const known = new Set(['name', 'todo', 'questid', 'ischeckpoint', 'dialogtext', 'dialogtextrepeat', 'repeattexttimesec', 'completeaction', 'failureactions', 'shipspawn', 'shipcontrol', 'task_on_station', 'notes', ...MECHANIC_KEYS])
     Object.keys(p).filter((k) => !known.has(k.toLowerCase()) && !k.endsWith('Info')).forEach((k) => kept.push(tr('keptUnknownKey', { key: k, where })))
   })
 
@@ -259,6 +267,9 @@ export function importText(raw: string): ImportOutcome {
   keepFromFile(content, data, toGameJson(content), QUEST_CHILDREN)
   return { kind: 'ok', mod, fixed: [...fixed], look, kept }
 }
+
+/** Main-story step keys held as read-only step fields; export never writes them back. */
+const MECHANIC_KEYS = ['buttons_task', 'buttons_task_order', 'buttons_task_hold', 'module_on_station']
 
 /** Written key → [model key, children of each item]. */
 type Children = Record<string, [string, Children]>
@@ -291,7 +302,7 @@ function keepFromFile(model: Kept, raw: Obj, written: Obj, children: Children) {
     if (child && isObj(rv) && isObj(value) && isObj(target)) { keepFromFile(target, rv, value, child[1]); continue }
     if (rv === undefined || JSON.stringify(rv) !== JSON.stringify(value)) (model._kept ??= {})[key] = { written: value, value: rv }
   }
-  for (const k of Object.keys(raw)) if (!matched.has(k)) (model._extra ??= {})[k] = raw[k]
+  for (const k of Object.keys(raw)) if (!matched.has(k) && !MECHANIC_KEYS.includes(k)) (model._extra ??= {})[k] = raw[k]
 }
 
 function importStars(

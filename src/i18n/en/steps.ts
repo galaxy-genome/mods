@@ -70,6 +70,7 @@ export default {
   finishesWhen: 'Finishes when',
   finishesWhenSentence: 'Finishes when {condition}.',
   chooseFinish: 'Choose what finishes this step',
+  gameNotes: 'Also in the game',
   finishHint: 'One condition. When it happens the next step begins; steps only advance when no dialogue is open. To let the player pick a path, end the step before it with choices.',
   failsWhen: 'Fails when',
   optional: '(optional)',
