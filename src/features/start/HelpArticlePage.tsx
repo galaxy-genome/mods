@@ -1,6 +1,7 @@
 import { Check, Circle, ExternalLink, X } from 'lucide-react'
 import * as React from 'react'
 import { Link, Navigate, useNavigate, useParams } from 'react-router-dom'
+import { useInPanel } from '@/components/layout/panel'
 import { AppBar } from '@/components/layout/shell'
 import { Button } from '@/components/ui/button'
 import { SearchInput } from '@/components/ui/inputs'
@@ -25,15 +26,16 @@ export function HelpArticlePage() {
 /** One article; from 900px wide the article list sits beside it. */
 export function HelpArticleView({ slug }: { slug: string }) {
   useT()
+  const inPanel = useInPanel()
   const wide = useMediaQuery('(min-width: 900px)')
   const article = ARTICLES.find((a) => a.slug === slug)
-  React.useEffect(() => { scrollTo(0, 0) }, [slug])
+  React.useEffect(() => { if (inPanel) inPanel.scrollTop(); else scrollTo(0, 0) }, [slug, inPanel])
   if (!article) return <Navigate to="/help" replace />
   const index = ARTICLES.indexOf(article)
   const next = ARTICLES[index + 1]
   return (
-    <div className="min-h-dvh bg-void">
-      <AppBar back={wide ? '/' : '/help'} title={wide ? t('startHelp.help') : article.title} subtitle={wide ? undefined : t('startHelp.helpGroup', { group: groupLabel(article.group) })}><OfflineChip /></AppBar>
+    <div className={inPanel ? 'bg-void' : 'min-h-dvh bg-void'}>
+      {!inPanel && <AppBar back={wide ? '/' : '/help'} title={wide ? t('startHelp.help') : article.title} subtitle={wide ? undefined : t('startHelp.helpGroup', { group: groupLabel(article.group) })}><OfflineChip /></AppBar>}
       <div className="flex">
       {wide && <HelpMenu active={slug} />}
       <main className="mx-auto flex min-w-0 max-w-[680px] flex-1 flex-col gap-4 px-4 py-5 pb-12">

@@ -46,6 +46,7 @@ export function PlanetsPage() {
               {mod.planets.filter((p) => p.system === sys).sort((a, b) => a.orbit - b.orbit).map((p) => (
                 <ItemCard
                   key={p.id}
+                  navKey={`planet:${p.name || p.id}`}
                   onOpen={() => go(`planets/${p.id}`)}
                   onDelete={() => removeItem(modId, 'planets', p.id, p.name)}
                   leading={<PlanetThumb type={p.type} />}

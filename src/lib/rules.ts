@@ -102,7 +102,7 @@ function systemChecker(galaxy: Galaxy | null, stars: StarsView[]) {
   return (name: string, getSystem: boolean) => {
     const at = resolve.system(name)
     if (at?.source === 'generated') return getSystem ? t('rules.systemGenerated', { name }) : null
-    if (at?.source === 'catalogue' && !galaxy.byName.get(name)![5]) return t('rules.systemHidden', { name })
+    if (at?.source === 'catalogue' && !galaxy.byName.get(at.system)![5]) return t('rules.systemHidden', { name })
     if (at) return null
     const guess = closest(name, [...galaxy.byName.keys(), ...stars.flatMap((m) => m.stars.map((st) => st.name))])
     return guess ? t('rules.systemUnknownGuess', { name, guess }) : t('rules.systemUnknown', { name })

@@ -1,6 +1,7 @@
 import { FileText, SearchX } from 'lucide-react'
 import * as React from 'react'
 import { useNavigate } from 'react-router-dom'
+import { useInPanel } from '@/components/layout/panel'
 import { AppBar } from '@/components/layout/shell'
 import { SearchInput } from '@/components/ui/inputs'
 import { EmptyState, ListRow, RowGroup, SectionLabel } from '@/components/ui/surfaces'
@@ -18,11 +19,12 @@ let menuQuery = ''
 
 export function HelpPage() {
   const t = useT()
+  const inPanel = useInPanel()
   const wide = useMediaQuery('(min-width: 900px)')
   if (wide) return <HelpArticleView slug={ARTICLES[0]!.slug} />
   return (
-    <div className="min-h-dvh bg-void">
-      <AppBar back="/" title={t('startHelp.help')}><OfflineChip /></AppBar>
+    <div className={inPanel ? 'bg-void' : 'min-h-dvh bg-void'}>
+      {!inPanel && <AppBar back="/" title={t('startHelp.help')}><OfflineChip /></AppBar>}
       <main className="mx-auto flex max-w-[720px] flex-col gap-4 px-4 py-4 pb-10">
         <HelpMenu />
       </main>
@@ -53,10 +55,10 @@ export function HelpMenu({ active }: { active?: string }) {
           <RowGroup>
             {shown.map(({ article: a, snippet }) => (
               <div key={a.slug} aria-current={a.slug === active ? 'page' : undefined} className={cn(a.slug === active && 'bg-cyan/10 shadow-[inset_2px_0_0_var(--color-cyan)] [&_*]:text-cyan')}>
-                <ListRow nav icon={<FileText />} title={a.title} subtitle={snippet} onClick={() => navigate(`/help/${a.slug}`)} />
+                <ListRow nav={`article:${a.slug}`} icon={<FileText />} title={a.title} subtitle={snippet} onClick={() => navigate(`/help/${a.slug}`)} />
               </div>
             ))}
-            {terms.map((id) => <ListRow nav key={id} muted title={termLabel(id)} subtitle={termDefinition(id)} onClick={() => navigate('/help/glossary')} />)}
+            {terms.map((id) => <ListRow nav={`term:${id}`} key={id} muted title={termLabel(id)} subtitle={termDefinition(id)} onClick={() => navigate('/help/glossary')} />)}
           </RowGroup>
         </>
       )}

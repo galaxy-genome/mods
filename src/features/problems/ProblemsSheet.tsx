@@ -82,7 +82,7 @@ export function ProblemsList({ modId, active = true, replace, onNavigate }: { mo
         <ul className="flex flex-col divide-y divide-edge rounded-[4px] border border-edge bg-panel">
           {list.map((p) => (
             <li key={p.id} className="flex flex-wrap items-center gap-1 pr-1">
-              <button type="button" data-opt onClick={() => goTo(p)} className="flex min-h-14 min-w-0 flex-1 items-start gap-3 px-3 py-2.5 text-left hover:bg-white/[0.03]">
+              <button type="button" data-opt data-nav={`problem:${p.id}`} onClick={() => goTo(p)} className="flex min-h-14 min-w-0 flex-1 items-start gap-3 px-3 py-2.5 text-left hover:bg-white/[0.03]">
                 <SeverityIcon severity={p.severity} className="mt-0.5 size-4 shrink-0" />
                 <span className="flex min-w-0 flex-1 flex-col gap-0.5">
                   <span className="text-[14px] leading-snug text-white">{p.message}</span>

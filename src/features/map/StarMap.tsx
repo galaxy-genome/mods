@@ -1,6 +1,7 @@
 import { Maximize, Minus, Plus } from 'lucide-react'
 import * as React from 'react'
 import { useT } from '@/i18n'
+import { FULL_MAP_URL, useOpenFullMap } from './MapRoute'
 import { STATIONS } from '@/lib/reference'
 import type { Severity, Star } from '@/lib/types'
 import { cn } from '@/lib/utils'
@@ -15,7 +16,7 @@ import { type Circle, type Grab, type Hit, type MapMode, dragTo, grabAt, pick, s
 export interface MapProblem { id: string; starId: string; severity: Severity }
 
 /** A numbered marker; `text` is drawn inside, `label` beside it. */
-export interface OverlayPin { id: string; x: number; y: number; text: string; colour: string; label?: string; start?: boolean; problem?: boolean; ring?: boolean; dim?: boolean; hollow?: boolean }
+export interface OverlayPin { id: string; x: number; y: number; text: string; colour: string; label?: string; start?: boolean; problem?: boolean; ring?: boolean; dim?: boolean; hollow?: boolean; quest?: boolean }
 /** A curved line between two map points; `bend` offsets the curve sideways as a share of its length. */
 export interface OverlayLine { x1: number; y1: number; x2: number; y2: number; colour: string; width?: number; dash?: boolean; arrow?: boolean; bend?: number; label?: string; dim?: boolean; step?: number }
 export interface OverlayArea { x: number; y: number; r: number; colour: string; dim?: boolean }
@@ -72,7 +73,7 @@ const FLASH_MS = 900
 const DIMMED = 0.45
 const round1 = (n: number) => Math.round(n * 10) / 10
 const STATION_SYSTEMS = new Set(STATIONS.map((s) => s.system))
-const fullMapUrl = (c: Camera) => `https://galaxy-genome.github.io/map/?at=${Math.round(c.cx)},${Math.round(c.cz)}&ly=${Math.round(acrossLy(c))}`
+const fullMapUrl = (c: Camera) => `${FULL_MAP_URL}?at=${Math.round(c.cx)},${Math.round(c.cz)}&ly=${Math.round(acrossLy(c))}`
 
 interface CatalogueDot { x: number; z: number; colour: string; name: string; rank: number }
 
@@ -82,7 +83,8 @@ export function StarMap(props: StarMapProps) {
   const { galaxy, maps } = useGalaxy()
   const wrap = React.useRef<HTMLDivElement>(null)
   const canvas = React.useRef<HTMLCanvasElement>(null)
-  const link = React.useRef<HTMLAnchorElement>(null)
+  const link = React.useRef<HTMLButtonElement>(null)
+  const openFullMap = useOpenFullMap()
   const propsRef = React.useRef(props)
   propsRef.current = props
 
@@ -245,7 +247,7 @@ export function StarMap(props: StarMapProps) {
     s.labels.clear()
     drawGrid(ctx, c)
     if (g) drawOutline(ctx, c, g.data.outline)
-    if (link.current) link.current.href = fullMapUrl(c)
+    if (link.current) link.current.dataset.url = fullMapUrl(c)
     s.layers = { mod: [], other: [], catalogue: [], generated: [] }
     if (!g) return
 
@@ -426,6 +428,14 @@ export function StarMap(props: StarMapProps) {
       ctx.strokeStyle = pin.colour; ctx.fillStyle = pin.colour; ctx.lineWidth = 1
       if (shown[i].fanned) { ctx.beginPath(); ctx.moveTo(px, py); ctx.lineTo(shown[i].x, shown[i].y); ctx.stroke() }
       ctx.beginPath(); ctx.arc(px, py, 2.5, 0, 6.283); ctx.fill()
+      // The game's own marker for a system with a side quest waiting in a bar.
+      if (pin.quest) {
+        ctx.fillStyle = '#ffffff'
+        ctx.font = '700 17px "JetBrains Mono", monospace'
+        ctx.fillText('!', px - 13, py - 2)
+        ctx.font = PIN_FONT
+        ctx.fillStyle = pin.colour
+      }
       s.labels.claim(px - 4, py + 4, 8)
     }
     for (const [i, { pin, w, px: tx, py: ty }] of placed.entries()) {
@@ -652,10 +662,10 @@ export function StarMap(props: StarMapProps) {
         <button type="button" aria-label={t('map.zoomOut')} onClick={() => zoomStep(1 / 1.6)} className="grid size-11 place-items-center border-t border-edge text-ink hover:text-cyan"><Minus className="size-4" /></button>
         {props.fit && <button type="button" aria-label={t('map.fit')} title={t('map.fit')} onClick={fitTo} className="grid size-11 place-items-center border-t border-edge text-ink hover:text-cyan"><Maximize className="size-4" /></button>}
       </div>
-      <a ref={link} href="https://galaxy-genome.github.io/map/" target="_blank" rel="noreferrer"
+      <button ref={link} type="button" onClick={() => openFullMap(link.current?.dataset.url ?? FULL_MAP_URL)}
         className="absolute bottom-7 right-2 rounded-[2px] bg-deep/80 px-2 py-1 text-[12px] text-cyan hover:underline">
-        {t('map.openFullMap')}<span aria-hidden> ↗</span>
-      </a>
+        {t('map.openFullMap')}
+      </button>
     </div>
   )
 }

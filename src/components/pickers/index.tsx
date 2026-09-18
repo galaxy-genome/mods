@@ -6,11 +6,10 @@ import { Home, MapPinned } from 'lucide-react'
 import * as React from 'react'
 import { useParams } from 'react-router-dom'
 import { Button } from '@/components/ui/button'
-import { ExternalLink } from '@/components/ui/feedback'
 import { Chip, SearchInput } from '@/components/ui/inputs'
 import { Sheet } from '@/components/ui/sheet'
 import { Badge } from '@/components/ui/surfaces'
-import { useOpenMap } from '@/features/map/MapRoute'
+import { FULL_MAP_URL, useOpenFullMap, useOpenMap } from '@/features/map/MapRoute'
 import { StarMap } from '@/features/map/StarMap'
 import { PlaceContextView, stationLabel, usePlaceLine, useResolver } from '@/features/map/PlaceContext'
 import { loadGalaxy, useGalaxy } from '@/features/map/galaxy'
@@ -31,7 +30,6 @@ export { FactionDot, GoodsIcon, PortraitTile, ShipSilhouette, factionName } from
 interface Base { open: boolean; onOpenChange: (v: boolean) => void; nested?: boolean }
 
 const NO_STARS: never[] = []
-const MAP_URL = 'https://galaxy-genome.github.io/map/'
 
 function useQuery(open: boolean) {
   const [q, setQ] = React.useState('')
@@ -56,7 +54,7 @@ export function PortraitPicker({ open, onOpenChange, nested, value, onSelect }: 
             <div className="section-label mb-2">{g.name}</div>
             <div className="grid grid-cols-3 gap-2 sm:grid-cols-4">
               {g.items.map((name) => (
-                <button key={name} type="button" data-opt aria-label={name} aria-pressed={value === name} onClick={() => pick(name)}
+                <button key={name} type="button" data-opt data-nav={`pick:${name}`} aria-label={name} aria-pressed={value === name} onClick={() => pick(name)}
                   className={cn('flex flex-col items-center gap-1.5 rounded-[2px] border p-2 hover:border-grid-strong',
                     value === name ? 'border-cyan bg-cyan/10' : 'border-edge bg-chip')}>
                   <PortraitTile name={name} size={72} className="h-auto w-full max-w-[88px]" />
@@ -98,7 +96,7 @@ export function ShipPicker({ open, onOpenChange, nested, value, mode, onSelect }
           {ships.map((s) => {
             const sel = valOf(s) === value || (mode === 'model' && s.key === value.toLowerCase())
             return (
-              <button key={s.key} type="button" data-opt aria-pressed={sel} onClick={() => pick(valOf(s))}
+              <button key={s.key} type="button" data-opt data-nav={`pick:${s.key}`} aria-pressed={sel} onClick={() => pick(valOf(s))}
                 className={cn('flex min-h-[120px] flex-col items-start gap-1 rounded-[2px] border p-3 text-left hover:border-grid-strong',
                   sel ? 'border-cyan bg-cyan/10' : 'border-edge bg-chip')}>
                 <ShipSilhouette size={s.size} name={s.key} className={cn('self-center', sel ? 'text-cyan' : 'text-grid-strong')} />
@@ -134,7 +132,7 @@ export function BehaviourPicker({ open, onOpenChange, nested, value, onSelect }:
             <div className="section-label mb-1.5">{t(`pickers.group${g}`)}</div>
             <div className="rounded-[2px] border border-edge bg-panel">
               {items.map((b) => (
-                <OptionRow key={b.key} selected={value === b.key} onClick={() => pick(b.key)}>
+                <OptionRow key={b.key} navKey={`pick:${b.key}`} selected={value === b.key} onClick={() => pick(b.key)}>
                   <span className={cn('block text-[15px]', value === b.key ? 'text-cyan' : 'text-white')}>{b.key}</span>
                   <span className="block text-[12px] text-dim">{b.description}</span>
                 </OptionRow>
@@ -188,6 +186,7 @@ export function PlacePicker({ open, onOpenChange, nested, kind, value, onSelect,
     })
   }
   const openMap = useOpenMap()
+  const openFullMap = useOpenFullMap()
   const { galaxy } = useGalaxy()
   const resolve = useResolver(route.modId)
   const placeLine = usePlaceLine()
@@ -202,9 +201,10 @@ export function PlacePicker({ open, onOpenChange, nested, kind, value, onSelect,
   const { game, own, others } = placeOptions(kind, mod, questPart ? mods : [], { catalogue, system: kind === 'system' ? undefined : system })
   const factionKey = (f = '') => STATION_FACTIONS.find((x) => x.name === f)?.key ?? f
   const mapLink = (sys: string) => (
-    <ExternalLink href={`${MAP_URL}?system=${encodeURIComponent(sys)}`} className="inline-flex h-12 shrink-0 items-center whitespace-nowrap px-3 text-[12px] [&>span+span]:hidden">
+    <button type="button" onClick={() => openFullMap(`${FULL_MAP_URL}?system=${encodeURIComponent(sys)}`)}
+      className="inline-flex h-12 shrink-0 items-center whitespace-nowrap px-3 text-[12px] text-cyan hover:underline">
       {t('pickers.viewOnMap')}
-    </ExternalLink>
+    </button>
   )
   const stationSystems = kind === 'system' ? placeOptions('station', mod, mods) : null
   const factionOf = new Map<string, string>()
@@ -215,7 +215,7 @@ export function PlacePicker({ open, onOpenChange, nested, kind, value, onSelect,
     ? (!hasStation || factionOf.has(o.name)) && (!security || o.security === security) && matches(q, o.name)
     : kind === 'station' ? (!faction || factionKey(o.faction) === faction) && matches(q, o.name, o.system) : matches(q, o.name, o.type)
   const row = (o: PlaceOption, onPick: () => void, badge?: string) => (
-    <OptionRow key={`${o.mod?.meta.id ?? ''}:${o.name}`} selected={value === o.name} onClick={onPick} trailing={kind !== 'planet' ? mapLink(o.system ?? o.name) : undefined}>
+    <OptionRow key={`${o.mod?.meta.id ?? ''}:${o.name}`} navKey={`pick:${o.name}`} selected={value === o.name} onClick={onPick} trailing={kind !== 'planet' ? mapLink(o.system ?? o.name) : undefined}>
       <span className="flex items-center gap-2">
         {kind === 'station' && <FactionDot faction={factionKey(o.faction)} />}
         {kind === 'system' && factionOf.has(o.name) && <FactionDot faction={factionOf.get(o.name)!} />}
@@ -229,26 +229,39 @@ export function PlacePicker({ open, onOpenChange, nested, kind, value, onSelect,
     </OptionRow>
   )
   // Stations nearest the selected one (Sol without one) first.
-  const origin = (kind === 'station' && value && value !== 'OWN' ? resolve?.station(value) : null) ?? { x: 0, y: 0 }
-  const starOf = (o: PlaceOption) => o.mod?.stars?.stars.find((st) => st.name === o.system)
+  const at = value && value !== 'OWN' ? (kind === 'station' ? resolve?.station(value) : kind === 'system' ? resolve?.system(value) : null) : null
+  const origin = (kind === 'station' ? at : null) ?? { x: 0, y: 0 }
+  const sysOf = (o: PlaceOption) => o.system ?? o.name
+  const starOf = (o: PlaceOption) => o.mod?.stars?.stars.find((st) => st.name === sysOf(o))
   const distOf = (o: PlaceOption) => { const st = starOf(o); const at = st ?? resolve?.station(o.name); return at ? distanceLy(at, origin) : Infinity }
   const all = [...own, ...game].filter(keep)
   const otherRows = others.map((x) => ({ mod: x.mod, options: x.options.filter(keep) })).filter((x) => x.options.length)
   const otherOptions = otherRows.flatMap((x) => x.options)
   if (kind === 'station') for (const list of [all, ...otherRows.map((x) => x.options)]) list.sort((a, b) => distOf(a) - distOf(b))
-  const shownKey = [...all, ...otherOptions].map((o) => o.system).join('|')
-  const shownSystems = React.useMemo(() => new Set([...all, ...otherOptions].map((o) => o.system!)), [shownKey]) // eslint-disable-line react-hooks/exhaustive-deps
+  const shownKey = [...all, ...otherOptions].map(sysOf).join('|')
+  const shownSystems = React.useMemo(() => new Set([...all, ...otherOptions].map(sysOf)), [shownKey]) // eslint-disable-line react-hooks/exhaustive-deps
   const otherStars = React.useMemo(() => otherOptions.map(starOf).filter((st) => !!st), [shownKey]) // eslint-disable-line react-hooks/exhaustive-deps
-  const stationMap = kind === 'station' && (
-    <StarMap className="mt-2 h-[200px] rounded-[2px] border border-edge" mode="pick" stars={NO_STARS} otherStars={otherStars} systems={shownSystems} focus={{ ...origin, ly: 60 }}
-      overlay={value && value !== 'OWN' && resolve?.station(value) ? { areas: [], lines: [], pins: [{ id: value, ...origin, text: '', colour: '#35e0f5', label: stationLabel(resolve.station(value)!.system, value), ring: true }] } : undefined}
+  // This mod's own systems are drawn from its stars file; stations map to their system's dot instead.
+  const ownStars = React.useMemo(() => (kind === 'system' ? all.map(starOf).filter((st) => !!st) : NO_STARS), [shownKey, kind]) // eslint-disable-line react-hooks/exhaustive-deps
+  const pin = at && { areas: [], lines: [], pins: [{ id: value, x: at.x, y: at.y, text: '', colour: '#35e0f5', label: kind === 'station' ? stationLabel(resolve?.station(value)?.system, value) : value, ring: true }] }
+  const inlineMap = kind !== 'planet' && (
+    <StarMap className="mt-2 h-[200px] rounded-[2px] border border-edge" mode="pick" stars={ownStars} otherStars={otherStars} systems={shownSystems}
+      focus={at ? { x: at.x, y: at.y, ly: 60 } : { x: 0, y: 0, ly: kind === 'station' ? 60 : 200 }}
+      showGenerated={kind === 'system' && generated} pickGenerated={kind === 'system' && generated}
+      overlay={pin || undefined}
       selectedPin={value}
-      onPick={(sys) => { const o = all.find((x) => x.system === sys); if (o) return pick(o.name); const other = otherOptions.find((x) => x.system === sys); if (other) pickOther(other) }} />
+      onPick={(sys) => {
+        const o = all.find((x) => sysOf(x) === sys)
+        if (o) return pick(o.name)
+        const other = otherOptions.find((x) => sysOf(x) === sys)
+        if (other) return pickOther(other)
+        if (kind === 'system' && generated) pick(sys)
+      }} />
   )
   const rows: React.ReactNode[] = all.slice(0, limit).map((o) => row(o, () => pick(o.name), o.mod ? t('pickers.thisMod') : undefined))
   if (kind === 'station' && allowOwnStation && matches(q, t('pickers.ownStation'), 'OWN')) {
     rows.unshift(
-      <OptionRow key="OWN" selected={value === 'OWN'} onClick={() => pick('OWN')}>
+      <OptionRow key="OWN" navKey="pick:OWN" selected={value === 'OWN'} onClick={() => pick('OWN')}>
         <span className="flex items-center gap-2 text-[15px] text-white"><Home className="size-4 text-cyan" />{t('pickers.ownStation')}</span>
         <span className="block text-[11px] text-dim">{t('pickers.ownStationHelp')}</span>
       </OptionRow>,
@@ -281,8 +294,8 @@ export function PlacePicker({ open, onOpenChange, nested, kind, value, onSelect,
             </div>
           )}
         </div>
-        {kind !== 'planet' && value && value !== 'OWN' && <PlaceContextView kind={kind} name={value} map={kind === 'system'} className="mt-3" />}
-        {stationMap}
+        {kind !== 'planet' && value && value !== 'OWN' && <PlaceContextView kind={kind} name={value} map={false} className="mt-3" />}
+        {inlineMap}
         <RecentRow items={recent} render={(v) => (v === 'OWN' ? t('pickers.ownStation') : kind === 'station' ? stationLabel(resolve?.station(v)?.system, v) : v)} onPick={pick} />
         {rows.length > 0 && <div className="mt-3 rounded-[2px] border border-edge bg-panel">{rows}</div>}
         {all.length > limit && <p className="mt-2 text-center text-[12px] text-dim">{t('pickers.showing', { limit, total: all.length })}</p>}
@@ -352,7 +365,7 @@ export function QuestPicker({ open, onOpenChange, nested, value, onChange, exclu
   const others = otherMods.map((m) => ({ m, list: questsOf(m).filter((x) => matches(q, x.c.settings.questName, m.meta.title, x.c.settings.questId)) })).filter((x) => x.list.length)
 
   const row = (id: number, title: React.ReactNode, sub: React.ReactNode, key: React.Key, onClick = () => toggle(id)) => (
-    <OptionRow key={key} selected={sel.includes(id)} onClick={onClick}>
+    <OptionRow key={key} navKey={`pick:${id}`} selected={sel.includes(id)} onClick={onClick}>
       <span className={cn('block truncate text-[15px]', sel.includes(id) ? 'text-cyan' : 'text-white')}>{title}</span>
       <span className="block truncate font-mono text-[11px] text-dim">{sub}</span>
     </OptionRow>
@@ -433,7 +446,7 @@ export function GoodsPicker({ open, onOpenChange, nested, value, onSelect, title
         <RecentRow items={recent} render={humanize} onPick={pick} />
         <div className="mt-3 grid grid-cols-2 gap-2">
           {goods.map((g) => (
-            <button key={g} type="button" data-opt aria-pressed={value === g} onClick={() => pick(g)}
+            <button key={g} type="button" data-opt data-nav={`pick:${g}`} aria-pressed={value === g} onClick={() => pick(g)}
               className={cn('flex min-h-12 items-center gap-2 rounded-[2px] border px-3 text-left hover:border-grid-strong',
                 value === g ? 'border-cyan bg-cyan/10' : 'border-edge bg-chip')}>
               <GoodsIcon goods={g} className={value === g ? 'text-cyan' : 'text-grid-strong'} />

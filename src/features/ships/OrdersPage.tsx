@@ -67,7 +67,7 @@ export function OrdersPage() {
           <SectionLabel>{t('ships.ordersCount', { count: orders.length })}</SectionLabel>
           {orders.map((o) => (
             <SwipeRow key={o.id} actions={[{ label: t('ships.delete'), icon: <Trash2 />, tone: 'danger', onAction: () => remove(o) }]}>
-              <SentenceCard nav icon={<Crosshair className="text-cyan" />} onClick={() => navigate(`${r.base}/orders/${o.id}`)}
+              <SentenceCard nav={`order:${o.id}`} icon={<Crosshair className="text-cyan" />} onClick={() => navigate(`${r.base}/orders/${o.id}`)}
                 tone={!o.ship ? 'amber' : undefined}>
                 {orderSentence(o)}
               </SentenceCard>

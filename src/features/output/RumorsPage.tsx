@@ -58,6 +58,7 @@ export function RumorsPage() {
               <button
                 type="button"
                 data-opt
+                data-nav={`rumor:${r.id}`}
                 onClick={() => setEditing(r.id)}
                 className="flex w-full flex-col gap-2 rounded-[4px] border border-edge bg-panel px-4 py-3 text-left hover:border-cyan"
               >

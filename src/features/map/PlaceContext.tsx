@@ -1,6 +1,7 @@
 import * as React from 'react'
 import { useParams } from 'react-router-dom'
 import { useT } from '@/i18n'
+import { FULL_MAP_URL, useOpenFullMap } from './MapRoute'
 import { splitViewId } from '@/lib/mods'
 import type { StarsView } from '@/lib/types'
 import { cn } from '@/lib/utils'
@@ -9,16 +10,20 @@ import { type Camera, sx, sy } from './camera'
 import { INK, Labels, drawGrid, drawSystems, loadGalaxy, loadGeneration, useGalaxy } from './galaxy'
 import { type PlaceContext, makeResolver, placeContext } from './places'
 
-const MAP_URL = 'https://galaxy-genome.github.io/map/'
 const MINI_H = 140
+
+/** The stars mods the game would load alongside the catalogue: `ownModId`'s first, then favorites. */
+export function useStarsMods(ownModId?: string) {
+  const parts = useEditor((s) => s.parts)
+  return React.useMemo(() => parts.filter((m): m is StarsView => m.meta.type === 'stars' && (m.meta.favorite || splitViewId(m.meta.id).modId === ownModId))
+    .toSorted((a, b) => Number(splitViewId(b.meta.id).modId === ownModId) - Number(splitViewId(a.meta.id).modId === ownModId)), [parts, ownModId])
+}
 
 /** The shared resolver over the galaxy and stars mods: `ownModId`'s stars first, then favorites. Null until the galaxy loads. */
 export function useResolver(ownModId?: string) {
   const { galaxy, maps } = useGalaxy()
-  const parts = useEditor((s) => s.parts)
   React.useEffect(() => { loadGalaxy().then(loadGeneration).catch(() => {}) }, [])
-  const stars = React.useMemo(() => parts.filter((m): m is StarsView => m.meta.type === 'stars' && (m.meta.favorite || splitViewId(m.meta.id).modId === ownModId))
-    .toSorted((a, b) => Number(splitViewId(b.meta.id).modId === ownModId) - Number(splitViewId(a.meta.id).modId === ownModId)), [parts, ownModId])
+  const stars = useStarsMods(ownModId)
   // `maps` turns approximate generated positions into exact ones.
   // eslint-disable-next-line react-hooks/exhaustive-deps
   return React.useMemo(() => (galaxy ? makeResolver(galaxy, stars) : null), [galaxy, maps, stars])
@@ -62,6 +67,7 @@ export function PlaceContextView({ kind, name, map = true, className }: { kind: 
 
 function MiniMap({ ctx }: { ctx: PlaceContext }) {
   const t = useT()
+  const openFullMap = useOpenFullMap()
   const { galaxy } = useGalaxy()
   const canvas = React.useRef<HTMLCanvasElement>(null)
   React.useEffect(() => {
@@ -88,9 +94,9 @@ function MiniMap({ ctx }: { ctx: PlaceContext }) {
     labels.draw(g, { ...c, W: W + 60 })
   }, [ctx, galaxy])
   return (
-    <a href={`${MAP_URL}?system=${encodeURIComponent(ctx.system)}`} target="_blank" rel="noreferrer" aria-label={t('map.miniMap', { name: ctx.system })}
-      className="block overflow-hidden rounded-[2px] border border-edge hover:border-cyan">
+    <button type="button" onClick={() => openFullMap(`${FULL_MAP_URL}?system=${encodeURIComponent(ctx.system)}`)} aria-label={t('map.miniMap', { name: ctx.system })}
+      className="block w-full overflow-hidden rounded-[2px] border border-edge hover:border-cyan">
       <canvas ref={canvas} className="block w-full" style={{ height: MINI_H }} />
-    </a>
+    </button>
   )
 }

@@ -45,8 +45,8 @@ export function ListRow({
   muted?: boolean
   fieldKey?: string
   href?: string
-  /** A row in a keyboard-navigable list. */
-  nav?: boolean
+  /** A row in a keyboard-navigable list; a string is its `<param>:<key>` place in the address. */
+  nav?: boolean | string
 }) {
   const inner = (
     <>
@@ -61,8 +61,8 @@ export function ListRow({
     </>
   )
   const cls = cn('flex min-h-12 w-full items-center gap-3 px-3 py-2 transition-colors', (onClick || href) && 'hover:bg-white/[0.03] active:bg-white/[0.06]', className)
-  if (href) return <a data-field={fieldKey} data-opt={nav || undefined} href={href} className={cls}>{inner}</a>
-  if (onClick) return <button data-field={fieldKey} data-opt={nav || undefined} type="button" onClick={onClick} className={cls}>{inner}</button>
+  if (href) return <a data-field={fieldKey} data-opt={nav ? '' : undefined} data-nav={typeof nav === 'string' ? nav : undefined} href={href} className={cls}>{inner}</a>
+  if (onClick) return <button data-field={fieldKey} data-opt={nav ? '' : undefined} data-nav={typeof nav === 'string' ? nav : undefined} type="button" onClick={onClick} className={cls}>{inner}</button>
   return <div data-field={fieldKey} className={cls}>{inner}</div>
 }
 
@@ -155,14 +155,14 @@ export function TipCard({ tipKey, children, className }: { tipKey: string; child
 /** Sentence-style summary card for a condition, order, ship etc. */
 export function SentenceCard({ icon, children, onClick, tone, trailing, className, fieldKey, nav }: {
   icon: React.ReactNode; children: React.ReactNode; onClick?: () => void; tone?: 'cyan' | 'amber' | 'danger'; trailing?: React.ReactNode; className?: string; fieldKey?: string
-  /** A row in a keyboard-navigable list. */
-  nav?: boolean
+  /** A row in a keyboard-navigable list; a string is its `<param>:<key>` place in the address. */
+  nav?: boolean | string
 }) {
   const Comp = onClick ? 'button' : 'div'
   return (
     <Comp
       data-field={fieldKey}
-      data-opt={nav || undefined}
+      data-opt={nav ? '' : undefined} data-nav={typeof nav === 'string' ? nav : undefined}
       type={onClick ? 'button' : undefined}
       onClick={onClick}
       className={cn(

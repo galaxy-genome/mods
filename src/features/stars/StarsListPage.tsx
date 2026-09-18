@@ -42,6 +42,7 @@ export function StarsListPage() {
               return (
                 <ItemCard
                   key={s.id}
+                  navKey={`star:${s.name || s.id}`}
                   onOpen={() => go(`stars/${s.id}`)}
                   onDelete={() => removeItem(modId, 'stars', s.id, s.name)}
                   leading={<StarSwatch type={s.type} />}

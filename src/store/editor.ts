@@ -699,6 +699,8 @@ async function importStory() {
   if (!primary || others.includes(null)) return null
   const base = primary.versions[primary.primaryLang]!
   base.settings.questId = 0
+  // A new save starts in the galaxy's origin cell, which is Sol (`PlayerInfo.secXf/secYf` = 1025/1591).
+  base.settings.startSystem = 'Sol'
   for (const o of others as QuestView[]) primary.versions[o.primaryLang] = syncVersion(base, o.versions[o.primaryLang]!)
   return primary
 }

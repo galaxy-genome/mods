@@ -2,7 +2,7 @@
 // turn quests into places, step routes and series routes. No drawing and no store access.
 import { parseCondition, neverFires } from '@/lib/conditions'
 import { GENERATED } from '@/lib/dependencies'
-import { BODIES, STATIONS } from '@/lib/reference'
+import { BODIES, STATIONS, SYSTEMS, starType } from '@/lib/reference'
 import { missionNeedsSystem, stepGraph } from '@/lib/rules'
 import type { QuestContent, StarsView } from '@/lib/types'
 import { CELL_LY } from './camera'
@@ -16,8 +16,15 @@ export interface Place extends Point { kind: PlaceKind; role: PlaceRole; name: s
 export interface Unresolved { kind: Exclude<PlaceKind, 'area'>; role: PlaceRole; name: string }
 
 const pairValue = (p: string) => (p.charCodeAt(0) - 65) * 26 + (p.charCodeAt(1) - 97)
+/**
+ * Systems the game renames as its story runs, mapped to the catalogue name they keep their position under. Once main
+ * story progress reaches step 67 Sol becomes Black Sol, a black hole under anarchy (`Universe.as:234-238, :433-438`).
+ * A renamed name resolves, but nothing offers it as a place: only the game's own story reaches that state.
+ */
+const RENAMED: Record<string, string> = { 'Black Sol': 'Sol' }
+
 /** Quadrant letter to the signs of anchor minus cell, as `Generator.sectorName` writes it. */
-const QUADRANT: Record<string, [number, number][]> = { B: [[1, 1], [1, -1], [-1, 1], [-1, -1]], C: [[1, -1]], D: [[-1, -1]], E: [[-1, 1]] }
+const QUADRANT: Record<string, [number, number][]> = { B:[[1, 1], [1, -1], [-1, 1], [-1, -1]], C: [[1, -1]], D: [[-1, -1]], E: [[-1, 1]] }
 
 export interface Resolver {
   system(name: string): Point | null
@@ -75,8 +82,9 @@ export function makeResolver(galaxy: Galaxy, stars: StarsView[]): Resolver {
   const system = (name: string): Point | null => {
     if (!name) return null
     if (cache.has(name)) return cache.get(name)!
-    const row = galaxy.byName.get(name)
-    const hit = modStars.get(name) ?? (row ? { x: row[1], y: row[2], system: name, source: 'catalogue' as const } : generated(name))
+    const key = RENAMED[name] ?? name
+    const row = galaxy.byName.get(key)
+    const hit = modStars.get(key) ?? (row ? { x: row[1], y: row[2], system: key, source: 'catalogue' as const } : generated(key))
     cache.set(name, hit)
     return hit
   }
@@ -131,6 +139,7 @@ export function questPlaces(q: QuestContent, resolve: Resolver): QuestPlaces {
 
   const s = q.settings
   if (s.startMode === 'bar') want(0, 'station', 'offer', s.stationName)
+  if (s.startSystem) want(0, 'system', 'start', s.startSystem)
   q.steps.forEach((step, i) => {
     for (const [raw, role] of [[step.finishWhen, 'arrive'], ...step.failWhen.map((f) => [f, 'fail'])] as [string | null, PlaceRole][]) {
       if (!raw || neverFires(raw)) continue
@@ -346,4 +355,51 @@ export function placeContext(galaxy: Galaxy, resolve: Resolver, kind: 'system' |
     .map((r) => ({ name: r[0], x: r[1], y: r[2], ly: distanceLy(at, { x: r[1], y: r[2] }) }))
     .sort((a, b) => a.ly - b.ly).slice(0, count)
   return { system: at.system, at, ly: distanceLy(at, { x: 0, y: 0 }), direction: compassOf(at), nearest }
+}
+
+/* ---------- the galaxy map's side-quest marker ---------- */
+
+/** One line of the info panel's STATIONS block. */
+export interface StartStation { name: string; faction: string; ls: number | null }
+
+/** What the galaxy map's info panel shows for the system a bar side quest is offered in. */
+export interface QuestStart {
+  system: string
+  /** The star's label, "M - Red Dwarf". */
+  type: string
+  fuel: boolean
+  explored: boolean
+  security: string | null
+  stations: StartStation[]
+}
+
+/** A system is charted from the start within this many light years of Sol (`globalSettings.distFromSolToDiscover`). */
+const DISCOVERED_LY = 300
+/** The Void, charted from the start within `VOID_LY` of it (`globalSettings.distFromVoidToDiscover`). */
+const VOID = { x: (973 - 1025) * CELL_LY, y: (1591 - 1682) * CELL_LY }
+const VOID_LY = 150
+
+/**
+ * The info panel for the system a quest's bar station sits in. `stars` are the stars mods whose systems, planets and
+ * stations the game loads alongside the catalogue.
+ */
+export function questStart(at: Point, stars: StarsView[]): QuestStart | null {
+  const system = at.system
+  if (!system) return null
+  const ref = SYSTEMS.find((s) => s.name === system)
+  const own = stars.flatMap((m) => m.stars).find((s) => s.name === system)
+  const type = ref?.starType ?? own?.type
+  const bodies: (number | null)[] = BODIES[system]?.map((b) => b.ls)
+    ?? stars.flatMap((m) => m.planets).filter((p) => p.system === system).map((p) => p.orbit)
+  return {
+    system,
+    type: (type && starType(type)?.label) || type || '',
+    fuel: !!type && !!starType(type)?.fuel,
+    explored: distanceLy(at, { x: 0, y: 0 }) <= DISCOVERED_LY || distanceLy(at, VOID) <= VOID_LY,
+    security: ref?.security ?? own?.security ?? null,
+    stations: [
+      ...STATIONS.filter((s) => s.system === system).map((s) => ({ name: s.name, faction: s.faction, ls: bodies[s.planetIndex - 1] ?? null })),
+      ...stars.flatMap((m) => m.stations).filter((s) => s.system === system).map((s) => ({ name: s.name, faction: s.faction, ls: bodies[s.bodyIndex - 1] ?? null })),
+    ],
+  }
 }

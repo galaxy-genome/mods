@@ -24,6 +24,7 @@ import { SeverityIcon } from '../ui/surfaces'
 import { Brand } from './brand'
 import { QUEST_TABS, STARS_TABS, TabIcon } from './tabs'
 import { listParam } from '../pickers/common'
+import { isPanelPath, usePanelOpen } from './panel'
 
 /* ---------- header override: nested pages set their own title and back target ---------- */
 
@@ -95,6 +96,8 @@ const scrollByPath = new Map<string, number>()
 export function ScrollRestore() {
   const { pathname } = useLocation()
   React.useEffect(() => {
+    // A panel draws over the page, which keeps the scroll position it already has.
+    if (isPanelPath(pathname)) return
     const y = scrollByPath.get(pathname) ?? 0
     const raf = requestAnimationFrame(() => scrollTo(0, y))
     const onScroll = () => scrollByPath.set(pathname, scrollY)
@@ -274,14 +277,16 @@ export function ModShell() {
   }, [modId, navigate])
 
   // An untouched library mod shows the address people can share; the app navigates by internal id underneath.
+  const panelOpen = usePanelOpen()
   React.useEffect(() => {
-    if (!owner || !modId) return
+    // A panel over this page owns the address bar.
+    if (!owner || !modId || panelOpen) return
     const { partId } = splitViewId(modId)
     const share = communityPath(owner, partId, location.pathname.replace(`/mod/${modId}`, '').replace(/^\//, ''))
     const url = `${import.meta.env.BASE_URL}${(share ?? location.pathname).slice(1)}${location.search}${location.hash}`
     const here = globalThis.location.pathname + globalThis.location.search + globalThis.location.hash
     if (url !== here) history.replaceState(history.state, '', url)
-  }, [owner, modId, location.pathname, location.search, location.hash])
+  }, [owner, modId, panelOpen, location.pathname, location.search, location.hash])
 
   if (modId && owner && !splitViewId(modId).partId) {
     const only = onlyPartView(owner)

@@ -130,8 +130,10 @@ export function Fab({ label, onClick }: { label: string; onClick: () => void }) 
 }
 
 /** A list card with swipe-to-delete and a visible delete button on wide screens. */
-export function ItemCard({ onOpen, onDelete, leading, title, subtitle, trailing, tone }: {
+export function ItemCard({ onOpen, onDelete, leading, title, subtitle, trailing, tone, navKey }: {
   onOpen: () => void; onDelete: () => void; leading: React.ReactNode; title: React.ReactNode; subtitle: React.ReactNode; trailing?: React.ReactNode; tone?: 'danger'
+  /** The row's `<param>:<key>` place in the address. */
+  navKey?: string
 }) {
   const t = useT()
   const origin = useStarsView().mod?.meta.origin
@@ -139,7 +141,7 @@ export function ItemCard({ onOpen, onDelete, leading, title, subtitle, trailing,
   return (
     <SwipeRow disabled={readOnly} actions={[{ label: t('stars.delete'), icon: <Trash2 />, tone: 'danger', onAction: onDelete }]}>
       <div className={cn('group flex items-center rounded-[4px] border bg-panel', tone === 'danger' ? 'border-danger/70' : 'border-edge')}>
-        <button type="button" data-opt onClick={onOpen} className="flex min-h-16 min-w-0 flex-1 items-center gap-3 px-3 py-2 text-left hover:bg-white/[0.03]">
+        <button type="button" data-opt data-nav={navKey} onClick={onOpen} className="flex min-h-16 min-w-0 flex-1 items-center gap-3 px-3 py-2 text-left hover:bg-white/[0.03]">
           <span className="shrink-0">{leading}</span>
           <span className="flex min-w-0 flex-1 flex-col gap-0.5">
             <span className="truncate text-[15px] text-white">{title}</span>
@@ -243,6 +245,7 @@ export function StarTypePicker({ open, onOpenChange, value, onSelect }: { open: 
                   key={k}
                   type="button"
                   data-opt
+                  data-nav={`pick:${k}`}
                   aria-pressed={k === value}
                   onClick={() => { onSelect(k); onOpenChange(false) }}
                   className={cn('flex min-h-12 items-center gap-3 px-3 text-left hover:bg-white/[0.03]', k === value && 'bg-cyan/10')}
@@ -270,6 +273,7 @@ export function PlanetTypePicker({ open, onOpenChange, value, onSelect }: { open
             key={k}
             type="button"
             data-opt
+            data-nav={`pick:${k}`}
             aria-pressed={k === value}
             onClick={() => { onSelect(k); onOpenChange(false) }}
             className={cn('flex min-h-24 flex-col items-center justify-center gap-1 rounded-[4px] border bg-panel p-2 text-center hover:border-grid-strong', k === value ? 'border-cyan bg-cyan/10' : 'border-edge')}

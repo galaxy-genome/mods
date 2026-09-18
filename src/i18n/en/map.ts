@@ -15,6 +15,8 @@ export default {
   title_point: 'Star position',
   title_circle: 'Quest area',
   title_pick: 'Pick a system',
+  title_panel: 'Galaxy map',
+  openInTab: 'New tab',
   centreOnSystem: 'Centre on a system',
   radius: 'Radius',
   help: 'Light years on the galaxy map. Sol is at 0, 0; Y grows toward the top of the map.',
@@ -33,6 +35,17 @@ export default {
   miniMap: 'Map around {name}. Opens the full map.',
   editHint: 'Drag a star to move it. Tap empty space to add a star.',
   newStar: 'New star {n}',
+
+  // The galaxy map's info panel, in the game's own words.
+  gmMarker: 'The galaxy map marks {system} with a “!”.',
+  gmSideQuest: 'Side quest [Space station bar]',
+  gmType: 'TYPE: ',
+  gmFuel: 'FUEL: ',
+  gmExplored: 'EXPLORED: ',
+  gmSecurity: 'SECURITY: ',
+  gmStations: 'STATIONS',
+  gmYes: 'Yes',
+  gmNo: 'No',
 
   outside: '{name} is outside the galaxy. Players may not be able to jump there.',
   overlap: '{name} sits on top of {other} on the game’s map, so players cannot see or select it.',

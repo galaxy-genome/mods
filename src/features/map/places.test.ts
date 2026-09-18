@@ -31,7 +31,7 @@ registerHooks({
 
 const { makeGalaxy } = await import('./galaxy.ts')
 const { GRID } = await import('./camera.ts')
-const { makeResolver, placeContext, compassOf, placeLabel, questPlaces, inheritPlaces, placeRoutes, routeLegs, seriesPlaces, sharedPlaces, distanceLy } = await import('./places.ts')
+const { makeResolver, placeContext, compassOf, placeLabel, questPlaces, inheritPlaces, placeRoutes, routeLegs, seriesPlaces, sharedPlaces, distanceLy, questStart } = await import('./places.ts')
 const { newLine, newMission, newQuestView, newStarsView, newStep } = await import('@/lib/factory.ts')
 import type { GalaxyData } from './galaxy'
 import type { QuestContent, QuestView } from '@/lib/types'
@@ -58,6 +58,16 @@ const content = (v: QuestView) => v.versions[v.primaryLang] as QuestContent
   assert.equal(r.planet('A2'), null)
   assert.equal(r.planet('A2', new Set(['Capella']))?.system, 'Capella')
   assert.equal(r.planet('B7')?.system, '36 Ophiuchi')
+}
+
+// The main story: it starts in Sol, and Black Sol is Sol under the name the game gives it after story step 67.
+{
+  const r = makeResolver(makeGalaxy(data), [])
+  assert.deepEqual(r.system('Black Sol'), { x: 0, y: 0, system: 'Sol', source: 'catalogue' })
+  const v = newQuestView('Story', { settings: { startSystem: 'Sol' }, steps: [newStep({ finishWhen: null }), newStep({ finishWhen: 'ACTION_WARP_END_SYSTEM_Black Sol' })] })
+  const places = inheritPlaces(content(v), questPlaces(content(v), r))
+  assert.deepEqual(places.unresolved, [])
+  assert.deepEqual(places.steps.map((s) => s.map((p) => [p.name, p.x, p.y])), [[['Sol', 0, 0]], [['Black Sol', 0, 0]]])
 }
 
 // Generated names decode to their cell, and to the exact star once the generation maps are loaded.
@@ -161,6 +171,8 @@ const resolve = makeResolver(galaxy, [])
   // Space quests start in their circle.
   const space = newQuestView('S', { settings: { startMode: 'space', pointX: 10, pointY: 20, radius: 30 }, steps: [newStep()], rumors: [] })
   assert.deepEqual(questPlaces(content(space), resolve).steps[0].map((p) => [p.kind, p.x, p.y, p.r]), [['area', 10, 20, 30]])
+  // No offer place, so no "!" marker: the galaxy map only marks a quest waiting in a bar.
+  assert.equal(questPlaces(content(space), resolve).steps[0].some((p) => p.role === 'offer'), false)
 }
 
 // Series: beats merge repeats, gates follow requiredQuestIds, places shared by two mods are marked.
@@ -225,4 +237,19 @@ console.log('places ok')
   assert.equal(placeContext(galaxy, r, 'system', 'Nowhere at all'), null)
   assert.deepEqual([[0, 1], [1, 1], [1, 0], [1, -1], [0, -1], [-1, -1], [-1, 0], [-1, 1]].map(([x, y]) => compassOf({ x, y })), ['n', 'ne', 'e', 'se', 's', 'sw', 'w', 'nw'])
   console.log('placeContext ok')
+}
+
+// The galaxy map's info panel for a bar quest's start system, against the reference screenshot of Wolf 359.
+{
+  const galaxy = makeGalaxy(data)
+  const r = makeResolver(galaxy, [])
+  const wolf = questStart(r.station('Manson Orbital')!, [])!
+  assert.equal(wolf.system, 'Wolf 359')
+  assert.equal(wolf.type, 'M - Red Dwarf')
+  assert.equal(wolf.fuel, true)
+  assert.equal(wolf.explored, true)
+  assert.equal(wolf.security, 'Medium')
+  assert.deepEqual(wolf.stations, [{ name: 'Manson Orbital', faction: 'Trade Federation', ls: 400 }])
+  assert.equal(r.station('No Such Station'), null)
+  console.log('questStart ok')
 }

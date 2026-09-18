@@ -7,6 +7,21 @@ export function navRows(): HTMLElement[] {
   return [...scope.querySelectorAll<HTMLElement>('[data-opt]')].filter((el) => el.offsetParent !== null)
 }
 
+/** `data-nav="<name>:<key>"` parsed into the `?<name>=<key>` a row records itself as. */
+export function navPlace(attr: string | null | undefined): { name: string; key: string } | null {
+  const i = attr ? attr.indexOf(':') : -1
+  return i > 0 ? { name: attr!.slice(0, i), key: attr!.slice(i + 1) } : null
+}
+
+/** The row's place, taken from it or its nearest ancestor that declares one. */
+export const rowPlace = (el: Element | null) => navPlace(el?.closest<HTMLElement>('[data-nav]')?.dataset.nav)
+
+/** The row a search string names, or null when none matches — a stale key selects nothing. */
+export function rowFor(search: string, rows: HTMLElement[] = navRows()): HTMLElement | null {
+  const params = new URLSearchParams(search)
+  return rows.find((r) => { const p = rowPlace(r); return p && params.get(p.name) === p.key }) ?? null
+}
+
 /** The row index a key moves to; `current` is -1 when no row is active. Clamped, no wrap. */
 export function nextIndex(current: number, count: number, key: string): number {
   if (!count) return -1

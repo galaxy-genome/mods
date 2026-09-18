@@ -1,7 +1,8 @@
 import * as React from 'react'
-import { Navigate, Route, BrowserRouter as Router, Routes, useLocation, useNavigate, useParams } from 'react-router-dom'
+import { type Location, Navigate, Route, BrowserRouter as Router, Routes, useLocation, useNavigate, useParams } from 'react-router-dom'
 import { toast, Toaster } from 'sonner'
 import { CommandLayer } from '@/components/layout/command'
+import { PanelOpenProvider, isPanelPath } from '@/components/layout/panel'
 import { ModShell, ScrollRestore } from '@/components/layout/shell'
 import { t } from '@/i18n'
 import { DialoguePage } from '@/features/steps/DialoguePage'
@@ -18,6 +19,7 @@ import { ShipsPage } from '@/features/ships/ShipsPage'
 import { CommunityEntryPage } from '@/features/start/CommunityEntryPage'
 import { GameEntryPage } from '@/features/start/GameEntryPage'
 import { HelpArticlePage } from '@/features/start/HelpArticlePage'
+import { HelpLayer } from '@/features/start/HelpLayer'
 import { HelpPage } from '@/features/start/HelpPage'
 import { HomePage } from '@/features/start/HomePage'
 import { ImportReviewPage } from '@/features/start/ImportReviewPage'
@@ -71,12 +73,25 @@ function RouteMemory() {
   return null
 }
 
-/** A map route opened from a page draws over that page, which stays mounted underneath with its sheets. */
+/** The location a panel draws over: the page it was opened from, or on a fresh load the page it returns to. */
+const HOME = { pathname: '/', search: '', hash: '', state: null, key: 'default' } satisfies Location
+
+function returnLocation(location: Location): Location {
+  const to = new URLSearchParams(location.search).get('return')
+  if (!to) return HOME
+  const [pathname, search] = to.split('?')
+  return { ...HOME, pathname, search: search ? `?${search}` : '' }
+}
+
+/** Help and the map draw over the page that opened them, which stays mounted underneath with its scroll and sheets. */
 function AppRoutes() {
   const location = useLocation()
-  const background = mapBackground(location)
+  const panel = isPanelPath(location.pathname)
+  const lastPage = React.useRef<Location | null>(null)
+  if (!panel) lastPage.current = location
+  const background = panel ? mapBackground(location) ?? lastPage.current ?? returnLocation(location) : undefined
   return (
-    <>
+    <PanelOpenProvider value={!!background}>
       <Routes location={background ?? location}>
         <Route path="/" element={<HomePage />} />
         <Route path="/new" element={<QuickSetupPage />} />
@@ -121,8 +136,8 @@ function AppRoutes() {
         <Route path="/share" element={<SharedFile />} />
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
-      {background && <MapLayer />}
-    </>
+      {background && (location.pathname.startsWith('/map/') ? <MapLayer /> : <HelpLayer background={background} fresh={!lastPage.current} />)}
+    </PanelOpenProvider>
   )
 }
 

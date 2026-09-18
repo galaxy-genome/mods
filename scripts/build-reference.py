@@ -23,10 +23,17 @@ stations = [dict(name=n, system=s, type=t, faction=f, planetIndex=p)
 station_systems = {s["system"] for s in stations}
 systems = [dict(name=n, x=round(x, 2), y=round(z, 2), security=sec, starType=t)
            for n, x, z, sec, t in q("SELECT name, map_x, map_z, security, star_type FROM galaxy_system WHERE authored = 1 ORDER BY ly_from_sol")]
+star_types = q("SELECT name, display, label, fuel_scoopable FROM galaxy_star_type ORDER BY name")
+# A body's distance from its star, in light seconds, as the galaxy map's info panel prints it.
+light_seconds = {}
+seen = {}
+for system, dist in q("SELECT system, dist FROM asset_PlanetsDB ORDER BY ord"):
+    light_seconds[(system, seen.get(system, 0))] = dist
+    seen[system] = seen.get(system, 0) + 1
 bodies = {}
 for system, ordinal, name, kind, type_ in q("SELECT system, ordinal, name, kind, type FROM galaxy_body ORDER BY system, ordinal"):
     if system in station_systems:
-        bodies.setdefault(system, []).append(dict(ordinal=ordinal, name=name, kind=kind, type=type_))
+        bodies.setdefault(system, []).append(dict(ordinal=ordinal, name=name, kind=kind, type=type_, ls=light_seconds.get((system, ordinal))))
 
 quests = []
 for fid, qid, name, desc, char, char_name, station, requires, space in q(
@@ -39,7 +46,7 @@ for fid, qid, name, desc, char, char_name, station, requires, space in q(
                        randomSpace=bool(space), requires=str(requires or ""),
                        steps=[dict(name=a, todo=b, completeAction=c) for a, b, c in steps]))
 
-(ROOT / "src/data/reference.json").write_text(json.dumps(dict(systems=systems, stations=stations, bodies=bodies,
+(ROOT / "src/data/reference.json").write_text(json.dumps(dict(systems=systems, stations=stations, bodies=bodies, starTypes=star_types,
     gameQuests=[{k: g[k] for k in ("id", "name", "charName", "station", "randomSpace")} for g in quests]), ensure_ascii=False))
 (ROOT / "public/data").mkdir(parents=True, exist_ok=True)
 (ROOT / "public/data/game-quests.json").write_text(json.dumps(quests, ensure_ascii=False))

@@ -400,6 +400,7 @@ function ModCard({ mod, rank, stat, selecting, selected, onOpen, onLongPress }: 
       {!selecting && <FavoriteButton label={mod.meta.title} on={mod.meta.favorite} onToggle={() => setFavorite([id], !mod.meta.favorite)} />}
       <button
         data-opt
+        data-nav={`mod:${id}`}
         onClick={() => { if (pressed.current) { pressed.current = false; return } onOpen() }}
         onPointerDown={start}
         onPointerUp={cancel}

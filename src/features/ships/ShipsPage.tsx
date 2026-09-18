@@ -106,7 +106,7 @@ function ShipCard({ ship, handle, onOpen, duplicate }: { ship: ShipSpawn; handle
   const hostile = isHostile(ship)
   return (
     <div className="flex items-stretch rounded-[4px] border border-edge bg-panel">
-      <button type="button" data-opt onClick={onOpen} className="flex min-w-0 flex-1 items-center gap-3 py-3 pl-3 text-left hover:bg-white/[0.03]">
+      <button type="button" data-opt data-nav={`ship:${ship.id}`} onClick={onOpen} className="flex min-w-0 flex-1 items-center gap-3 py-3 pl-3 text-left hover:bg-white/[0.03]">
         <span className={cn('grid size-12 shrink-0 place-items-center rounded-[2px] border border-edge bg-field', hostile ? 'text-danger' : 'text-ink')}>
           <ShipArt model={ship.model} className="size-9" color={ship.tint ?? undefined} />
         </span>

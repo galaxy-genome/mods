@@ -1,7 +1,7 @@
-import { X } from 'lucide-react'
+import { ExternalLink as ExternalLinkIcon, X } from 'lucide-react'
 import * as React from 'react'
-import { createPortal } from 'react-dom'
 import { type Location, useLocation, useNavigate, useParams } from 'react-router-dom'
+import { Panel, useInPanel } from '@/components/layout/panel'
 import { matches } from '@/components/pickers/common'
 import { Button } from '@/components/ui/button'
 import { ExternalLink } from '@/components/ui/feedback'
@@ -30,8 +30,10 @@ interface MapState { mapBackground?: Location; map?: MapRequest & { key: string 
 /** Result callbacks by request key. The page that opened the map stays mounted underneath, so its callback still applies. */
 const pending = new Map<string, (result: never) => void>()
 
+export const FULL_MAP_URL = 'https://galaxy-genome.github.io/map/'
+
 export const fullMapCircleUrl = (x: number, y: number, r: number) =>
-  `https://galaxy-genome.github.io/map/?at=${x},${y}&ly=${Math.max(1, 3 * r)}&draw=${encodeURIComponent(JSON.stringify({ circle: [x, y, r] }))}`
+  `${FULL_MAP_URL}?at=${x},${y}&ly=${Math.max(1, 3 * r)}&draw=${encodeURIComponent(JSON.stringify({ circle: [x, y, r] }))}`
 
 /** Opens the full-screen map route over the current page; `onResult` runs on Done (or on a pick), not on Cancel. */
 export function useOpenMap() {
@@ -40,8 +42,6 @@ export function useOpenMap() {
   return <R extends MapRequest>(request: R, onResult: (result: ResultOf<R>) => void) => {
     const key = crypto.randomUUID()
     pending.set(key, onResult as (result: never) => void)
-    // A focused field inside an open sheet would pull focus back from the map.
-    ;(document.activeElement as HTMLElement | null)?.blur?.()
     const back = (location.state as MapState | null)?.mapBackground ?? location
     navigate(`/map/${request.mode}?return=${encodeURIComponent(back.pathname + back.search)}`, { state: { mapBackground: back, map: { ...request, key } } satisfies MapState })
   }
@@ -49,34 +49,72 @@ export function useOpenMap() {
 
 export const mapBackground = (location: Location) => (location.state as MapState | null)?.mapBackground
 
-// Events stop at the layer, so an open sheet underneath neither closes on a tap here nor takes focus or keys from it.
-const STOPPED = ['pointerdown', 'pointerup', 'pointermove', 'mousedown', 'mouseup', 'click', 'touchstart', 'touchmove', 'touchend', 'focusin', 'focusout', 'keydown', 'keyup', 'wheel']
+/** Where a map panel goes when it closes. */
+function useCloseMap() {
+  const location = useLocation()
+  const navigate = useNavigate()
+  return () => {
+    if ((location.state as MapState | null)?.mapBackground) navigate(-1)
+    else navigate(new URLSearchParams(location.search).get('return') ?? '/', { replace: true })
+  }
+}
+
+/** Opens the published galaxy map in a panel over the current page. */
+export function useOpenFullMap() {
+  const navigate = useNavigate()
+  const location = useLocation()
+  return (url: string) => {
+    const back = mapBackground(location) ?? location
+    navigate(`/map/view?url=${encodeURIComponent(url)}&return=${encodeURIComponent(back.pathname + back.search)}`, { state: { mapBackground: back } satisfies MapState })
+  }
+}
 
 /** The map route drawn over the page that opened it. */
 export function MapLayer() {
-  const [host] = React.useState(() => {
-    const el = document.createElement('div')
-    el.style.pointerEvents = 'auto'
-    return el
-  })
-  React.useLayoutEffect(() => {
-    document.body.append(host)
-    const stop = (e: Event) => e.stopPropagation()
-    STOPPED.forEach((type) => host.addEventListener(type, stop))
-    return () => { STOPPED.forEach((type) => host.removeEventListener(type, stop)); host.remove() }
-  }, [host])
-  return createPortal(<MapRoute />, host)
+  const t = useT()
+  const close = useCloseMap()
+  return <Panel label={t('map.title_panel')} onClose={close}><MapRoute /></Panel>
+}
+
+/** Drawn over a page, the layer sits outside <Routes> and has no params of its own. */
+function useMapMode() {
+  const location = useLocation()
+  return useParams().mode ?? location.pathname.split('/')[2] ?? 'pick'
 }
 
 export function MapRoute() {
+  return useMapMode() === 'view' ? <FullMapView /> : <MapPicker />
+}
+
+/** The published galaxy map, which holds the whole catalogue and the routes the editor's own map leaves out. */
+function FullMapView() {
   const t = useT()
   const location = useLocation()
-  // Drawn over a page, the layer sits outside <Routes> and has no params of its own.
-  const mode = useParams().mode ?? location.pathname.split('/')[2] ?? 'pick'
+  const close = useCloseMap()
+  const inPanel = useInPanel()
+  const url = new URLSearchParams(location.search).get('url') ?? ''
+  const src = url.startsWith(FULL_MAP_URL) ? url : FULL_MAP_URL
+  return (
+    <div className={inPanel ? 'flex h-full min-h-0 flex-col bg-void' : 'flex h-dvh flex-col bg-void'}>
+      <header className="flex min-h-14 shrink-0 items-center gap-2 border-b border-edge bg-deep px-2 pt-[env(safe-area-inset-top)]">
+        <button type="button" aria-label={t('common.close')} onClick={close} className="grid size-11 shrink-0 place-items-center text-ink hover:text-white"><X className="size-5" /></button>
+        <h1 className="min-w-0 flex-1 truncate text-[17px] font-semibold text-white">{t('map.openFullMap')}</h1>
+        <ExternalLink href={src} className="inline-flex h-11 items-center gap-1 px-2 text-[13px]">{t('map.openInTab')}<ExternalLinkIcon className="size-3.5" /></ExternalLink>
+      </header>
+      <iframe src={src} title={t('map.openFullMap')} className="min-h-0 w-full flex-1 border-0" />
+    </div>
+  )
+}
+
+function MapPicker() {
+  const t = useT()
+  const location = useLocation()
+  const mode = useMapMode()
   const navigate = useNavigate()
   const state = (location.state ?? {}) as MapState
   const request = state.map?.mode === mode ? state.map : undefined
   const parts = useEditor((s) => s.parts)
+  const inPanel = useInPanel()
   const { galaxy } = useGalaxy()
 
   const favorites = React.useMemo(() => parts.filter((m): m is StarsView => m.meta.type === 'stars' && m.meta.favorite), [parts])
@@ -120,8 +158,8 @@ export function MapRoute() {
 
   const title = request?.title ?? t(`map.title_${mode}`)
   return (
-    <div className="fixed inset-0 z-[70] flex flex-col bg-void">
-      <header className="flex min-h-14 items-center gap-2 border-b border-edge bg-deep px-2 pt-[env(safe-area-inset-top)]">
+    <div className={inPanel ? 'flex h-full min-h-0 flex-col bg-void' : 'flex h-dvh flex-col bg-void'}>
+      <header className="flex min-h-14 shrink-0 items-center gap-2 border-b border-edge bg-deep px-2 pt-[env(safe-area-inset-top)]">
         <button type="button" aria-label={t('map.cancel')} onClick={close} className="grid size-11 shrink-0 place-items-center text-ink hover:text-white"><X className="size-5" /></button>
         <h1 className="min-w-0 flex-1 truncate text-[17px] font-semibold text-white">{title}</h1>
         {mode !== 'pick' && <Button variant="primary" size="sm" onClick={done} disabled={!request}>{t('map.done')}</Button>}

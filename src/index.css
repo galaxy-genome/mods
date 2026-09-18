@@ -96,6 +96,14 @@
   animation: pulse-field 1.4s ease-out 2;
 }
 
+@keyframes panel-in {
+  from { transform: translateX(100%); }
+}
+
+.panel-in {
+  animation: panel-in 0.18s ease-out;
+}
+
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {
     animation-duration: 0.01ms !important;

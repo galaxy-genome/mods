@@ -1,8 +1,8 @@
 import { Check } from 'lucide-react'
 import * as React from 'react'
 import { useT } from '@/i18n'
-import { useSearchParams } from 'react-router-dom'
-import { NAV_KEYS, navRows, nextIndex } from '@/lib/listNav'
+import { useLocation, useSearchParams } from 'react-router-dom'
+import { NAV_KEYS, navRows, nextIndex, rowFor, rowPlace } from '@/lib/listNav'
 import { STATION_FACTIONS } from '@/lib/reference'
 import { cn } from '@/lib/utils'
 import portraits from '@/data/portraits.json'
@@ -36,6 +36,35 @@ const OWNS_KEYS = 'input, textarea, select, [contenteditable="true"], canvas, [r
  * (its swipe Delete) and moves to the row that takes its place.
  */
 export function useListNav() {
+  const write = useWriteListParam()
+  const { search, key: historyKey } = useLocation()
+  const writeRef = React.useRef(write)
+  writeRef.current = write
+
+  // The focused row goes in the address, so reload and Back come back to it.
+  React.useEffect(() => {
+    const onFocus = (e: FocusEvent) => {
+      const place = rowPlace(e.target as Element)
+      if (place) writeRef.current(place.name, place.key)
+    }
+    addEventListener('focusin', onFocus)
+    return () => removeEventListener('focusin', onFocus)
+  }, [])
+
+  // Rows arrive after the address does, so keep looking for a second.
+  React.useEffect(() => {
+    const idle = () => !document.activeElement || document.activeElement === document.body
+    if (!idle()) return
+    let tries = 0
+    const id = setInterval(() => {
+      if (!idle()) return clearInterval(id)
+      const row = rowFor(search)
+      if (row) { row.focus({ preventScroll: true }); row.scrollIntoView({ block: 'nearest' }) }
+      if (row || ++tries > 20) clearInterval(id)
+    }, 50)
+    return () => clearInterval(id)
+  }, [search, historyKey])
+
   React.useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
       if (e.defaultPrevented || e.metaKey || e.ctrlKey || e.altKey) return
@@ -108,22 +137,33 @@ export function listParam(params: URLSearchParams, name: string, count = Infinit
   return Number.isInteger(n) && n >= 1 && n <= count ? n - 1 : null
 }
 
+/** Writes one list's `?<name>=<value>`, replaced rather than pushed; null removes it. */
+export function useWriteListParam() {
+  const [, setParams] = useSearchParams()
+  return (name: string, value: string | null) =>
+    setParams((p) => { if (value === null) p.delete(name); else p.set(name, value); return p }, { replace: true })
+}
+
 /** A list's selected row kept in the address as `?<name>=<1-based n>`; replaces rather than pushes. */
 export function useListParam(name: string, count: number) {
-  const [params, setParams] = useSearchParams()
+  const [params] = useSearchParams()
+  const write = useWriteListParam()
   const selected = listParam(params, name, count)
-  const select = (i: number | null) => setParams((p) => { if (i === null) p.delete(name); else p.set(name, String(i + 1)); return p }, { replace: true })
+  const select = (i: number | null) => write(name, i === null ? null : String(i + 1))
   return [selected, select] as const
 }
 
-export function OptionRow({ selected, onClick, children, trailing, className }: {
+export function OptionRow({ selected, onClick, children, trailing, className, navKey }: {
   selected?: boolean; onClick: () => void; children: React.ReactNode; trailing?: React.ReactNode; className?: string
+  /** The row's `<param>:<key>` place in the address. */
+  navKey?: string
 }) {
   return (
     <div className={cn('flex min-h-12 items-center border-b border-edge last:border-b-0', selected && 'bg-cyan/[0.06]', className)}>
       <button
         type="button"
         data-opt
+        data-nav={navKey}
         aria-pressed={selected}
         onClick={onClick}
         className="flex min-h-12 min-w-0 flex-1 items-center gap-3 px-3 py-2 text-left hover:bg-white/[0.03] active:bg-white/[0.06]"
@@ -144,7 +184,7 @@ export function RecentRow({ items, render, onPick }: { items: string[]; render?:
       <div className="section-label mb-1.5">{t('pickers.recent')}</div>
       <div className="flex gap-2 overflow-x-auto pb-1">
         {items.map((v) => (
-          <button key={v} type="button" data-opt onClick={() => onPick(v)}
+          <button key={v} type="button" data-opt data-nav={`recent:${v}`} onClick={() => onPick(v)}
             className="h-9 shrink-0 rounded-[2px] border border-edge bg-chip px-3 font-mono text-[13px] text-ink hover:border-grid-strong">
             {render ? render(v) : v}
           </button>

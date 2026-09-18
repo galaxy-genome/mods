@@ -10,6 +10,7 @@ import { Input, SearchInput, Textarea } from '@/components/ui/inputs'
 import { Menu } from '@/components/ui/overlays'
 import { Sheet } from '@/components/ui/sheet'
 import { Badge, Card, EmptyState, SectionLabel, SeverityIcon, TipCard } from '@/components/ui/surfaces'
+import { QuestStartInfo } from '@/features/map/QuestStart'
 import { toGameJson, toStarsJson } from '@/features/output/gameJson'
 import { useT } from '@/i18n'
 import { dataUrlBytes, partsOf } from '@/lib/mods'
@@ -160,7 +161,7 @@ export function ContentsPage({ mod }: { mod: Mod }) {
                   <li key={v.meta.id} className="relative flex items-center" style={{ paddingLeft: depth * 12 }}>
                     {tree !== undefined && !q && <span aria-hidden className={cn('absolute left-[23px] w-0.5 bg-cyan/50', i === 0 || shownQuests[i - 1].tree !== tree ? 'top-1/2' : 'top-0', last ? 'bottom-1/2' : 'bottom-0')} />}
                     {depth > 0 && tree !== undefined && !q && <span aria-hidden className="absolute left-[24px] top-1/2 h-0.5 bg-cyan/50" style={{ width: depth * 12 }} />}
-                    <button data-opt onClick={() => navigate(`/mod/${v.meta.id}/overview`)} className="flex min-h-16 min-w-0 flex-1 items-center gap-3 py-2.5 pl-3 text-left hover:bg-white/[0.03]">
+                    <button data-opt data-nav={`quest:${v.meta.id}`} onClick={() => navigate(`/mod/${v.meta.id}/overview`)} className="flex min-h-16 min-w-0 flex-1 items-center gap-3 py-2.5 pl-3 text-left hover:bg-white/[0.03]">
                       {n ? <span className="relative grid size-6 shrink-0 place-items-center rounded-full border border-cyan bg-panel font-mono text-[12px] font-semibold text-cyan">{n}</span>
                         : c.settings.startMode === 'space' ? <Orbit className="size-5 shrink-0 text-cyan" /> : <ScrollText className="size-5 shrink-0 text-cyan" />}
                       <span className="flex min-w-0 flex-1 flex-col gap-0.5">
@@ -169,6 +170,7 @@ export function ContentsPage({ mod }: { mod: Mod }) {
                           {Object.keys(v.versions).map((l) => <Badge key={l}>{LANGS.find((x) => x.key === l)?.label}</Badge>)}
                         </span>
                         <span className="text-[13px] text-ink">{startPlace(v, mod)}</span>
+                        {c.settings.startMode === 'bar' && <QuestStartInfo station={c.settings.stationName} modId={mod.meta.id} className="py-0.5" />}
                         {after && <span className="text-[13px] text-cyan">{after}</span>}
                         {firstLine && <span className="line-clamp-1 text-[13px] text-ink/80">{firstLine}</span>}
                         <span className="flex items-center gap-2 truncate font-mono text-[11px] text-dim/80">
@@ -194,7 +196,7 @@ export function ContentsPage({ mod }: { mod: Mod }) {
           <SectionLabel>{t('start.starsStations')}</SectionLabel>
           {starsView && mod.stars ? (
             <div className="flex items-center rounded-[4px] border border-edge bg-panel">
-              <button data-opt onClick={() => navigate(`/mod/${starsView.meta.id}/overview`)} className="flex min-h-14 flex-1 items-center gap-3 px-3 text-left hover:bg-white/[0.03]">
+              <button data-opt data-nav={`stars:${starsView.meta.id}`} onClick={() => navigate(`/mod/${starsView.meta.id}/overview`)} className="flex min-h-14 flex-1 items-center gap-3 px-3 text-left hover:bg-white/[0.03]">
                 <Globe2 className="size-5 text-cyan" />
                 <span className="flex flex-col gap-0.5">
                   <span className="text-[15px] text-white">StarsStations.json</span>

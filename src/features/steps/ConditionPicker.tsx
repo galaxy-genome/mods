@@ -87,7 +87,7 @@ export function ConditionPicker({ open, onOpenChange, title, value, onSelect, st
   const heading = level.kind === 'category' ? categoryLabel(level.category) : level.kind === 'param' ? level.def.label : title
 
   const row = (def: ConditionDef) => (
-    <ListRow nav key={def.action} title={def.label} subtitle={<AdvancedKey k={def.action.endsWith('_') ? `${def.action}…` : def.action} />} onClick={() => choose(def)}
+    <ListRow nav={`pick:${def.action}`} key={def.action} title={def.label} subtitle={<AdvancedKey k={def.action.endsWith('_') ? `${def.action}…` : def.action} />} onClick={() => choose(def)}
       className={cn(value && parseCondition(value).def?.action === def.action && 'bg-cyan/10')} />
   )
 
@@ -113,11 +113,11 @@ export function ConditionPicker({ open, onOpenChange, title, value, onSelect, st
             )}
             <RowGroup>
               {CATEGORY_INFO.map((c) => (
-                <ListRow nav key={c.name} icon={ICONS[c.icon]} title={c.label} subtitle={c.hint}
+                <ListRow nav={`pick:${c.name}`} key={c.name} icon={ICONS[c.icon]} title={c.label} subtitle={c.hint}
                   value={CONDITIONS.filter((x) => x.category === c.name).length}
                   onClick={() => setLevel({ kind: 'category', category: c.name })} />
               ))}
-              <ListRow nav icon={<span aria-hidden>💥</span>} title={t('conditions.neverLabel')} subtitle={<AdvancedKey k={NEVER} />}
+              <ListRow nav={`pick:${NEVER}`} icon={<span aria-hidden>💥</span>} title={t('conditions.neverLabel')} subtitle={<AdvancedKey k={NEVER} />}
                 className={cn(value === NEVER && 'bg-cyan/10')} onClick={() => { onSelect(NEVER); onOpenChange(false) }} />
             </RowGroup>
           </>

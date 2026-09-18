@@ -13,6 +13,7 @@ import { questOf, useEditor } from '@/store/editor'
 import { useResolver } from './PlaceContext'
 import { type Place, ONE_JUMP_LY, distanceLy, placeLabel, placeRoutes, inheritPlaces, questPlaces, routeLegs, seriesPlaces, sharedPlaces } from './places'
 import { FIT_MIN_LY } from './declutter'
+import { QuestStartInfo } from './QuestStart'
 import { type MapOverlay, type OverlayPin, StarMap } from './StarMap'
 
 const START = '#ffb454'
@@ -54,6 +55,7 @@ export function QuestOverviewMap({ q, modId, selected, onSelect }: { q: QuestCon
       if (!pin.steps.includes(i)) pin.steps.push(i)
       pin.places.push(p)
       if (i === 0 && (p.role === 'offer' || p.role === 'start')) { pin.start = true; pin.colour = START }
+      if (i === 0 && p.role === 'offer') pin.quest = true
       pin.problem ||= problemSteps.has(i)
       pins.set(key, pin)
     }))
@@ -91,12 +93,12 @@ export function QuestOverviewMap({ q, modId, selected, onSelect }: { q: QuestCon
     const strip = q.steps.map((_, i) => i).filter((i) => !places.steps[i].length && !onRoute.has(i))
     const startPlaces = places.steps[0]?.filter((p) => p.role === 'offer' || p.role === 'start') ?? []
     const offer = startPlaces.find((p) => p.role === 'offer')
-    const start = offer ? t('output.qmStartLine', { station: offer.name, system: offer.system }) : startPlaces.length ? t('output.qmStartPin', { place: t('output.qmStartArea') }) : ''
-    return { places, overlay, pins, strip, problemSteps, fit, start }
+    const start = offer ? t('output.qmStartLine', { station: offer.name, system: offer.system }) : startPlaces.length ? t('output.qmStartPin', { place: placeLabel(startPlaces, t('output.qmStartArea')) }) : ''
+    return { places, overlay, pins, strip, problemSteps, fit, start, offerStation: offer?.name ?? '' }
   }, [q, resolve, t])
 
   if (!model) return <p className="py-10 text-center font-mono text-[12px] text-dim">{t('map.loading')}</p>
-  const { places, overlay, pins, strip, fit, start } = model
+  const { places, overlay, pins, strip, fit, start, offerStation } = model
   const pinOfStep = (i: number) => [...pins.values()].find((p) => p.steps.includes(i))?.id ?? null
   const setSelected = onSelect
   const onPin = (id: string | null) => {
@@ -153,6 +155,7 @@ export function QuestOverviewMap({ q, modId, selected, onSelect }: { q: QuestCon
         )}
       </div>
       {start && <p className="text-[14px] text-white"><span className="text-amber">▶</span> {start}</p>}
+      {offerStation && <QuestStartInfo station={offerStation} modId={modId} />}
       {strip.length > 0 && (
         <div className="flex flex-col gap-1.5">
           <p className="text-[12px] text-dim">{t('output.qmStrip')}</p>

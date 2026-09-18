@@ -128,7 +128,7 @@ function GameQuests({ query }: { query: string }) {
             const req = requirementText(g)
             return (
               <ListRow
-                nav
+                nav={`quest:${g.id}`}
                 key={g.id}
                 icon={g.randomSpace ? <Orbit /> : <BookOpen />}
                 title={g.name}

@@ -50,6 +50,7 @@ export function StationsPage() {
               return (
                 <ItemCard
                   key={st.id}
+                  navKey={`station:${st.name || st.id}`}
                   onOpen={() => go(`stations/${st.id}`)}
                   onDelete={() => removeItem(modId, 'stations', st.id, st.name)}
                   leading={<span className="text-cyan"><StationIcon type={st.type} /></span>}
@@ -140,7 +141,7 @@ function StationEditor({ mod, modId, station }: { mod: StarsView; modId: string;
               const on = b.index === station.bodyIndex
               const disabled = b.kind !== 'planet'
               return (
-                <button key={b.index} type="button" data-opt disabled={disabled} aria-pressed={on} onClick={() => { set({ bodyIndex: b.index }); setOrbitsOpen(false) }}
+                <button key={b.index} type="button" data-opt data-nav={`pick:${b.index}`} disabled={disabled} aria-pressed={on} onClick={() => { set({ bodyIndex: b.index }); setOrbitsOpen(false) }}
                   className={cn('flex min-h-12 items-center gap-3 px-3 text-left', disabled ? 'cursor-not-allowed opacity-50' : 'hover:bg-white/[0.03]', on && 'bg-cyan/10')}
                 >
                   <span className="w-6 font-mono text-[13px] text-dim">{b.index}</span>

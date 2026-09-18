@@ -68,6 +68,8 @@ export interface QuestSettings extends Kept {
   charName: string // CharName
   charImage: string // CharImage
   startMode: StartMode // isRandomStationQuest / isRandomSpaceQuest
+  /** Where the quest begins when no start mode says it: the game's own story starts a new save in Sol. Mods have no such field. */
+  startSystem?: string
   trigger: 'warp' | 'planetScan' // RandomSpaceQuestTrigger
   chance: number // RandomSpaceQuestChance, 0..1
   pointX: number // RandomQuestX

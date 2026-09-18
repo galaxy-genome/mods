@@ -111,7 +111,7 @@ export function LineBubble({ line, steps, contact, showChoices, onClick, label, 
     </>
   )
   if (!onClick) return <div className="flex min-w-0 flex-1 items-start gap-2.5">{body}</div>
-  return <button type="button" data-opt aria-label={label} onClick={onClick} className="flex min-w-0 flex-1 items-start gap-2.5 text-left">{body}</button>
+  return <button type="button" data-opt data-nav={`line:${line.id}`} aria-label={label} onClick={onClick} className="flex min-w-0 flex-1 items-start gap-2.5 text-left">{body}</button>
 }
 
 /** Plays the lines one at a time with a typing effect, as the game does. */

@@ -5,6 +5,7 @@ import { Link, useNavigate, useParams, useSearchParams } from 'react-router-dom'
 import { Page, useShellHeader } from '@/components/layout/shell'
 import { useOpenMap } from '@/features/map/MapRoute'
 import { PlaceContextView, useStationLabel } from '@/features/map/PlaceContext'
+import { QuestStartInfo } from '@/features/map/QuestStart'
 import { PlacePicker, PortraitPicker, QuestPicker } from '@/components/pickers'
 import { RequiresLine } from '@/features/start/ModInfoSheet'
 import { Button } from '@/components/ui/button'
@@ -214,6 +215,7 @@ export function OverviewPage() {
                 {s.stationName ? <span className="font-mono">{stationLabel(s.stationName)}</span> : <span className="text-dim">{t('overview.chooseStation')}</span>}
               </SentenceCard>
               <PlaceContextView kind="station" name={s.stationName} />
+              <QuestStartInfo station={s.stationName} />
               {stationGuess && (
                 <div><Chip tone="amber" onClick={() => shared((x) => { x.stationName = stationGuess })}>{t('overview.didYouMean', { name: stationGuess })}</Chip></div>
               )}

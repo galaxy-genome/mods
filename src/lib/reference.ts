@@ -4,7 +4,7 @@ import type { Lang, ShipLevel } from './types'
 
 export interface RefSystem { name: string; x: number; y: number; security: string | null; starType: string }
 export interface RefStation { name: string; system: string; type: string; faction: string; planetIndex: number }
-export interface RefBody { ordinal: number; name: string; kind: string; type: string }
+export interface RefBody { ordinal: number; name: string; kind: string; type: string; ls: number }
 export interface GameQuest {
   id: number
   name: string
@@ -20,6 +20,28 @@ export interface GameQuest {
 export const SYSTEMS = data.systems as RefSystem[]
 export const STATIONS = data.stations as RefStation[]
 export const BODIES = data.bodies as Record<string, RefBody[]>
+
+/** Star types by their internal name and by the name a mod writes, with the label and fuel flag the game gives them. */
+const STAR_TYPES_BY_NAME = new Map<string, { label: string; fuel: boolean }>()
+for (const [internal, name, label, fuel] of data.starTypes as [string, string, string, number][]) {
+  const info = { label, fuel: !!fuel }
+  STAR_TYPES_BY_NAME.set(internal, info)
+  STAR_TYPES_BY_NAME.set(name, info)
+}
+export const starType = (name: string) => STAR_TYPES_BY_NAME.get(name)
+
+/** What the galaxy map prints for a faction in a station's line. */
+export const FACTION_SHORT: Record<string, string> = {
+  'Trade Federation': 'Federation', USA: 'Federation',
+  'United Empire': 'Empire', Russian: 'Empire',
+  'Interstellar Alliance': 'Alliance', China: 'Alliance',
+  Independent: 'Independent', Pirates: 'Pirates',
+}
+
+/** What the galaxy map prints for a system's security. */
+export const SECURITY_NAMES: Record<string, string> = {
+  Anarchy: 'Anarchy', Low: 'Low', Medium: 'Medium', High: 'High', Only: 'Anarchy', NoOne: 'Anarchy', Conflict: 'Conflict Zone',
+}
 /**
  * The game's own side quests. Filled at startup from data/game-quests.json, which is generated locally and not
  * published; when it is absent the list stays empty and screens fall back to the reserved ID range.
