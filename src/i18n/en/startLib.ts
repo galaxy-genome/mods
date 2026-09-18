@@ -175,4 +175,6 @@ export default {
   station: 'Station',
   setupNote: 'Contact and portrait come from the template. The quest ID is picked for you. Everything is changeable later.',
   createQuest: 'Create quest',
+  modName: 'Mod name',
+  createMod: 'Create mod',
 }

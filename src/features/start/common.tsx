@@ -6,7 +6,6 @@ import { Button } from '@/components/ui/button'
 import { ConfirmDialog } from '@/components/ui/overlays'
 import { Sheet } from '@/components/ui/sheet'
 import { Card, SectionLabel } from '@/components/ui/surfaces'
-import { newStarsView } from '@/lib/factory'
 import { LANGS } from '@/lib/reference'
 import { QUEST_TEMPLATES, type QuestTemplate } from '@/lib/templates'
 import { modFromParts, pairTextures } from '@/lib/mods'
@@ -14,7 +13,7 @@ import { applyBackup, readBackup, type Backup } from '@/data/backup'
 import { cn } from '@/lib/utils'
 import { unzip } from '@/lib/zip'
 import { useT } from '@/i18n'
-import { addHistory, addMod, addModFromPart, getRepository, reloadFromStorage, setImportDraft, setSettings, useEditor } from '@/store/editor'
+import { addHistory, addMod, getRepository, reloadFromStorage, setImportDraft, setSettings, useEditor } from '@/store/editor'
 import { SAMPLE_FILE, SAMPLE_FILE_NAME, importText } from './importer'
 
 export function OfflineChip() {
@@ -91,46 +90,47 @@ export function TemplateDiagram({ diagram }: { diagram: QuestTemplate['diagram']
   )
 }
 
-/** Type sheet, then the template sheet for quests. */
-export function NewModSheets({ open, onOpenChange }: { open: boolean; onOpenChange: (v: boolean) => void }) {
+/** The New choices; each one is a linkable `/new/...` address. */
+export function NewChoices({ onPick }: { onPick?: () => void }) {
   const t = useT()
   const navigate = useNavigate()
-  const [templates, setTemplates] = React.useState(false)
-  const newStars = () => {
-    const mod = newStarsView(t('start.newStarsTitle'))
-    const newId = addModFromPart(mod)
-    onOpenChange(false)
-    navigate(`/mod/${newId}/overview`)
-  }
+  const go = (to: string) => { onPick?.(); navigate(to) }
   return (
-    <>
-      <Sheet open={open} onOpenChange={onOpenChange} title={t('start.newMod')} description={t('start.newModHelp')}>
-        <div className="flex flex-col gap-3 pt-2">
-          <TypeCard icon={<Sparkles />} title={t('start.sideQuest')} body={t('start.sideQuestHelp')} onClick={() => { onOpenChange(false); setTemplates(true) }} primary />
-          <TypeCard icon={<Star />} title={t('start.starsStations')} body={t('start.starsStationsHelp')} onClick={newStars} />
-          <TypeCard icon={<Image />} title={t('start.texturesType')} body={t('start.texturesTypeHelp')} badge={t('start.comingSoon')} disabled />
-        </div>
-      </Sheet>
-      <Sheet open={templates} onOpenChange={setTemplates} title={t('start.chooseTemplate')} description={t('start.chooseTemplateHelp')} full>
-        <div className="flex flex-col gap-2 pt-2">
-          {QUEST_TEMPLATES.map((tpl) => (
-            <button
-              key={tpl.key}
-              onClick={() => { setTemplates(false); navigate(`/new?template=${tpl.key}`) }}
-              className="flex min-h-[72px] flex-col gap-2 rounded-[4px] border border-edge bg-panel px-3 py-3 text-left hover:border-cyan"
-            >
-              <span className="flex w-full items-start justify-between gap-3">
-                <span className="flex flex-col gap-0.5">
-                  <span className="text-[15px] font-semibold text-white">{tpl.name}</span>
-                  <span className="text-[13px] text-ink/80">{tpl.description}</span>
-                </span>
-              </span>
-              <TemplateDiagram diagram={tpl.diagram} />
-            </button>
-          ))}
-        </div>
-      </Sheet>
-    </>
+    <div className="flex flex-col gap-3 pt-2">
+      <TypeCard icon={<Sparkles />} title={t('start.sideQuest')} body={t('start.sideQuestHelp')} onClick={() => go('/new/quest')} primary />
+      <TypeCard icon={<Star />} title={t('start.starsStations')} body={t('start.starsStationsHelp')} onClick={() => go('/new/stars')} />
+      <TypeCard icon={<Image />} title={t('start.texturesType')} body={t('start.texturesTypeHelp')} badge={t('start.comingSoon')} disabled />
+    </div>
+  )
+}
+
+export function TemplateChoices() {
+  const navigate = useNavigate()
+  return (
+    <div className="flex flex-col gap-2 pt-2">
+      {QUEST_TEMPLATES.map((tpl) => (
+        <button
+          key={tpl.key}
+          onClick={() => navigate(`/new/quest/${tpl.key}`)}
+          className="flex min-h-[72px] flex-col gap-2 rounded-[4px] border border-edge bg-panel px-3 py-3 text-left hover:border-cyan"
+        >
+          <span className="flex flex-col gap-0.5">
+            <span className="text-[15px] font-semibold text-white">{tpl.name}</span>
+            <span className="text-[13px] text-ink/80">{tpl.description}</span>
+          </span>
+          <TemplateDiagram diagram={tpl.diagram} />
+        </button>
+      ))}
+    </div>
+  )
+}
+
+export function NewModSheets({ open, onOpenChange }: { open: boolean; onOpenChange: (v: boolean) => void }) {
+  const t = useT()
+  return (
+    <Sheet open={open} onOpenChange={onOpenChange} title={t('start.newMod')} description={t('start.newModHelp')}>
+      <NewChoices onPick={() => onOpenChange(false)} />
+    </Sheet>
   )
 }
 

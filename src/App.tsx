@@ -26,7 +26,7 @@ import { ImportReviewPage } from '@/features/start/ImportReviewPage'
 import { InstallGuidePage } from '@/features/start/InstallGuidePage'
 import { LibraryPage } from '@/features/start/LibraryPage'
 import { LibraryQuestPage } from '@/features/start/LibraryQuestPage'
-import { QuickSetupPage } from '@/features/start/QuickSetupPage'
+import { NewPage, NewQuestPage, NewStarsPage, QuickSetupPage } from '@/features/start/QuickSetupPage'
 import { SettingsPage } from '@/features/start/SettingsPage'
 import { PlanetsPage } from '@/features/stars/PlanetsPage'
 import { StarsListPage } from '@/features/stars/StarsListPage'
@@ -94,7 +94,11 @@ function AppRoutes() {
     <PanelOpenProvider value={!!background}>
       <Routes location={background ?? location}>
         <Route path="/" element={<HomePage />} />
-        <Route path="/new" element={<QuickSetupPage />} />
+        <Route path="/new" element={<NewPage />} />
+        <Route path="/new/quest" element={<NewQuestPage />} />
+        <Route path="/new/quest/:template" element={<QuickSetupPage />} />
+        <Route path="/new/stars" element={<NewStarsPage />} />
+        <Route path="/new/stars/build" element={<NewStarsPage build />} />
         <Route path="/import" element={<ImportReviewPage />} />
         <Route path="/library" element={<LibraryPage />} />
         <Route path="/library/:questId" element={<LibraryQuestPage />} />

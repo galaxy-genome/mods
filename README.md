@@ -85,6 +85,8 @@ https://galaxy-genome.github.io/mods/community/community-humanity-at-war/test
 https://galaxy-genome.github.io/mods/community/owner-of-record/2/flow
 ```
 
+Each way to start a mod has its own address, which shows a setup page and creates nothing until Create: `/new`, `/new/quest`, `/new/quest/<template>` (`blank`, `delivery`, `ambush`, `choice`, `space`, `job`), `/new/stars` and `/new/stars/build`, for example `https://galaxy-genome.github.io/mods/new/quest/delivery` or `https://galaxy-genome.github.io/mods/new/stars/build`.
+
 ## Licence
 
 The editor is MIT licensed (see [LICENSE](LICENSE)). Each library mod keeps its own author's licence, listed
