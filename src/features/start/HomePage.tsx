@@ -3,7 +3,7 @@ import { AnimatePresence, motion } from 'motion/react'
 import * as React from 'react'
 import { useNavigate } from 'react-router-dom'
 import { toast } from 'sonner'
-import { Brand } from '@/components/layout/brand'
+import { BrandMenu } from '@/components/layout/brand'
 import { Button } from '@/components/ui/button'
 import { DraftBanner, NoStorageBanner, Skeleton, StorageFullBanner } from '@/components/ui/feedback'
 import { SearchInput } from '@/components/ui/inputs'
@@ -145,7 +145,7 @@ export function HomePage() {
           </>
         ) : (
           <>
-            <Brand className="flex-1" />
+            <div className="flex-1"><BrandMenu /></div>
             <OfflineChip />
             <Button variant="ghost" size="sm" onClick={() => setFileOpen(true)} className="px-2"><FileUp className="size-4" />{t('start.open')}</Button>
             <Menu

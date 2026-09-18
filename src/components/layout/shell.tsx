@@ -21,7 +21,7 @@ import { clearFocusedField, LearnMore, useFocusedField } from '../ui/field'
 import { Menu } from '../ui/overlays'
 import { Sheet } from '../ui/sheet'
 import { SeverityIcon } from '../ui/surfaces'
-import { Brand } from './brand'
+import { BrandMenu } from './brand'
 import { QUEST_TABS, STARS_TABS, TabIcon } from './tabs'
 import { listParam } from '../pickers/common'
 import { isPanelPath, usePanelOpen } from './panel'
@@ -372,7 +372,7 @@ export function ModShell() {
       <div className="flex min-h-dvh">
         {desktop && (
           <aside className="sticky top-0 flex h-dvh w-[240px] shrink-0 flex-col gap-6 border-r border-edge bg-deep px-3 py-4">
-            <Brand compact />
+            <BrandMenu compact />
             <div className="flex flex-col gap-2">
               <div className="flex flex-col gap-0.5 px-3" title={mod.meta.title}>
                 <span className="line-clamp-2 text-[15px] font-semibold leading-snug text-white">{mod.meta.title}</span>
