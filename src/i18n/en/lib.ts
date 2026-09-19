@@ -42,6 +42,7 @@ export default {
   issueGeneratedDeleted: '“{a}” uses the generated system {system}, which the stars of “{b}” remove from the game’s map.',
   issueGeneratedChanged: '“{a}” uses the generated system {system}, which the stars of “{b}” move or turn into a different star.',
   issueStarClash: '{star} is added by both “{a}” and “{b}”; the second one wins.',
+  issueStarTwice: '{star} is a new star in both “{a}” and “{b}”; the game makes two systems with that name.',
   issueStarValues: '{star} is in both “{a}” and “{b}” with a different {fields}; the values of “{b}” win because it loads later.',
   issueStationClash: 'Station “{station}” is in both “{a}” and “{b}”; the game skips the second.',
   issueStarOverlap: '{star} of “{b}” shares a map slot with {other} of “{a}”, so players cannot see or select it.',

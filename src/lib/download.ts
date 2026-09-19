@@ -123,7 +123,9 @@ export function planDownload(favorites: Mod[], lang: Lang, all: ModPart[], mods:
       if (other && owner.get(other) !== owner.get(s)) {
         const fields = (['x', 'y', 'z', 'security', 'type'] as const).filter((f) => other[f] !== s[f])
         const vars = { star: s.name, a: title(other), b: title(s) }
-        plan.issues.push(fields.length
+        // The game's existing-name check sees only its own stars, so a new star listed twice becomes two systems.
+        if (galaxy && !galaxy.byName.has(s.name)) plan.issues.push({ severity: 'error', message: t('lib.issueStarTwice', vars), modId: owner.get(s)!.meta.id })
+        else plan.issues.push(fields.length
           ? { severity: 'warning', message: t('lib.issueStarValues', { ...vars, fields: fields.map((f) => f.length === 1 ? f.toUpperCase() : f).join(', ') }), modId: owner.get(s)!.meta.id }
           : { severity: 'warning', message: t('lib.issueStarClash', vars), modId: owner.get(s)!.meta.id })
       }
