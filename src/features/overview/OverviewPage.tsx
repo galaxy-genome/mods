@@ -1,5 +1,5 @@
 import { PortraitTile as SharedPortraitTile } from '@/components/pickers'
-import { AlertTriangle, ChevronRight, Download, Info, MapPin, Plus, Store, X } from 'lucide-react'
+import { AlertTriangle, ChevronRight, FileArchive, Info, Layers, MapPin, Plus, Store, X } from 'lucide-react'
 import * as React from 'react'
 import { Link, useNavigate, useParams, useSearchParams } from 'react-router-dom'
 import { Page, useShellHeader } from '@/components/layout/shell'
@@ -401,11 +401,14 @@ export function OverviewPage() {
               </div>
             </Field>
           </fieldset>
+          <Button variant="secondary" size="sm" className="self-start" onClick={() => navigate(`/mod/${owner.meta.id}`, { state: { contents: true } })}>
+            <Layers className="size-4" />{t('shell.modSettings')}
+          </Button>
           {!readOnly && (
             <Card tone="cyan" className="flex flex-col items-start gap-2 p-3">
               <p className="text-[13px] leading-snug text-ink">{t('overview.contributeHelp')}</p>
-              <Button variant="secondary" size="sm" onClick={() => navigate(`/mod/${owner.meta.id}`, { state: { contents: true } })}>
-                <Download className="size-4" />{t('overview.downloadForSubmission')}
+              <Button variant="secondary" size="sm" onClick={() => navigate(`/mod/${owner.meta.id}`, { state: { contents: true, submit: true } })}>
+                <FileArchive className="size-4" />{t('overview.submitToLibrary')}
               </Button>
             </Card>
           )}

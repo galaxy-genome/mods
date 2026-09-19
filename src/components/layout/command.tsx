@@ -31,8 +31,10 @@ export function CommandLayer() {
       if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'k') { e.preventDefault(); setOpen((v) => !v) }
       else if (e.key === '?' && !e.metaKey && !e.ctrlKey && !typing(e)) { e.preventDefault(); setKeysOpen(true) }
     }
+    const onShortcuts = () => setKeysOpen(true)
     addEventListener('keydown', onKey)
-    return () => removeEventListener('keydown', onKey)
+    addEventListener('open-shortcuts', onShortcuts)
+    return () => { removeEventListener('keydown', onKey); removeEventListener('open-shortcuts', onShortcuts) }
   }, [])
 
   const run = (fn: () => void) => { setOpen(false); fn() }

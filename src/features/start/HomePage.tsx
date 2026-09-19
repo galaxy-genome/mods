@@ -1,4 +1,4 @@
-import { Map as MapIcon, ArrowUpDown, BookOpen, Check, Info, Layers, Copy, Download, FileUp, FolderOpen, HelpCircle, Library, MoreVertical, Plus, Settings, ShieldCheck, Sparkles, Star, Trash2, Users, X } from 'lucide-react'
+import { Map as MapIcon, ArrowUpDown, BookOpen, Check, Info, Layers, Copy, Download, FileClock, FileUp, FolderOpen, HelpCircle, Keyboard, Library, ListChecks, MoreVertical, Plus, Settings, ShieldCheck, Sparkles, Star, Trash2, Users, X } from 'lucide-react'
 import { AnimatePresence, motion } from 'motion/react'
 import * as React from 'react'
 import { useNavigate } from 'react-router-dom'
@@ -11,7 +11,7 @@ import { Menu } from '@/components/ui/overlays'
 import { SwipeRow } from '@/components/ui/gestures'
 import { Badge, Card, EmptyState, SectionLabel, SeverityIcon, TipCard } from '@/components/ui/surfaces'
 import { t, useT } from '@/i18n'
-import { onlyPartView, partCount, partsOf } from '@/lib/mods'
+import { onlyPartView, partsOf } from '@/lib/mods'
 import { LANGS } from '@/lib/reference'
 import { MAX_QUEST_FILES, questFileCount } from '@/lib/mods'
 import { modProblems } from '@/lib/rules'
@@ -22,6 +22,7 @@ import { DownloadSheet } from './DownloadSheet'
 import { ModInfoSheet } from './ModInfoSheet'
 import { LanguageSheet, NewModSheets, OfflineChip, OpenFileSheet } from './common'
 import { communityEntry } from '@/lib/community'
+import { useIsDesktop } from '@/hooks/use-media-query'
 
 type Filter = 'all' | 'favorites' | 'mine' | 'community' | 'problems'
 type Sort = 'recent' | 'name' | 'status'
@@ -62,7 +63,10 @@ export function HomePage() {
   const storage = useEditor((s) => s.storage)
   const [dragging, setDragging] = React.useState(false)
   const [dropped, setDropped] = React.useState<File | null>(null)
-  const selecting = selected.size > 0
+  const [selectMode, setSelectMode] = React.useState(false)
+  const selecting = selectMode || selected.size > 0
+  const clearSelection = () => { setSelected(new Set()); setSelectMode(false) }
+  const desktop = useIsDesktop()
 
   React.useEffect(() => {
     const show = (sheet: 'file' | 'download') => { pendingSheet = null; if (sheet === 'file') setFileOpen(true); else setDownloadOpen(true) }
@@ -139,7 +143,7 @@ export function HomePage() {
       <header className="sticky top-0 z-30 flex min-h-14 items-center gap-1 border-b border-edge bg-deep/95 pl-4 pr-1 pt-[env(safe-area-inset-top)] backdrop-blur">
         {selecting ? (
           <>
-            <button aria-label={t('start.cancelSelection')} onClick={() => setSelected(new Set())} className="-ml-3 grid size-11 place-items-center text-ink hover:text-white"><X className="size-5" /></button>
+            <button aria-label={t('start.cancelSelection')} onClick={clearSelection} className="-ml-3 grid size-11 place-items-center text-ink hover:text-white"><X className="size-5" /></button>
             <h1 className="flex-1 text-[17px] font-semibold text-white">{t('start.selected', { count: selected.size })}</h1>
             <Button variant="text" size="sm" onClick={() => setSelected(new Set(mine.map((b) => b.meta.id)))}>{t('start.selectAll')}</Button>
           </>
@@ -154,9 +158,12 @@ export function HomePage() {
               items={[
                 { label: t('start.modLibrary'), icon: <Library />, onSelect: () => navigate('/library') },
                 { label: t('output.smFavoritesTitle'), icon: <MapIcon />, onSelect: () => navigate('/series') },
+                { label: t('start.historyAndDeleted'), icon: <FileClock />, onSelect: () => navigate('/history') },
+                ...(mine.length ? [{ label: t('start.selectMods'), icon: <ListChecks />, onSelect: () => setSelectMode(true) }] : []),
                 ...(gameQuests ? [{ label: t('start.gameQuests'), icon: <BookOpen />, onSelect: () => navigate('/library?tab=game') }] : []),
                 { label: t('start.language'), icon: <span className="grid size-4 place-items-center font-mono text-[10px]">{LANGS.find((l) => l.key === settings.uiLang)?.label}</span>, onSelect: () => setLangOpen(true), separatorBefore: true },
                 { label: t('start.help'), icon: <HelpCircle />, onSelect: () => navigate('/help') },
+                ...(desktop ? [{ label: t('shell.shortcuts'), icon: <Keyboard />, onSelect: () => dispatchEvent(new Event('open-shortcuts')) }] : []),
                 { label: t('start.settings'), icon: <Settings />, onSelect: () => navigate('/settings') },
               ]}
             />
@@ -288,9 +295,9 @@ export function HomePage() {
         {selecting ? (
           <motion.div key="select" initial={{ y: 90 }} animate={{ y: 0 }} exit={{ y: 90 }} transition={{ type: 'spring', stiffness: 500, damping: 40 }} className="safe-bottom fixed inset-x-0 bottom-0 z-40 border-t border-edge bg-deep">
             <div className="mx-auto grid max-w-[720px] grid-cols-3 gap-2 px-4 py-2">
-              <Button variant="ghost" size="sm" className="h-12 flex-col gap-0.5 text-[12px]" onClick={() => { setFavorite([...selected], true); setSelected(new Set()) }}><Star className="size-4 text-amber" />{t('common.favorite')}</Button>
-              <Button variant="ghost" size="sm" className="h-12 flex-col gap-0.5 text-[12px]" onClick={() => { setFavorite([...selected], false); setSelected(new Set()) }}><Star className="size-4" />{t('common.unfavorite')}</Button>
-              <Button variant="ghost" size="sm" className="h-12 flex-col gap-0.5 text-[12px] text-danger" onClick={() => { deleteMods([...selected]); setSelected(new Set()) }}><Trash2 className="size-4" />{t('common.delete')}</Button>
+              <Button variant="ghost" size="sm" className="h-12 flex-col gap-0.5 text-[12px]" onClick={() => { setFavorite([...selected], true); clearSelection() }}><Star className="size-4 text-amber" />{t('common.favorite')}</Button>
+              <Button variant="ghost" size="sm" className="h-12 flex-col gap-0.5 text-[12px]" onClick={() => { setFavorite([...selected], false); clearSelection() }}><Star className="size-4" />{t('common.unfavorite')}</Button>
+              <Button variant="ghost" size="sm" className="h-12 flex-col gap-0.5 text-[12px] text-danger" onClick={() => { deleteMods([...selected]); clearSelection() }}><Trash2 className="size-4" />{t('common.delete')}</Button>
             </div>
           </motion.div>
         ) : (
@@ -441,7 +448,7 @@ function ModCard({ mod, rank, stat, selecting, selected, onOpen, onLongPress }: 
           label={t('start.actionsFor', { title: mod.meta.title })}
           items={[
             { label: t('common.open'), icon: <FolderOpen />, onSelect: onOpen },
-            ...(partCount(mod) > 1 ? [{ label: t('start.contents'), icon: <Layers />, onSelect: () => navigate(`/mod/${id}`) }] : []),
+            { label: t('start.modSettings'), icon: <Layers />, onSelect: () => navigate(`/mod/${id}`, { state: { contents: true } }) },
             { label: mod.meta.favorite ? t('common.unfavorite') : t('common.favorite'), icon: <Star />, onSelect: () => setFavorite([id], !mod.meta.favorite) },
             { label: t('common.duplicate'), icon: <Copy />, onSelect: () => duplicateMod(id) },
             ...(community && mod.meta.modified && !hasOriginal ? [{ label: t('start.addOriginal'), icon: <Plus />, onSelect: () => addCommunityEntry(community.entryId) }] : []),

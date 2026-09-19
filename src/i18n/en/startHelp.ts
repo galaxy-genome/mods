@@ -35,7 +35,7 @@ export default {
   'def.version': 'A linked copy of a quest in another language. It shares the quest ID, steps and ships.',
 
   'title.getting-started': 'Getting started: your first quest in 5 minutes',
-  'title.mods-and-files': 'Mods, files and the contents page',
+  'title.mods-and-files': 'Mods, files and Mod settings',
   'title.steps-and-choices': 'How steps, choices and branches work',
   'title.conditions': 'Conditions: every “Finishes when” explained',
   'title.ships-and-orders': 'Ships and orders',
@@ -55,7 +55,7 @@ export default {
   'title.older-files': 'Opening older mod files',
 
   'kw.getting-started': 'new first template create',
-  'kw.mods-and-files': 'mod contents files quest add remove',
+  'kw.mods-and-files': 'mod settings contents files quest add remove submit',
   'kw.steps-and-choices': 'branch choice options dialogue jump questID',
   'kw.conditions': 'finishes fails action complete trigger',
   'kw.ships-and-orders': 'spawn pilot behaviour attack destroy',
@@ -83,8 +83,8 @@ export default {
   gsTry: 'open the steps of “The Long Haul”',
 
   mfIntro: 'A mod is a set of files that belong together: any number of quests, one stars & stations file, and texture sheets. The home screen shows one card per mod.',
-  mfContents: 'The contents page',
-  mfContentsBody: 'Tapping a mod with one file opens that file’s editor. A mod with more opens its contents page, which lists every quest, the stars & stations file and the textures.',
+  mfContents: 'Mod settings',
+  mfContentsBody: 'Tapping a mod with one file opens that file’s editor. A mod with more opens its Mod settings page, which holds the mod’s name, version and author and lists every quest, the stars & stations file and the textures. From a quest, open it with Mod settings on the Overview page or in the ⋮ menu.',
   mf1: 'Add quest starts a new quest in the mod from a template.',
   mf2: 'Add stars & stations adds the mod’s one StarsStations.json.',
   mf3: 'Add textures takes txtr_ sheets with their .xml files.',
@@ -152,7 +152,7 @@ export default {
   ss4: 'Planets from mods start out already discovered.',
 
   txIntro: 'A texture sheet replaces some of the game’s art. It is two files with the same name: a picture, txtr_<sheet>.png, and its map of sprites, txtr_<sheet>.xml.',
-  tx1: 'On a mod’s contents page, tap Add textures and pick both files. You can pick several sheets at once; each .png is paired with its .xml.',
+  tx1: 'On a mod’s Mod settings page, tap Add textures and pick both files. You can pick several sheets at once; each .png is paired with its .xml.',
   tx2: 'A file without its partner is named in an error and not added.',
   tx3: 'Download copies the sheets of your favorite mods into mod/textures/ in the zip.',
   tx4: 'When two favorite mods replace the same sheet, the later one wins, and Download lists it under Needs a look.',
@@ -178,8 +178,8 @@ export default {
   cl3: 'A link like /community/<entry-id> opens that mod here, adding it first if it isn’t on this device; put a screen after it, as in /community/<entry-id>/test, to open the mod there.',
   clShare: 'Sharing your mod',
   clShareBody: 'The library is a folder in the editor’s own repository. A mod joins it through the “Submit a mod” form on GitHub; you need a GitHub account, nothing else.',
-  clStep1: 'Fill in the mod’s name, version, author and summary on its contents page.',
-  clStep2: 'From the contents page’s ⋯ menu, choose Download for submission, then Download zip and open the form.',
+  clStep1: 'Fill in the mod’s name, version, author and summary on its Mod settings page.',
+  clStep2: 'Choose Submit to library from the quest’s ⋮ menu, the Mod settings ⋮ menu or the Overview page, then Download zip and open the form.',
   clStep3: 'Drag the zip into the form and submit. A check comments on your submission; when it passes, a maintainer reviews and adds the mod.',
   clDiscord: 'No GitHub account? Share the zip on Discord and a maintainer adds it for you.',
   clGithub: 'GitHub',

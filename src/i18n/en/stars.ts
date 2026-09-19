@@ -19,7 +19,7 @@ export default {
   planetsCount: 'Planets',
   stationsCount: 'Stations',
   oneFileInfo: 'The game reads one stars & stations file. Download merges your favorites into one.',
-  modContents: 'Mod contents',
+  modSettings: 'Mod settings',
 
   starsEmpty: "Add a new star system, or use an existing system's name to move and change it.",
   addAStar: 'Add a star',

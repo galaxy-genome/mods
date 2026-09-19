@@ -43,7 +43,7 @@ device. Galaxy Genome and all of its data belong to SKV Games; this is an unoffi
 - **Library.** Ready-made mods to add, edit or learn from, each with its author and licence. See
   [CREDITS.md](docs/CREDITS.md).
 - **Help.** Searchable articles on installing mods, how the game runs quests, and every field.
-- **Keyboard.** ⌘K command palette, ⌘Z undo, and `?` for every shortcut.
+- **Keyboard.** ⌘K command palette, ⌘Z undo, and `?` for every shortcut (also under Keyboard shortcuts in the home ⋮ menu).
 
 ## What is here
 
@@ -74,7 +74,7 @@ library once its author agrees to its licence.
 
 ## Link to a mod
 
-`/community/<entry-id>` opens a library mod's contents on whoever's device follows the link, adding the entry
+`/community/<entry-id>` opens a library mod's Mod settings page on whoever's device follows the link, adding the entry
 there first if it is missing. Anything after the entry id is a screen inside the mod, and a mod with several
 parts can name one first by quest id, 1-based number, or `stars`. While an untouched library mod is open the
 address bar stays on this form, so the URL is always ready to paste; a mod you have changed shows its own
