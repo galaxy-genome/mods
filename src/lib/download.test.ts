@@ -38,3 +38,25 @@ console.log('download ok')
   assert.match(err.message, /201 quest files, 1 past the game’s 200\. Files past Quest199\.json never load\..*Big \(201\)/)
   console.log('download limit ok')
 }
+
+// Cross-mod stars: station names, PlanetID shifts, companion stars and which catalogue values win.
+{
+  const port = (m: ReturnType<typeof starsMod>, name: string, bodyIndex: number) => { m.stars!.stations.push({ id: uid(), name, system: 'Probe', bodyIndex } as never); return m }
+  const errors = (...mods: ReturnType<typeof starsMod>[]) => planDownload(mods, 'en', []).issues.filter((i) => i.severity === 'error').map((i) => i.message)
+  const a = starsMod('A', [['A1', 400]])
+  const b = port(starsMod('B', [['B1', 100]]), 'Dock', 1)
+  assert.deepEqual(errors(a, b), ['Station “Dock” of “B” sits on body 1 of Probe, but with the planets of “A” loaded first, body 1 is A1.'])
+  assert.deepEqual(errors(b, a), [], 'B first keeps its body')
+
+  const c = port(starsMod('C', []), 'Dock', 1)
+  assert.ok(errors(b, c).includes('Station “Dock” is in both “B” and “C”; the game skips the second.'))
+
+  const moved = starsMod('M', [])
+  moved.stars!.stars[0] = { ...moved.stars!.stars[0], x: 5, security: 'Low' }
+  assert.ok(issues(a, moved).includes('Probe is in both “A” and “M” with a different X, security; the values of “M” win because it loads later.'))
+
+  const bin = starsMod('Bin', [])
+  bin.stars!.planets.push({ id: uid(), name: 'Probe B', system: 'Probe', type: 'G-WhiteYellow', orbit: 900, moons: 0, size: 50, rings: 0, material: null })
+  assert.ok(issues(bin, a).includes('A1 of “A” orbits the companion star Probe B of “Bin” in Probe, not the main star.'))
+  console.log('download cross-mod stars ok')
+}

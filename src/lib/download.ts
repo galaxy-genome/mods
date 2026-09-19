@@ -8,8 +8,9 @@ import { gameQuest, GAME_QUEST_ID_MAX, GAME_QUEST_ID_MIN, LANGS } from './refere
 import { getGalaxy } from '@/features/map/galaxy'
 import { satisfies } from './dependencies'
 import { modDeps } from './modDeps'
-import { modProblems } from './rules'
-import type { Mod, Lang, ModPart, QuestContent, QuestView, StarsView, TexturePart } from './types'
+import { isPlanetBody, loadedPlanets, modProblems } from './rules'
+import { placeStars } from '@/features/map/placement'
+import type { Mod, Lang, ModPart, ModStation, Planet, Star, QuestContent, QuestView, StarsView, TexturePart } from './types'
 import { zip } from './zip'
 
 export const GAME_VERSION = '1.6.12'
@@ -107,34 +108,78 @@ export function planDownload(favorites: Mod[], lang: Lang, all: ModPart[], mods:
     }
   }
 
+  const owner = new Map<object, Mod>()
+  const merged = { stars: [] as Star[], planets: [] as Planet[], stations: [] as ModStation[] }
+  for (const { mod, part } of plan.stars) {
+    for (const k of ['stars', 'planets', 'stations'] as const) for (const x of part[k]) { owner.set(x, mod); (merged[k] as object[]).push(x) }
+  }
+  const title = (x: object) => owner.get(x)!.meta.title
   if (plan.stars.length > 1) {
-    const stars = new Map<string, Mod>()
+    const stars = new Map<string, Star>()
+    const stations = new Map<string, ModStation>()
     const orbits = new Map<string, Mod>()
+    for (const s of merged.stars) {
+      const other = stars.get(s.name)
+      if (other && owner.get(other) !== owner.get(s)) {
+        const fields = (['x', 'y', 'z', 'security', 'type'] as const).filter((f) => other[f] !== s[f])
+        const vars = { star: s.name, a: title(other), b: title(s) }
+        plan.issues.push(fields.length
+          ? { severity: 'warning', message: t('lib.issueStarValues', { ...vars, fields: fields.map((f) => f.length === 1 ? f.toUpperCase() : f).join(', ') }), modId: owner.get(s)!.meta.id }
+          : { severity: 'warning', message: t('lib.issueStarClash', vars), modId: owner.get(s)!.meta.id })
+      }
+      stars.set(s.name, s)
+    }
+    for (const st of merged.stations) {
+      const other = stations.get(st.name)
+      if (other && owner.get(other) !== owner.get(st)) plan.issues.push({ severity: 'error', message: t('lib.issueStationClash', { station: st.name, a: title(other), b: title(st) }), modId: owner.get(st)!.meta.id })
+      if (!other) stations.set(st.name, st)
+    }
+    for (const p of merged.planets) {
+      const key = `${p.system}:${Math.floor(p.orbit / 100) * 100}`
+      const other = orbits.get(key)
+      if (other && other !== owner.get(p)) plan.issues.push({ severity: 'warning', message: t('lib.issueOrbitClash', { planet: p.name, system: p.system }), modId: owner.get(p)!.meta.id })
+      if (!other) orbits.set(key, owner.get(p)!)
+    }
+
+    // A station's PlanetID counts the system's bodies in load order, so another mod's earlier planets move it.
+    const loaded = loadedPlanets(merged)
     for (const { mod, part } of plan.stars) {
-      part.stars.forEach((s) => {
-        const other = stars.get(s.name)
-        if (other && other !== mod) plan.issues.push({ severity: 'warning', message: t('lib.issueStarClash', { star: s.name, a: other.meta.title, b: mod.meta.title }), modId: mod.meta.id })
-        stars.set(s.name, mod)
-      })
-      part.planets.forEach((p) => {
-        const key = `${p.system}:${Math.floor(p.orbit / 100) * 100}`
-        const other = orbits.get(key)
-        if (other && other !== mod) plan.issues.push({ severity: 'warning', message: t('lib.issueOrbitClash', { planet: p.name, system: p.system }), modId: mod.meta.id })
-        if (!other) orbits.set(key, mod)
-      })
+      const own = loadedPlanets(part)
+      for (const st of part.stations) {
+        const body = own.filter((p) => p.system === st.system)[st.bodyIndex - 1]
+        const inSystem = loaded.filter((p) => p.system === st.system)
+        const now = inSystem[st.bodyIndex - 1]
+        const other = inSystem.find((p) => owner.get(p) !== mod)
+        if (body && now !== body && other) plan.issues.push({ severity: 'error', message: t('lib.issuePlanetShift', { station: st.name, a: title(other), b: mod.meta.title, n: st.bodyIndex, system: st.system, body: now ? now.name || now.type : '-' }), modId: mod.meta.id })
+      }
+    }
+    // In game a star-type body becomes a companion star, and later planets of the system orbit it.
+    const companions = new Map<string, Planet>()
+    for (const p of loaded) {
+      const c = companions.get(p.system)
+      if (!isPlanetBody(p.type)) { if (!c) companions.set(p.system, p) } else if (c && owner.get(c) !== owner.get(p)) plan.issues.push({ severity: 'warning', message: t('lib.issueCompanionReparent', { planet: p.name, companion: c.name || c.type, system: p.system, a: title(c), b: title(p) }), modId: owner.get(p)!.meta.id })
     }
     plan.fixes.push(t('lib.fixMergedStars', { count: plan.stars.length }))
   }
 
-  // A quest's generated system that a favorite's stars (its own included) remove or change is not the system it was written for.
-  const deps = new Map(favorites.map((m) => [m, modDeps(m, { galaxy })]))
-  for (const a of favorites) {
-    for (const system of deps.get(a)!.uses.generated) {
-      for (const b of favorites) {
-        const { changes } = deps.get(b)!
-        const key = changes.deletedGenerated.includes(system) ? 'lib.issueGeneratedDeleted' : changes.renumberedGenerated.includes(system) ? 'lib.issueGeneratedChanged' : null
-        if (key) plan.issues.push({ severity: 'error', message: t(key, { a: a.meta.title, b: b.meta.title, system }), modId: a.meta.id })
+  // Generation runs with every favorite's stars at once, as the game does with the merged file.
+  const generated = new Map<string, { key: string; mod: Mod }>()
+  if (galaxy && merged.stars.length) {
+    placeStars(galaxy, merged.stars).forEach((p, i) => {
+      const star = merged.stars[i]
+      const mod = owner.get(star)!
+      if (p.hiddenBy && p.hiddenBy !== star.name) {
+        const other = merged.stars.find((s) => s.name === p.hiddenBy)
+        if (other && owner.get(other) !== mod) plan.issues.push({ severity: 'error', message: t('lib.issueStarOverlap', { star: star.name, other: other.name, a: title(other), b: mod.meta.title }), modId: mod.meta.id })
       }
+      for (const s of p.deletedGenerated) generated.set(s, { key: 'lib.issueGeneratedDeleted', mod })
+      for (const s of p.renumberedGenerated) if (!generated.has(s)) generated.set(s, { key: 'lib.issueGeneratedChanged', mod })
+    })
+  }
+  for (const a of favorites) {
+    for (const system of modDeps(a, { galaxy }).uses.generated) {
+      const hit = generated.get(system)
+      if (hit) plan.issues.push({ severity: 'error', message: t(hit.key, { a: a.meta.title, b: hit.mod.meta.title, system }), modId: a.meta.id })
     }
   }
 
