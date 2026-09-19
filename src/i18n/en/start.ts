@@ -289,7 +289,7 @@ export default {
   removeNamed: 'Remove {name}',
   addAQuest: 'Add a quest',
   addAQuestHelp: 'Start from a template. You can change everything later.',
-  submitTitle: 'Share in the community library',
+  submitTitle: 'Submit to library',
   submitHelp: 'Share your mod through a short form on GitHub. You need a free GitHub account.',
   submitButton: 'Download zip and open the form',
   submitZipHolds: 'The zip holds',
