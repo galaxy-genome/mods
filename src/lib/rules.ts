@@ -481,11 +481,11 @@ const REFUSED_STAR_TYPES = ['Preonstar', 'Quarkstar']
 /** Every type name in PlanetType.enum; a planet of any of them loads. */
 const BODY_TYPES = new Set([...PLANET_TYPES, 'Asteroids', ...STAR_TYPES, ...REFUSED_STAR_TYPES])
 /** Planet types and Asteroids sit below StarM_RedDwarf in PlanetType.enum: their orbit is floored and a station may sit on them. */
-const isPlanetBody = (type: string) => type === 'Asteroids' || PLANET_TYPES.includes(type)
+export const isPlanetBody = (type: string) => type === 'Asteroids' || PLANET_TYPES.includes(type)
 const orbitKey = (p: Planet) => `${p.system}:${isPlanetBody(p.type) ? Math.floor(p.orbit / 100) * 100 : Math.trunc(p.orbit)}`
 
 /** Planets StationsStarsMod keeps, in load order: any PlanetType name, first per orbit per system. */
-export function loadedPlanets(mod: StarsView) {
+export function loadedPlanets(mod: Pick<StarsView, 'planets'>) {
   const kept: Planet[] = []
   const orbits = new Set<string>()
   for (const p of mod.planets) {

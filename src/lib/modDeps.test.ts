@@ -6,6 +6,7 @@ import { type GalaxyData, makeGalaxy } from '../features/map/galaxy.ts'
 import { planDownload } from './download.ts'
 import { newQuestView, newStarsView, newStep, uid } from './factory.ts'
 import { modDeps } from './modDeps.ts'
+import { placeStars } from '../features/map/placement.ts'
 import { modFromParts, partsOf } from './mods.ts'
 import { questProblems } from './rules.ts'
 import { STATIONS } from './reference.ts'
@@ -78,3 +79,23 @@ const stars = starsMod('S', cell[8].x, cell[8].z)
   ])
 }
 console.log('modDeps ok')
+
+// Cross-mod stars: generation runs with every favorite's stars at once, and a star in another mod's slot is hidden.
+{
+  const one = (title: string, x: number, y: number) => { const m = starsMod(title, x, y); m.stars!.stars.splice(1); m.stars!.stations = []; return m }
+  const x = one('X', cell[8].x, cell[8].z)
+  const y = one('Y', cell[8].x + 0.1, cell[8].z)
+  const errs = planDownload([x, y], 'en', [], [x, y], galaxy).issues.filter((i) => i.severity === 'error').map((i) => i.message)
+  assert.deepEqual(errs, ['Y Star of “Y” shares a map slot with X Star of “X”, so players cannot see or select it.'])
+
+  // With both favorites, each generated system a quest uses is blamed on the mod whose star removes or changes it.
+  const far = one('Far', cell[14].x, cell[14].z)
+  const deleted = placeStars(galaxy, far.stars!.stars)[0].deletedGenerated[0]
+  const q = modFromParts([quest('Tour', D6, deleted)], { title: 'Tour', favorite: true })
+  const got = planDownload([q, x, far], 'en', [], [q, x, far], galaxy).issues.filter((i) => i.severity === 'error').map((i) => i.message)
+  assert.deepEqual(got, [
+    `“Tour” uses the generated system ${deleted}, which the stars of “Far” remove from the game’s map.`,
+    `“Tour” uses the generated system ${D6}, which the stars of “X” move or turn into a different star.`,
+  ])
+  console.log('modDeps cross-mod stars ok')
+}
