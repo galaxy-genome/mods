@@ -1,4 +1,4 @@
-import { ArrowLeft, Layers, Star, Braces, Copy, Download, FileClock, HelpCircle, Languages, ListChecks, Redo2, Trash2, Undo2, WifiOff } from 'lucide-react'
+import { ArrowLeft, Layers, Star, Braces, Copy, Download, FileArchive, FileClock, HelpCircle, Languages, ListChecks, Redo2, Trash2, Undo2, WifiOff } from 'lucide-react'
 import * as React from 'react'
 import { Link, Navigate, NavLink, Outlet, useLocation, useNavigate, useParams, useSearchParams } from 'react-router-dom'
 import { ExportSheet } from '@/features/output/ExportSheet'
@@ -322,7 +322,8 @@ export function ModShell() {
   const tabTo = (path: string) => `${base}/${path}${stepN && (path === 'flow' || path === 'steps') ? `?step=${stepN}` : ''}`
   const menu = [
     ...(!desktop ? [{ label: t('shell.redo'), icon: <Redo2 />, onSelect: () => redo(modId), disabled: !canRedo(modId) }] : []),
-    { label: multiPart ? t('shell.allFiles', { title: owner.meta.title }) : t('shell.modContents'), icon: <Layers />, onSelect: () => navigate(contentsPath, { state: { contents: true } }) },
+    { label: t('shell.modSettings'), icon: <Layers />, onSelect: () => navigate(contentsPath, { state: { contents: true } }) },
+    ...(readOnly ? [] : [{ label: t('start.submitToLibrary'), icon: <FileArchive />, onSelect: () => navigate(contentsPath, { state: { contents: true, submit: true } }) }]),
     { label: t('shell.export'), icon: <Download />, onSelect: () => sheet.open('export') },
     ...(isQuest ? [{ label: t('shell.languageVersions'), icon: <Languages />, onSelect: () => sheet.open('languages') }] : []),
     { label: t('shell.history'), icon: <FileClock />, onSelect: () => navigate(`${base}/history`) },
@@ -338,6 +339,7 @@ export function ModShell() {
       {offline && <span className="mr-1 flex h-7 items-center gap-1 rounded-[2px] border border-edge px-2 font-mono text-[11px] text-dim"><WifiOff className="size-3" />{t('shell.offline')}</span>}
       {header?.actions}
       {!desktop && <button aria-label={t('common.undo')} disabled={!canUndo(modId)} onClick={() => undo(modId)} className="grid size-11 place-items-center text-ink disabled:opacity-30"><Undo2 className="size-5" /></button>}
+      {!desktop && canRedo(modId) && <button aria-label={t('shell.redo')} onClick={() => redo(modId)} className="grid size-11 place-items-center text-ink"><Redo2 className="size-5" /></button>}
       {desktop && (
         <>
           <button aria-label={t('common.undo')} disabled={!canUndo(modId)} onClick={() => undo(modId)} className="grid size-11 place-items-center text-ink disabled:opacity-30"><Undo2 className="size-5" /></button>

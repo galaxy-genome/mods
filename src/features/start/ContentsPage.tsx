@@ -1,6 +1,6 @@
 import { Copy, FileArchive, Globe2, ImagePlus, Info, Map as MapIcon, MoreVertical, Orbit, Plus, ScrollText, SearchX, Trash2, X } from 'lucide-react'
 import * as React from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
 import { toast } from 'sonner'
 import { AppBar } from '@/components/layout/shell'
 import { Button } from '@/components/ui/button'
@@ -56,7 +56,8 @@ export function ContentsPage({ mod }: { mod: Mod }) {
   const t = useT()
   const navigate = useNavigate()
   const parts = useEditor((s) => s.parts)
-  const [submitOpen, setSubmitOpen] = React.useState(false)
+  const location = useLocation()
+  const [submitOpen, setSubmitOpen] = React.useState(location.state?.submit === true)
   const [query, setQuery] = React.useState('')
   const [infoOpen, setInfoOpen] = React.useState(false)
   const [templateOpen, setTemplateOpen] = React.useState(false)
@@ -101,7 +102,7 @@ export function ContentsPage({ mod }: { mod: Mod }) {
           trigger={<button aria-label={t('common.more')} className="grid size-11 place-items-center text-ink hover:text-white"><MoreVertical className="size-5" /></button>}
           items={[
             { label: t('start.duplicateMod'), icon: <Copy />, onSelect: () => { const cid = duplicateMod(id); if (cid) navigate(`/mod/${cid}`) } },
-            ...(readOnly ? [] : [{ label: t('start.downloadForSubmission'), icon: <FileArchive />, onSelect: () => setSubmitOpen(true) }]),
+            ...(readOnly ? [] : [{ label: t('start.submitToLibrary'), icon: <FileArchive />, onSelect: () => setSubmitOpen(true) }]),
             community && !mod.meta.modified
               ? { label: t('start.removeFromHome'), icon: <X />, onSelect: () => { removeCommunityEntry(community.entryId); navigate('/') }, separatorBefore: true }
               : { label: t('start.deleteMod'), icon: <Trash2 />, tone: 'danger' as const, onSelect: () => { navigate('/'); deleteMod(id) }, separatorBefore: true },

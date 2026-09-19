@@ -49,7 +49,7 @@ export function StarsOverviewPage() {
       <InfoNote>{t('stars.oneFileInfo')}</InfoNote>
 
       <Link to={`/mod/${owner.meta.id}`} state={{ contents: true }} className="flex min-h-11 items-center gap-2 text-[15px] text-cyan hover:underline">
-        <Package className="size-4" />{t('stars.modContents')}<ChevronRight className="size-4" />
+        <Package className="size-4" />{t('stars.modSettings')}<ChevronRight className="size-4" />
       </Link>
     </Page>
   )
