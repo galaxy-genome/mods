@@ -1,0 +1,7486 @@
+{
+ "modules": [
+  {
+   "key": "CanonWeapon.FirstD",
+   "category": "CannonWeapon",
+   "subtype": "CannonWeapon",
+   "slotType": "Weapon",
+   "className": "1D",
+   "mClass": 1,
+   "grade": "D",
+   "singleton": false,
+   "name": "1D Cannon"
+  },
+  {
+   "key": "CanonWeapon.FirstE",
+   "category": "CannonWeapon",
+   "subtype": "CannonWeapon",
+   "slotType": "Weapon",
+   "className": "1E",
+   "mClass": 1,
+   "grade": "E",
+   "singleton": false,
+   "name": "1E Cannon"
+  },
+  {
+   "key": "CanonWeapon.FourD",
+   "category": "CannonWeapon",
+   "subtype": "CannonWeapon",
+   "slotType": "Weapon",
+   "className": "4D",
+   "mClass": 4,
+   "grade": "D",
+   "singleton": false,
+   "name": "4D Cannon"
+  },
+  {
+   "key": "CanonWeapon.FourE",
+   "category": "CannonWeapon",
+   "subtype": "CannonWeapon",
+   "slotType": "Weapon",
+   "className": "4E",
+   "mClass": 4,
+   "grade": "E",
+   "singleton": false,
+   "name": "4E Cannon"
+  },
+  {
+   "key": "CanonWeapon.SecondD",
+   "category": "CannonWeapon",
+   "subtype": "CannonWeapon",
+   "slotType": "Weapon",
+   "className": "2D",
+   "mClass": 2,
+   "grade": "D",
+   "singleton": false,
+   "name": "2D Cannon"
+  },
+  {
+   "key": "CanonWeapon.SecondE",
+   "category": "CannonWeapon",
+   "subtype": "CannonWeapon",
+   "slotType": "Weapon",
+   "className": "2E",
+   "mClass": 2,
+   "grade": "E",
+   "singleton": false,
+   "name": "2E Cannon"
+  },
+  {
+   "key": "CanonWeapon.ThirdD",
+   "category": "CannonWeapon",
+   "subtype": "CannonWeapon",
+   "slotType": "Weapon",
+   "className": "3D",
+   "mClass": 3,
+   "grade": "D",
+   "singleton": false,
+   "name": "3D Cannon"
+  },
+  {
+   "key": "CanonWeapon.ThirdE",
+   "category": "CannonWeapon",
+   "subtype": "CannonWeapon",
+   "slotType": "Weapon",
+   "className": "3E",
+   "mClass": 3,
+   "grade": "E",
+   "singleton": false,
+   "name": "3E Cannon"
+  },
+  {
+   "key": "CargoDroneController.FirstD",
+   "category": "CargoDroneController",
+   "subtype": "CargoDroneController",
+   "slotType": "Optional",
+   "className": "1D",
+   "mClass": 1,
+   "grade": "D",
+   "singleton": true,
+   "name": "1D Collector Drone Controller"
+  },
+  {
+   "key": "CargoDroneController.FirstE",
+   "category": "CargoDroneController",
+   "subtype": "CargoDroneController",
+   "slotType": "Optional",
+   "className": "1E",
+   "mClass": 1,
+   "grade": "E",
+   "singleton": true,
+   "name": "1E Collector Drone Controller"
+  },
+  {
+   "key": "CargoDroneController.FiveD",
+   "category": "CargoDroneController",
+   "subtype": "CargoDroneController",
+   "slotType": "Optional",
+   "className": "5D",
+   "mClass": 5,
+   "grade": "D",
+   "singleton": true,
+   "name": "5D Collector Drone Controller"
+  },
+  {
+   "key": "CargoDroneController.FiveE",
+   "category": "CargoDroneController",
+   "subtype": "CargoDroneController",
+   "slotType": "Optional",
+   "className": "5E",
+   "mClass": 5,
+   "grade": "E",
+   "singleton": true,
+   "name": "5E Collector Drone Controller"
+  },
+  {
+   "key": "CargoDroneController.SevenD",
+   "category": "CargoDroneController",
+   "subtype": "CargoDroneController",
+   "slotType": "Optional",
+   "className": "7D",
+   "mClass": 7,
+   "grade": "D",
+   "singleton": true,
+   "name": "7D Collector Drone Controller"
+  },
+  {
+   "key": "CargoDroneController.SevenE",
+   "category": "CargoDroneController",
+   "subtype": "CargoDroneController",
+   "slotType": "Optional",
+   "className": "7E",
+   "mClass": 7,
+   "grade": "E",
+   "singleton": true,
+   "name": "7E Collector Drone Controller"
+  },
+  {
+   "key": "CargoDroneController.ThirdD",
+   "category": "CargoDroneController",
+   "subtype": "CargoDroneController",
+   "slotType": "Optional",
+   "className": "3D",
+   "mClass": 3,
+   "grade": "D",
+   "singleton": true,
+   "name": "3D Collector Drone Controller"
+  },
+  {
+   "key": "CargoDroneController.ThirdE",
+   "category": "CargoDroneController",
+   "subtype": "CargoDroneController",
+   "slotType": "Optional",
+   "className": "3E",
+   "mClass": 3,
+   "grade": "E",
+   "singleton": true,
+   "name": "3E Collector Drone Controller"
+  },
+  {
+   "key": "CargoRack.EightD",
+   "category": "CargoRack",
+   "subtype": "CargoRack",
+   "slotType": "Optional",
+   "className": "8D",
+   "mClass": 8,
+   "grade": "D",
+   "singleton": false,
+   "name": "8D Cargo Rack"
+  },
+  {
+   "key": "CargoRack.FirstD",
+   "category": "CargoRack",
+   "subtype": "CargoRack",
+   "slotType": "Optional",
+   "className": "1D",
+   "mClass": 1,
+   "grade": "D",
+   "singleton": false,
+   "name": "1D Cargo Rack"
+  },
+  {
+   "key": "CargoRack.FiveD",
+   "category": "CargoRack",
+   "subtype": "CargoRack",
+   "slotType": "Optional",
+   "className": "5D",
+   "mClass": 5,
+   "grade": "D",
+   "singleton": false,
+   "name": "5D Cargo Rack"
+  },
+  {
+   "key": "CargoRack.FourD",
+   "category": "CargoRack",
+   "subtype": "CargoRack",
+   "slotType": "Optional",
+   "className": "4D",
+   "mClass": 4,
+   "grade": "D",
+   "singleton": false,
+   "name": "4D Cargo Rack"
+  },
+  {
+   "key": "CargoRack.SecondD",
+   "category": "CargoRack",
+   "subtype": "CargoRack",
+   "slotType": "Optional",
+   "className": "2D",
+   "mClass": 2,
+   "grade": "D",
+   "singleton": false,
+   "name": "2D Cargo Rack"
+  },
+  {
+   "key": "CargoRack.SevenD",
+   "category": "CargoRack",
+   "subtype": "CargoRack",
+   "slotType": "Optional",
+   "className": "7D",
+   "mClass": 7,
+   "grade": "D",
+   "singleton": false,
+   "name": "7D Cargo Rack"
+  },
+  {
+   "key": "CargoRack.SixD",
+   "category": "CargoRack",
+   "subtype": "CargoRack",
+   "slotType": "Optional",
+   "className": "6D",
+   "mClass": 6,
+   "grade": "D",
+   "singleton": false,
+   "name": "6D Cargo Rack"
+  },
+  {
+   "key": "CargoRack.ThirdD",
+   "category": "CargoRack",
+   "subtype": "CargoRack",
+   "slotType": "Optional",
+   "className": "3D",
+   "mClass": 3,
+   "grade": "D",
+   "singleton": false,
+   "name": "3D Cargo Rack"
+  },
+  {
+   "key": "CargoScanner.FirstA",
+   "category": "CargoScanner",
+   "subtype": "CargoScanner",
+   "slotType": "External",
+   "className": "A",
+   "mClass": 1,
+   "grade": "A",
+   "singleton": true,
+   "name": "A Cargo Scanner"
+  },
+  {
+   "key": "CargoScanner.FirstB",
+   "category": "CargoScanner",
+   "subtype": "CargoScanner",
+   "slotType": "External",
+   "className": "B",
+   "mClass": 1,
+   "grade": "B",
+   "singleton": true,
+   "name": "B Cargo Scanner"
+  },
+  {
+   "key": "CargoScanner.FirstC",
+   "category": "CargoScanner",
+   "subtype": "CargoScanner",
+   "slotType": "External",
+   "className": "C",
+   "mClass": 1,
+   "grade": "C",
+   "singleton": true,
+   "name": "C Cargo Scanner"
+  },
+  {
+   "key": "CargoScanner.FirstD",
+   "category": "CargoScanner",
+   "subtype": "CargoScanner",
+   "slotType": "External",
+   "className": "D",
+   "mClass": 1,
+   "grade": "D",
+   "singleton": true,
+   "name": "D Cargo Scanner"
+  },
+  {
+   "key": "CargoScanner.FirstE",
+   "category": "CargoScanner",
+   "subtype": "CargoScanner",
+   "slotType": "External",
+   "className": "E",
+   "mClass": 1,
+   "grade": "E",
+   "singleton": true,
+   "name": "E Cargo Scanner"
+  },
+  {
+   "key": "ChaffLauncher.ChaffE",
+   "category": "ChaffLauncher",
+   "subtype": "ChaffLauncher",
+   "slotType": "External",
+   "className": "1E",
+   "mClass": 1,
+   "grade": "E",
+   "singleton": true,
+   "name": "1E Chaff Launcher"
+  },
+  {
+   "key": "DeepSpaceDrive.EightA",
+   "category": "DeepSpaceDrive",
+   "subtype": "DeepSpaceDrive",
+   "slotType": "Main",
+   "className": "8A",
+   "mClass": 8,
+   "grade": "A",
+   "singleton": true,
+   "name": "8A Warp Drive"
+  },
+  {
+   "key": "DeepSpaceDrive.EightB",
+   "category": "DeepSpaceDrive",
+   "subtype": "DeepSpaceDrive",
+   "slotType": "Main",
+   "className": "8B",
+   "mClass": 8,
+   "grade": "B",
+   "singleton": true,
+   "name": "8B Warp Drive"
+  },
+  {
+   "key": "DeepSpaceDrive.EightC",
+   "category": "DeepSpaceDrive",
+   "subtype": "DeepSpaceDrive",
+   "slotType": "Main",
+   "className": "8C",
+   "mClass": 8,
+   "grade": "C",
+   "singleton": true,
+   "name": "8C Warp Drive"
+  },
+  {
+   "key": "DeepSpaceDrive.EightD",
+   "category": "DeepSpaceDrive",
+   "subtype": "DeepSpaceDrive",
+   "slotType": "Main",
+   "className": "8D",
+   "mClass": 8,
+   "grade": "D",
+   "singleton": true,
+   "name": "8D Warp Drive"
+  },
+  {
+   "key": "DeepSpaceDrive.EightE",
+   "category": "DeepSpaceDrive",
+   "subtype": "DeepSpaceDrive",
+   "slotType": "Main",
+   "className": "8E",
+   "mClass": 8,
+   "grade": "E",
+   "singleton": true,
+   "name": "8E Warp Drive"
+  },
+  {
+   "key": "DeepSpaceDrive.FiveA",
+   "category": "DeepSpaceDrive",
+   "subtype": "DeepSpaceDrive",
+   "slotType": "Main",
+   "className": "5A",
+   "mClass": 5,
+   "grade": "A",
+   "singleton": true,
+   "name": "5A Warp Drive"
+  },
+  {
+   "key": "DeepSpaceDrive.FiveB",
+   "category": "DeepSpaceDrive",
+   "subtype": "DeepSpaceDrive",
+   "slotType": "Main",
+   "className": "5B",
+   "mClass": 5,
+   "grade": "B",
+   "singleton": true,
+   "name": "5B Warp Drive"
+  },
+  {
+   "key": "DeepSpaceDrive.FiveC",
+   "category": "DeepSpaceDrive",
+   "subtype": "DeepSpaceDrive",
+   "slotType": "Main",
+   "className": "5C",
+   "mClass": 5,
+   "grade": "C",
+   "singleton": true,
+   "name": "5C Warp Drive"
+  },
+  {
+   "key": "DeepSpaceDrive.FiveD",
+   "category": "DeepSpaceDrive",
+   "subtype": "DeepSpaceDrive",
+   "slotType": "Main",
+   "className": "5D",
+   "mClass": 5,
+   "grade": "D",
+   "singleton": true,
+   "name": "5D Warp Drive"
+  },
+  {
+   "key": "DeepSpaceDrive.FiveE",
+   "category": "DeepSpaceDrive",
+   "subtype": "DeepSpaceDrive",
+   "slotType": "Main",
+   "className": "5E",
+   "mClass": 5,
+   "grade": "E",
+   "singleton": true,
+   "name": "5E Warp Drive"
+  },
+  {
+   "key": "DeepSpaceDrive.FourA",
+   "category": "DeepSpaceDrive",
+   "subtype": "DeepSpaceDrive",
+   "slotType": "Main",
+   "className": "4A",
+   "mClass": 4,
+   "grade": "A",
+   "singleton": true,
+   "name": "4A Warp Drive"
+  },
+  {
+   "key": "DeepSpaceDrive.FourB",
+   "category": "DeepSpaceDrive",
+   "subtype": "DeepSpaceDrive",
+   "slotType": "Main",
+   "className": "4B",
+   "mClass": 4,
+   "grade": "B",
+   "singleton": true,
+   "name": "4B Warp Drive"
+  },
+  {
+   "key": "DeepSpaceDrive.FourC",
+   "category": "DeepSpaceDrive",
+   "subtype": "DeepSpaceDrive",
+   "slotType": "Main",
+   "className": "4C",
+   "mClass": 4,
+   "grade": "C",
+   "singleton": true,
+   "name": "4C Warp Drive"
+  },
+  {
+   "key": "DeepSpaceDrive.FourD",
+   "category": "DeepSpaceDrive",
+   "subtype": "DeepSpaceDrive",
+   "slotType": "Main",
+   "className": "4D",
+   "mClass": 4,
+   "grade": "D",
+   "singleton": true,
+   "name": "4D Warp Drive"
+  },
+  {
+   "key": "DeepSpaceDrive.FourE",
+   "category": "DeepSpaceDrive",
+   "subtype": "DeepSpaceDrive",
+   "slotType": "Main",
+   "className": "4E",
+   "mClass": 4,
+   "grade": "E",
+   "singleton": true,
+   "name": "4E Warp Drive"
+  },
+  {
+   "key": "DeepSpaceDrive.SecondA",
+   "category": "DeepSpaceDrive",
+   "subtype": "DeepSpaceDrive",
+   "slotType": "Main",
+   "className": "2A",
+   "mClass": 2,
+   "grade": "A",
+   "singleton": true,
+   "name": "2A Warp Drive"
+  },
+  {
+   "key": "DeepSpaceDrive.SecondB",
+   "category": "DeepSpaceDrive",
+   "subtype": "DeepSpaceDrive",
+   "slotType": "Main",
+   "className": "2B",
+   "mClass": 2,
+   "grade": "B",
+   "singleton": true,
+   "name": "2B Warp Drive"
+  },
+  {
+   "key": "DeepSpaceDrive.SecondC",
+   "category": "DeepSpaceDrive",
+   "subtype": "DeepSpaceDrive",
+   "slotType": "Main",
+   "className": "2C",
+   "mClass": 2,
+   "grade": "C",
+   "singleton": true,
+   "name": "2C Warp Drive"
+  },
+  {
+   "key": "DeepSpaceDrive.SecondD",
+   "category": "DeepSpaceDrive",
+   "subtype": "DeepSpaceDrive",
+   "slotType": "Main",
+   "className": "2D",
+   "mClass": 2,
+   "grade": "D",
+   "singleton": true,
+   "name": "2D Warp Drive"
+  },
+  {
+   "key": "DeepSpaceDrive.SecondE",
+   "category": "DeepSpaceDrive",
+   "subtype": "DeepSpaceDrive",
+   "slotType": "Main",
+   "className": "2E",
+   "mClass": 2,
+   "grade": "E",
+   "singleton": true,
+   "name": "2E Warp Drive"
+  },
+  {
+   "key": "DeepSpaceDrive.SevenA",
+   "category": "DeepSpaceDrive",
+   "subtype": "DeepSpaceDrive",
+   "slotType": "Main",
+   "className": "7A",
+   "mClass": 7,
+   "grade": "A",
+   "singleton": true,
+   "name": "7A Warp Drive"
+  },
+  {
+   "key": "DeepSpaceDrive.SevenB",
+   "category": "DeepSpaceDrive",
+   "subtype": "DeepSpaceDrive",
+   "slotType": "Main",
+   "className": "7B",
+   "mClass": 7,
+   "grade": "B",
+   "singleton": true,
+   "name": "7B Warp Drive"
+  },
+  {
+   "key": "DeepSpaceDrive.SevenC",
+   "category": "DeepSpaceDrive",
+   "subtype": "DeepSpaceDrive",
+   "slotType": "Main",
+   "className": "7C",
+   "mClass": 7,
+   "grade": "C",
+   "singleton": true,
+   "name": "7C Warp Drive"
+  },
+  {
+   "key": "DeepSpaceDrive.SevenD",
+   "category": "DeepSpaceDrive",
+   "subtype": "DeepSpaceDrive",
+   "slotType": "Main",
+   "className": "7D",
+   "mClass": 7,
+   "grade": "D",
+   "singleton": true,
+   "name": "7D Warp Drive"
+  },
+  {
+   "key": "DeepSpaceDrive.SevenE",
+   "category": "DeepSpaceDrive",
+   "subtype": "DeepSpaceDrive",
+   "slotType": "Main",
+   "className": "7E",
+   "mClass": 7,
+   "grade": "E",
+   "singleton": true,
+   "name": "7E Warp Drive"
+  },
+  {
+   "key": "DeepSpaceDrive.SixA",
+   "category": "DeepSpaceDrive",
+   "subtype": "DeepSpaceDrive",
+   "slotType": "Main",
+   "className": "6A",
+   "mClass": 6,
+   "grade": "A",
+   "singleton": true,
+   "name": "6A Warp Drive"
+  },
+  {
+   "key": "DeepSpaceDrive.SixB",
+   "category": "DeepSpaceDrive",
+   "subtype": "DeepSpaceDrive",
+   "slotType": "Main",
+   "className": "6B",
+   "mClass": 6,
+   "grade": "B",
+   "singleton": true,
+   "name": "6B Warp Drive"
+  },
+  {
+   "key": "DeepSpaceDrive.SixC",
+   "category": "DeepSpaceDrive",
+   "subtype": "DeepSpaceDrive",
+   "slotType": "Main",
+   "className": "6C",
+   "mClass": 6,
+   "grade": "C",
+   "singleton": true,
+   "name": "6C Warp Drive"
+  },
+  {
+   "key": "DeepSpaceDrive.SixD",
+   "category": "DeepSpaceDrive",
+   "subtype": "DeepSpaceDrive",
+   "slotType": "Main",
+   "className": "6D",
+   "mClass": 6,
+   "grade": "D",
+   "singleton": true,
+   "name": "6D Warp Drive"
+  },
+  {
+   "key": "DeepSpaceDrive.SixE",
+   "category": "DeepSpaceDrive",
+   "subtype": "DeepSpaceDrive",
+   "slotType": "Main",
+   "className": "6E",
+   "mClass": 6,
+   "grade": "E",
+   "singleton": true,
+   "name": "6E Warp Drive"
+  },
+  {
+   "key": "DeepSpaceDrive.ThirdA",
+   "category": "DeepSpaceDrive",
+   "subtype": "DeepSpaceDrive",
+   "slotType": "Main",
+   "className": "3A",
+   "mClass": 3,
+   "grade": "A",
+   "singleton": true,
+   "name": "3A Warp Drive"
+  },
+  {
+   "key": "DeepSpaceDrive.ThirdB",
+   "category": "DeepSpaceDrive",
+   "subtype": "DeepSpaceDrive",
+   "slotType": "Main",
+   "className": "3B",
+   "mClass": 3,
+   "grade": "B",
+   "singleton": true,
+   "name": "3B Warp Drive"
+  },
+  {
+   "key": "DeepSpaceDrive.ThirdC",
+   "category": "DeepSpaceDrive",
+   "subtype": "DeepSpaceDrive",
+   "slotType": "Main",
+   "className": "3C",
+   "mClass": 3,
+   "grade": "C",
+   "singleton": true,
+   "name": "3C Warp Drive"
+  },
+  {
+   "key": "DeepSpaceDrive.ThirdD",
+   "category": "DeepSpaceDrive",
+   "subtype": "DeepSpaceDrive",
+   "slotType": "Main",
+   "className": "3D",
+   "mClass": 3,
+   "grade": "D",
+   "singleton": true,
+   "name": "3D Warp Drive"
+  },
+  {
+   "key": "DeepSpaceDrive.ThirdE",
+   "category": "DeepSpaceDrive",
+   "subtype": "DeepSpaceDrive",
+   "slotType": "Main",
+   "className": "3E",
+   "mClass": 3,
+   "grade": "E",
+   "singleton": true,
+   "name": "3E Warp Drive"
+  },
+  {
+   "key": "DeepSpaceDriveBooster.FiveC",
+   "category": "DeepSpaceDriveBooster",
+   "subtype": "DeepSpaceDriveBooster",
+   "slotType": "Optional",
+   "className": "5C",
+   "mClass": 5,
+   "grade": "C",
+   "singleton": true,
+   "name": "5C Warp Drive Booster"
+  },
+  {
+   "key": "DeepSpaceDriveBooster.FourC",
+   "category": "DeepSpaceDriveBooster",
+   "subtype": "DeepSpaceDriveBooster",
+   "slotType": "Optional",
+   "className": "4C",
+   "mClass": 4,
+   "grade": "C",
+   "singleton": true,
+   "name": "4C Warp Drive Booster"
+  },
+  {
+   "key": "DeepSpaceDriveBooster.ThirdC",
+   "category": "DeepSpaceDriveBooster",
+   "subtype": "DeepSpaceDriveBooster",
+   "slotType": "Optional",
+   "className": "3C",
+   "mClass": 3,
+   "grade": "C",
+   "singleton": true,
+   "name": "3C Warp Drive Booster"
+  },
+  {
+   "key": "DefenceTurret.TurretE",
+   "category": "DefenceTurret",
+   "subtype": "DefenceTurret",
+   "slotType": "External",
+   "className": "1E",
+   "mClass": 1,
+   "grade": "E",
+   "singleton": true,
+   "name": "1E Defence Turret"
+  },
+  {
+   "key": "ExperimentalModule.ModuleE",
+   "category": "ExperimentalBooster",
+   "subtype": "ExperimentalBooster",
+   "slotType": "External",
+   "className": "1E",
+   "mClass": 1,
+   "grade": "E",
+   "singleton": false,
+   "name": "1E Experimental Booster"
+  },
+  {
+   "key": "ExperimentalModule2.ModuleE",
+   "category": "Experimental2Booster",
+   "subtype": "Experimental2Booster",
+   "slotType": "External",
+   "className": "1E",
+   "mClass": 1,
+   "grade": "E",
+   "singleton": false,
+   "name": "1E Experimental Booster"
+  },
+  {
+   "key": "FighterHangar.FighterHangarEight",
+   "category": "FighterHangar",
+   "subtype": "FighterHangar",
+   "slotType": "Military",
+   "className": "8C",
+   "mClass": 8,
+   "grade": "C",
+   "singleton": true,
+   "name": "8C Fighter Hangar"
+  },
+  {
+   "key": "FighterHangar.FighterHangarFive",
+   "category": "FighterHangar",
+   "subtype": "FighterHangar",
+   "slotType": "Military",
+   "className": "5E",
+   "mClass": 5,
+   "grade": "E",
+   "singleton": true,
+   "name": "5E Fighter Hangar"
+  },
+  {
+   "key": "FighterHangar.FighterHangarFiveD",
+   "category": "FighterHangar",
+   "subtype": "FighterHangar",
+   "slotType": "Military",
+   "className": "5D",
+   "mClass": 5,
+   "grade": "D",
+   "singleton": true,
+   "name": "5D Fighter Hangar"
+  },
+  {
+   "key": "FighterHangar.FighterHangarSeven",
+   "category": "FighterHangar",
+   "subtype": "FighterHangar",
+   "slotType": "Military",
+   "className": "7E",
+   "mClass": 7,
+   "grade": "E",
+   "singleton": true,
+   "name": "7E Fighter Hangar"
+  },
+  {
+   "key": "FighterHangar.FighterHangarSevenD",
+   "category": "FighterHangar",
+   "subtype": "FighterHangar",
+   "slotType": "Military",
+   "className": "7D",
+   "mClass": 7,
+   "grade": "D",
+   "singleton": true,
+   "name": "7D Fighter Hangar"
+  },
+  {
+   "key": "FighterHangar.FighterHangarSix",
+   "category": "FighterHangar",
+   "subtype": "FighterHangar",
+   "slotType": "Military",
+   "className": "6E",
+   "mClass": 6,
+   "grade": "E",
+   "singleton": true,
+   "name": "6E Fighter Hangar"
+  },
+  {
+   "key": "FighterHangar.FighterHangarSixD",
+   "category": "FighterHangar",
+   "subtype": "FighterHangar",
+   "slotType": "Military",
+   "className": "6D",
+   "mClass": 6,
+   "grade": "D",
+   "singleton": true,
+   "name": "6D Fighter Hangar"
+  },
+  {
+   "key": "FragmentCanonWeapon.FirstD",
+   "category": "FragmentCannonWeapon",
+   "subtype": "FragmentCannon",
+   "slotType": "Weapon",
+   "className": "1D",
+   "mClass": 1,
+   "grade": "D",
+   "singleton": false,
+   "name": "1D Fragment Cannon"
+  },
+  {
+   "key": "FragmentCanonWeapon.SecondD",
+   "category": "FragmentCannonWeapon",
+   "subtype": "FragmentCannon",
+   "slotType": "Weapon",
+   "className": "2D",
+   "mClass": 2,
+   "grade": "D",
+   "singleton": false,
+   "name": "2D Fragment Cannon"
+  },
+  {
+   "key": "FragmentCanonWeapon.ThirdD",
+   "category": "FragmentCannonWeapon",
+   "subtype": "FragmentCannon",
+   "slotType": "Weapon",
+   "className": "3D",
+   "mClass": 3,
+   "grade": "D",
+   "singleton": false,
+   "name": "3D Fragment Cannon"
+  },
+  {
+   "key": "FuelScoop.EightA",
+   "category": "FuelScoop",
+   "subtype": "FuelScoop",
+   "slotType": "Optional",
+   "className": "8A",
+   "mClass": 8,
+   "grade": "A",
+   "singleton": true,
+   "name": "8A Fuel Scoop"
+  },
+  {
+   "key": "FuelScoop.EightB",
+   "category": "FuelScoop",
+   "subtype": "FuelScoop",
+   "slotType": "Optional",
+   "className": "8B",
+   "mClass": 8,
+   "grade": "B",
+   "singleton": true,
+   "name": "8B Fuel Scoop"
+  },
+  {
+   "key": "FuelScoop.EightC",
+   "category": "FuelScoop",
+   "subtype": "FuelScoop",
+   "slotType": "Optional",
+   "className": "8C",
+   "mClass": 8,
+   "grade": "C",
+   "singleton": true,
+   "name": "8C Fuel Scoop"
+  },
+  {
+   "key": "FuelScoop.EightD",
+   "category": "FuelScoop",
+   "subtype": "FuelScoop",
+   "slotType": "Optional",
+   "className": "8D",
+   "mClass": 8,
+   "grade": "D",
+   "singleton": true,
+   "name": "8D Fuel Scoop"
+  },
+  {
+   "key": "FuelScoop.EightE",
+   "category": "FuelScoop",
+   "subtype": "FuelScoop",
+   "slotType": "Optional",
+   "className": "8E",
+   "mClass": 8,
+   "grade": "E",
+   "singleton": true,
+   "name": "8E Fuel Scoop"
+  },
+  {
+   "key": "FuelScoop.FirstA",
+   "category": "FuelScoop",
+   "subtype": "FuelScoop",
+   "slotType": "Optional",
+   "className": "1A",
+   "mClass": 1,
+   "grade": "A",
+   "singleton": true,
+   "name": "1A Fuel Scoop"
+  },
+  {
+   "key": "FuelScoop.FirstB",
+   "category": "FuelScoop",
+   "subtype": "FuelScoop",
+   "slotType": "Optional",
+   "className": "1B",
+   "mClass": 1,
+   "grade": "B",
+   "singleton": true,
+   "name": "1B Fuel Scoop"
+  },
+  {
+   "key": "FuelScoop.FirstC",
+   "category": "FuelScoop",
+   "subtype": "FuelScoop",
+   "slotType": "Optional",
+   "className": "1C",
+   "mClass": 1,
+   "grade": "C",
+   "singleton": true,
+   "name": "1C Fuel Scoop"
+  },
+  {
+   "key": "FuelScoop.FirstD",
+   "category": "FuelScoop",
+   "subtype": "FuelScoop",
+   "slotType": "Optional",
+   "className": "1D",
+   "mClass": 1,
+   "grade": "D",
+   "singleton": true,
+   "name": "1D Fuel Scoop"
+  },
+  {
+   "key": "FuelScoop.FirstE",
+   "category": "FuelScoop",
+   "subtype": "FuelScoop",
+   "slotType": "Optional",
+   "className": "1E",
+   "mClass": 1,
+   "grade": "E",
+   "singleton": true,
+   "name": "1E Fuel Scoop"
+  },
+  {
+   "key": "FuelScoop.FiveA",
+   "category": "FuelScoop",
+   "subtype": "FuelScoop",
+   "slotType": "Optional",
+   "className": "5A",
+   "mClass": 5,
+   "grade": "A",
+   "singleton": true,
+   "name": "5A Fuel Scoop"
+  },
+  {
+   "key": "FuelScoop.FiveB",
+   "category": "FuelScoop",
+   "subtype": "FuelScoop",
+   "slotType": "Optional",
+   "className": "5B",
+   "mClass": 5,
+   "grade": "B",
+   "singleton": true,
+   "name": "5B Fuel Scoop"
+  },
+  {
+   "key": "FuelScoop.FiveC",
+   "category": "FuelScoop",
+   "subtype": "FuelScoop",
+   "slotType": "Optional",
+   "className": "5C",
+   "mClass": 5,
+   "grade": "C",
+   "singleton": true,
+   "name": "5C Fuel Scoop"
+  },
+  {
+   "key": "FuelScoop.FiveD",
+   "category": "FuelScoop",
+   "subtype": "FuelScoop",
+   "slotType": "Optional",
+   "className": "5D",
+   "mClass": 5,
+   "grade": "D",
+   "singleton": true,
+   "name": "5D Fuel Scoop"
+  },
+  {
+   "key": "FuelScoop.FiveE",
+   "category": "FuelScoop",
+   "subtype": "FuelScoop",
+   "slotType": "Optional",
+   "className": "5E",
+   "mClass": 5,
+   "grade": "E",
+   "singleton": true,
+   "name": "5E Fuel Scoop"
+  },
+  {
+   "key": "FuelScoop.FourA",
+   "category": "FuelScoop",
+   "subtype": "FuelScoop",
+   "slotType": "Optional",
+   "className": "4A",
+   "mClass": 4,
+   "grade": "A",
+   "singleton": true,
+   "name": "4A Fuel Scoop"
+  },
+  {
+   "key": "FuelScoop.FourB",
+   "category": "FuelScoop",
+   "subtype": "FuelScoop",
+   "slotType": "Optional",
+   "className": "4B",
+   "mClass": 4,
+   "grade": "B",
+   "singleton": true,
+   "name": "4B Fuel Scoop"
+  },
+  {
+   "key": "FuelScoop.FourC",
+   "category": "FuelScoop",
+   "subtype": "FuelScoop",
+   "slotType": "Optional",
+   "className": "4C",
+   "mClass": 4,
+   "grade": "C",
+   "singleton": true,
+   "name": "4C Fuel Scoop"
+  },
+  {
+   "key": "FuelScoop.FourD",
+   "category": "FuelScoop",
+   "subtype": "FuelScoop",
+   "slotType": "Optional",
+   "className": "4D",
+   "mClass": 4,
+   "grade": "D",
+   "singleton": true,
+   "name": "4D Fuel Scoop"
+  },
+  {
+   "key": "FuelScoop.FourE",
+   "category": "FuelScoop",
+   "subtype": "FuelScoop",
+   "slotType": "Optional",
+   "className": "4E",
+   "mClass": 4,
+   "grade": "E",
+   "singleton": true,
+   "name": "4E Fuel Scoop"
+  },
+  {
+   "key": "FuelScoop.SecondA",
+   "category": "FuelScoop",
+   "subtype": "FuelScoop",
+   "slotType": "Optional",
+   "className": "2A",
+   "mClass": 2,
+   "grade": "A",
+   "singleton": true,
+   "name": "2A Fuel Scoop"
+  },
+  {
+   "key": "FuelScoop.SecondB",
+   "category": "FuelScoop",
+   "subtype": "FuelScoop",
+   "slotType": "Optional",
+   "className": "2B",
+   "mClass": 2,
+   "grade": "B",
+   "singleton": true,
+   "name": "2B Fuel Scoop"
+  },
+  {
+   "key": "FuelScoop.SecondC",
+   "category": "FuelScoop",
+   "subtype": "FuelScoop",
+   "slotType": "Optional",
+   "className": "2C",
+   "mClass": 2,
+   "grade": "C",
+   "singleton": true,
+   "name": "2C Fuel Scoop"
+  },
+  {
+   "key": "FuelScoop.SecondD",
+   "category": "FuelScoop",
+   "subtype": "FuelScoop",
+   "slotType": "Optional",
+   "className": "2D",
+   "mClass": 2,
+   "grade": "D",
+   "singleton": true,
+   "name": "2D Fuel Scoop"
+  },
+  {
+   "key": "FuelScoop.SecondE",
+   "category": "FuelScoop",
+   "subtype": "FuelScoop",
+   "slotType": "Optional",
+   "className": "2E",
+   "mClass": 2,
+   "grade": "E",
+   "singleton": true,
+   "name": "2E Fuel Scoop"
+  },
+  {
+   "key": "FuelScoop.SevenA",
+   "category": "FuelScoop",
+   "subtype": "FuelScoop",
+   "slotType": "Optional",
+   "className": "7A",
+   "mClass": 7,
+   "grade": "A",
+   "singleton": true,
+   "name": "7A Fuel Scoop"
+  },
+  {
+   "key": "FuelScoop.SevenB",
+   "category": "FuelScoop",
+   "subtype": "FuelScoop",
+   "slotType": "Optional",
+   "className": "7B",
+   "mClass": 7,
+   "grade": "B",
+   "singleton": true,
+   "name": "7B Fuel Scoop"
+  },
+  {
+   "key": "FuelScoop.SevenC",
+   "category": "FuelScoop",
+   "subtype": "FuelScoop",
+   "slotType": "Optional",
+   "className": "7C",
+   "mClass": 7,
+   "grade": "C",
+   "singleton": true,
+   "name": "7C Fuel Scoop"
+  },
+  {
+   "key": "FuelScoop.SevenD",
+   "category": "FuelScoop",
+   "subtype": "FuelScoop",
+   "slotType": "Optional",
+   "className": "7D",
+   "mClass": 7,
+   "grade": "D",
+   "singleton": true,
+   "name": "7D Fuel Scoop"
+  },
+  {
+   "key": "FuelScoop.SevenE",
+   "category": "FuelScoop",
+   "subtype": "FuelScoop",
+   "slotType": "Optional",
+   "className": "7E",
+   "mClass": 7,
+   "grade": "E",
+   "singleton": true,
+   "name": "7E Fuel Scoop"
+  },
+  {
+   "key": "FuelScoop.SixA",
+   "category": "FuelScoop",
+   "subtype": "FuelScoop",
+   "slotType": "Optional",
+   "className": "6A",
+   "mClass": 6,
+   "grade": "A",
+   "singleton": true,
+   "name": "6A Fuel Scoop"
+  },
+  {
+   "key": "FuelScoop.SixB",
+   "category": "FuelScoop",
+   "subtype": "FuelScoop",
+   "slotType": "Optional",
+   "className": "6B",
+   "mClass": 6,
+   "grade": "B",
+   "singleton": true,
+   "name": "6B Fuel Scoop"
+  },
+  {
+   "key": "FuelScoop.SixC",
+   "category": "FuelScoop",
+   "subtype": "FuelScoop",
+   "slotType": "Optional",
+   "className": "6C",
+   "mClass": 6,
+   "grade": "C",
+   "singleton": true,
+   "name": "6C Fuel Scoop"
+  },
+  {
+   "key": "FuelScoop.SixD",
+   "category": "FuelScoop",
+   "subtype": "FuelScoop",
+   "slotType": "Optional",
+   "className": "6D",
+   "mClass": 6,
+   "grade": "D",
+   "singleton": true,
+   "name": "6D Fuel Scoop"
+  },
+  {
+   "key": "FuelScoop.SixE",
+   "category": "FuelScoop",
+   "subtype": "FuelScoop",
+   "slotType": "Optional",
+   "className": "6E",
+   "mClass": 6,
+   "grade": "E",
+   "singleton": true,
+   "name": "6E Fuel Scoop"
+  },
+  {
+   "key": "FuelScoop.ThirdA",
+   "category": "FuelScoop",
+   "subtype": "FuelScoop",
+   "slotType": "Optional",
+   "className": "3A",
+   "mClass": 3,
+   "grade": "A",
+   "singleton": true,
+   "name": "3A Fuel Scoop"
+  },
+  {
+   "key": "FuelScoop.ThirdB",
+   "category": "FuelScoop",
+   "subtype": "FuelScoop",
+   "slotType": "Optional",
+   "className": "3B",
+   "mClass": 3,
+   "grade": "B",
+   "singleton": true,
+   "name": "3B Fuel Scoop"
+  },
+  {
+   "key": "FuelScoop.ThirdC",
+   "category": "FuelScoop",
+   "subtype": "FuelScoop",
+   "slotType": "Optional",
+   "className": "3C",
+   "mClass": 3,
+   "grade": "C",
+   "singleton": true,
+   "name": "3C Fuel Scoop"
+  },
+  {
+   "key": "FuelScoop.ThirdD",
+   "category": "FuelScoop",
+   "subtype": "FuelScoop",
+   "slotType": "Optional",
+   "className": "3D",
+   "mClass": 3,
+   "grade": "D",
+   "singleton": true,
+   "name": "3D Fuel Scoop"
+  },
+  {
+   "key": "FuelScoop.ThirdE",
+   "category": "FuelScoop",
+   "subtype": "FuelScoop",
+   "slotType": "Optional",
+   "className": "3E",
+   "mClass": 3,
+   "grade": "E",
+   "singleton": true,
+   "name": "3E Fuel Scoop"
+  },
+  {
+   "key": "FuelTank.FirstC",
+   "category": "FuelTank",
+   "subtype": "FuelTank",
+   "slotType": "Main",
+   "className": "1C",
+   "mClass": 1,
+   "grade": "C",
+   "singleton": true,
+   "name": "1C Fuel Tank"
+  },
+  {
+   "key": "FuelTank.FiveC",
+   "category": "FuelTank",
+   "subtype": "FuelTank",
+   "slotType": "Main",
+   "className": "5C",
+   "mClass": 5,
+   "grade": "C",
+   "singleton": true,
+   "name": "5C Fuel Tank"
+  },
+  {
+   "key": "FuelTank.FourC",
+   "category": "FuelTank",
+   "subtype": "FuelTank",
+   "slotType": "Main",
+   "className": "4C",
+   "mClass": 4,
+   "grade": "C",
+   "singleton": true,
+   "name": "4C Fuel Tank"
+  },
+  {
+   "key": "FuelTank.SecondC",
+   "category": "FuelTank",
+   "subtype": "FuelTank",
+   "slotType": "Main",
+   "className": "2C",
+   "mClass": 2,
+   "grade": "C",
+   "singleton": true,
+   "name": "2C Fuel Tank"
+  },
+  {
+   "key": "FuelTank.SevenC",
+   "category": "FuelTank",
+   "subtype": "FuelTank",
+   "slotType": "Main",
+   "className": "7C",
+   "mClass": 7,
+   "grade": "C",
+   "singleton": true,
+   "name": "7C Fuel Tank"
+  },
+  {
+   "key": "FuelTank.SixC",
+   "category": "FuelTank",
+   "subtype": "FuelTank",
+   "slotType": "Main",
+   "className": "6C",
+   "mClass": 6,
+   "grade": "C",
+   "singleton": true,
+   "name": "6C Fuel Tank"
+  },
+  {
+   "key": "FuelTank.ThirdC",
+   "category": "FuelTank",
+   "subtype": "FuelTank",
+   "slotType": "Main",
+   "className": "3C",
+   "mClass": 3,
+   "grade": "C",
+   "singleton": true,
+   "name": "3C Fuel Tank"
+  },
+  {
+   "key": "GaussWeapon.FourD",
+   "category": "GaussWeapon",
+   "subtype": "GaussWeapon",
+   "slotType": "Weapon",
+   "className": "4D",
+   "mClass": 4,
+   "grade": "D",
+   "singleton": false,
+   "name": "4D Gauss Gun"
+  },
+  {
+   "key": "GaussWeapon.SecondD",
+   "category": "GaussWeapon",
+   "subtype": "GaussWeapon",
+   "slotType": "Weapon",
+   "className": "2D",
+   "mClass": 2,
+   "grade": "D",
+   "singleton": false,
+   "name": "2D Gauss Gun"
+  },
+  {
+   "key": "GaussWeapon.ThirdD",
+   "category": "GaussWeapon",
+   "subtype": "GaussWeapon",
+   "slotType": "Weapon",
+   "className": "3D",
+   "mClass": 3,
+   "grade": "D",
+   "singleton": false,
+   "name": "3D Gauss Gun"
+  },
+  {
+   "key": "Heatsink.HeatsinkE",
+   "category": "Heatsink",
+   "subtype": "Heatsink",
+   "slotType": "External",
+   "className": "1E",
+   "mClass": 1,
+   "grade": "E",
+   "singleton": false,
+   "name": "1E Heatsink Launcher"
+  },
+  {
+   "key": "HookWeapon.FirstD",
+   "category": "HookWeapon",
+   "subtype": "HookWeapon",
+   "slotType": "Weapon",
+   "className": "1D",
+   "mClass": 1,
+   "grade": "D",
+   "singleton": false,
+   "name": "1D"
+  },
+  {
+   "key": "HookWeapon.FourD",
+   "category": "HookWeapon",
+   "subtype": "HookWeapon",
+   "slotType": "Weapon",
+   "className": "4D",
+   "mClass": 4,
+   "grade": "D",
+   "singleton": false,
+   "name": "4D"
+  },
+  {
+   "key": "HookWeapon.SecondD",
+   "category": "HookWeapon",
+   "subtype": "HookWeapon",
+   "slotType": "Weapon",
+   "className": "2D",
+   "mClass": 2,
+   "grade": "D",
+   "singleton": false,
+   "name": "2D"
+  },
+  {
+   "key": "HookWeapon.ThirdD",
+   "category": "HookWeapon",
+   "subtype": "HookWeapon",
+   "slotType": "Weapon",
+   "className": "3D",
+   "mClass": 3,
+   "grade": "D",
+   "singleton": false,
+   "name": "3D"
+  },
+  {
+   "key": "Hull.Light",
+   "category": "Hull",
+   "subtype": "Hull",
+   "slotType": "Main",
+   "className": "Light",
+   "mClass": 1,
+   "grade": "E",
+   "singleton": true,
+   "name": "Light Hull"
+  },
+  {
+   "key": "Hull.Military",
+   "category": "Hull",
+   "subtype": "Hull",
+   "slotType": "Main",
+   "className": "Military",
+   "mClass": 1,
+   "grade": "E",
+   "singleton": true,
+   "name": "Military Hull"
+  },
+  {
+   "key": "Hull.Mirrored",
+   "category": "Hull",
+   "subtype": "Hull",
+   "slotType": "Main",
+   "className": "Mirrored",
+   "mClass": 1,
+   "grade": "E",
+   "singleton": true,
+   "name": "Mirrored Hull"
+  },
+  {
+   "key": "Hull.Reinforced",
+   "category": "Hull",
+   "subtype": "Hull",
+   "slotType": "Main",
+   "className": "Reinforced",
+   "mClass": 1,
+   "grade": "E",
+   "singleton": true,
+   "name": "Reinforced Hull"
+  },
+  {
+   "key": "HullReinforcement.FirstD",
+   "category": "HullReinforcement",
+   "subtype": "HullReinforcement",
+   "slotType": "Military",
+   "className": "1D",
+   "mClass": 1,
+   "grade": "D",
+   "singleton": false,
+   "name": "1D Hull Reinforcement"
+  },
+  {
+   "key": "HullReinforcement.FirstE",
+   "category": "HullReinforcement",
+   "subtype": "HullReinforcement",
+   "slotType": "Military",
+   "className": "1E",
+   "mClass": 1,
+   "grade": "E",
+   "singleton": false,
+   "name": "1E Hull Reinforcement"
+  },
+  {
+   "key": "HullReinforcement.FiveD",
+   "category": "HullReinforcement",
+   "subtype": "HullReinforcement",
+   "slotType": "Military",
+   "className": "5D",
+   "mClass": 5,
+   "grade": "D",
+   "singleton": false,
+   "name": "5D Hull Reinforcement"
+  },
+  {
+   "key": "HullReinforcement.FiveE",
+   "category": "HullReinforcement",
+   "subtype": "HullReinforcement",
+   "slotType": "Military",
+   "className": "5E",
+   "mClass": 5,
+   "grade": "E",
+   "singleton": false,
+   "name": "5E Hull Reinforcement"
+  },
+  {
+   "key": "HullReinforcement.FourD",
+   "category": "HullReinforcement",
+   "subtype": "HullReinforcement",
+   "slotType": "Military",
+   "className": "4D",
+   "mClass": 4,
+   "grade": "D",
+   "singleton": false,
+   "name": "4D Hull Reinforcement"
+  },
+  {
+   "key": "HullReinforcement.FourE",
+   "category": "HullReinforcement",
+   "subtype": "HullReinforcement",
+   "slotType": "Military",
+   "className": "4E",
+   "mClass": 4,
+   "grade": "E",
+   "singleton": false,
+   "name": "4E Hull Reinforcement"
+  },
+  {
+   "key": "HullReinforcement.SecondD",
+   "category": "HullReinforcement",
+   "subtype": "HullReinforcement",
+   "slotType": "Military",
+   "className": "2D",
+   "mClass": 2,
+   "grade": "D",
+   "singleton": false,
+   "name": "2D Hull Reinforcement"
+  },
+  {
+   "key": "HullReinforcement.SecondE",
+   "category": "HullReinforcement",
+   "subtype": "HullReinforcement",
+   "slotType": "Military",
+   "className": "2E",
+   "mClass": 2,
+   "grade": "E",
+   "singleton": false,
+   "name": "2E Hull Reinforcement"
+  },
+  {
+   "key": "HullReinforcement.ThirdD",
+   "category": "HullReinforcement",
+   "subtype": "HullReinforcement",
+   "slotType": "Military",
+   "className": "3D",
+   "mClass": 3,
+   "grade": "D",
+   "singleton": false,
+   "name": "3D Hull Reinforcement"
+  },
+  {
+   "key": "HullReinforcement.ThirdE",
+   "category": "HullReinforcement",
+   "subtype": "HullReinforcement",
+   "slotType": "Military",
+   "className": "3E",
+   "mClass": 3,
+   "grade": "E",
+   "singleton": false,
+   "name": "3E Hull Reinforcement"
+  },
+  {
+   "key": "LaserWeapon.FirstD",
+   "category": "LaserWeapon",
+   "subtype": "LaserWeapon",
+   "slotType": "Weapon",
+   "className": "1D",
+   "mClass": 1,
+   "grade": "D",
+   "singleton": false,
+   "name": "1D Beam Laser"
+  },
+  {
+   "key": "LaserWeapon.FirstE",
+   "category": "LaserWeapon",
+   "subtype": "LaserWeapon",
+   "slotType": "Weapon",
+   "className": "1E",
+   "mClass": 1,
+   "grade": "E",
+   "singleton": false,
+   "name": "1E Beam Laser"
+  },
+  {
+   "key": "LaserWeapon.FourD",
+   "category": "LaserWeapon",
+   "subtype": "LaserWeapon",
+   "slotType": "Weapon",
+   "className": "4D",
+   "mClass": 4,
+   "grade": "D",
+   "singleton": false,
+   "name": "4D Beam Laser"
+  },
+  {
+   "key": "LaserWeapon.SecondD",
+   "category": "LaserWeapon",
+   "subtype": "LaserWeapon",
+   "slotType": "Weapon",
+   "className": "2D",
+   "mClass": 2,
+   "grade": "D",
+   "singleton": false,
+   "name": "2D Beam Laser"
+  },
+  {
+   "key": "LaserWeapon.SecondE",
+   "category": "LaserWeapon",
+   "subtype": "LaserWeapon",
+   "slotType": "Weapon",
+   "className": "2E",
+   "mClass": 2,
+   "grade": "E",
+   "singleton": false,
+   "name": "2E Beam Laser"
+  },
+  {
+   "key": "LaserWeapon.ThirdD",
+   "category": "LaserWeapon",
+   "subtype": "LaserWeapon",
+   "slotType": "Weapon",
+   "className": "3D",
+   "mClass": 3,
+   "grade": "D",
+   "singleton": false,
+   "name": "3D Beam Laser"
+  },
+  {
+   "key": "LaserWeapon.ThirdE",
+   "category": "LaserWeapon",
+   "subtype": "LaserWeapon",
+   "slotType": "Weapon",
+   "className": "3E",
+   "mClass": 3,
+   "grade": "E",
+   "singleton": false,
+   "name": "3E Beam Laser"
+  },
+  {
+   "key": "LifeSupport.FirstA",
+   "category": "LifeSupport",
+   "subtype": "LifeSupport",
+   "slotType": "Main",
+   "className": "1A",
+   "mClass": 1,
+   "grade": "A",
+   "singleton": true,
+   "name": "1A Life Support"
+  },
+  {
+   "key": "LifeSupport.FirstB",
+   "category": "LifeSupport",
+   "subtype": "LifeSupport",
+   "slotType": "Main",
+   "className": "1B",
+   "mClass": 1,
+   "grade": "B",
+   "singleton": true,
+   "name": "1B Life Support"
+  },
+  {
+   "key": "LifeSupport.FirstC",
+   "category": "LifeSupport",
+   "subtype": "LifeSupport",
+   "slotType": "Main",
+   "className": "1C",
+   "mClass": 1,
+   "grade": "C",
+   "singleton": true,
+   "name": "1C Life Support"
+  },
+  {
+   "key": "LifeSupport.FirstD",
+   "category": "LifeSupport",
+   "subtype": "LifeSupport",
+   "slotType": "Main",
+   "className": "1D",
+   "mClass": 1,
+   "grade": "D",
+   "singleton": true,
+   "name": "1D Life Support"
+  },
+  {
+   "key": "LifeSupport.FirstE",
+   "category": "LifeSupport",
+   "subtype": "LifeSupport",
+   "slotType": "Main",
+   "className": "1E",
+   "mClass": 1,
+   "grade": "E",
+   "singleton": true,
+   "name": "1E Life Support"
+  },
+  {
+   "key": "LifeSupport.FiveA",
+   "category": "LifeSupport",
+   "subtype": "LifeSupport",
+   "slotType": "Main",
+   "className": "5A",
+   "mClass": 5,
+   "grade": "A",
+   "singleton": true,
+   "name": "5A Life Support"
+  },
+  {
+   "key": "LifeSupport.FiveB",
+   "category": "LifeSupport",
+   "subtype": "LifeSupport",
+   "slotType": "Main",
+   "className": "5B",
+   "mClass": 5,
+   "grade": "B",
+   "singleton": true,
+   "name": "5B Life Support"
+  },
+  {
+   "key": "LifeSupport.FiveC",
+   "category": "LifeSupport",
+   "subtype": "LifeSupport",
+   "slotType": "Main",
+   "className": "5C",
+   "mClass": 5,
+   "grade": "C",
+   "singleton": true,
+   "name": "5C Life Support"
+  },
+  {
+   "key": "LifeSupport.FiveD",
+   "category": "LifeSupport",
+   "subtype": "LifeSupport",
+   "slotType": "Main",
+   "className": "5D",
+   "mClass": 5,
+   "grade": "D",
+   "singleton": true,
+   "name": "5D Life Support"
+  },
+  {
+   "key": "LifeSupport.FiveE",
+   "category": "LifeSupport",
+   "subtype": "LifeSupport",
+   "slotType": "Main",
+   "className": "5E",
+   "mClass": 5,
+   "grade": "E",
+   "singleton": true,
+   "name": "5E Life Support"
+  },
+  {
+   "key": "LifeSupport.FourA",
+   "category": "LifeSupport",
+   "subtype": "LifeSupport",
+   "slotType": "Main",
+   "className": "4A",
+   "mClass": 4,
+   "grade": "A",
+   "singleton": true,
+   "name": "4A Life Support"
+  },
+  {
+   "key": "LifeSupport.FourB",
+   "category": "LifeSupport",
+   "subtype": "LifeSupport",
+   "slotType": "Main",
+   "className": "4B",
+   "mClass": 4,
+   "grade": "B",
+   "singleton": true,
+   "name": "4B Life Support"
+  },
+  {
+   "key": "LifeSupport.FourC",
+   "category": "LifeSupport",
+   "subtype": "LifeSupport",
+   "slotType": "Main",
+   "className": "4C",
+   "mClass": 4,
+   "grade": "C",
+   "singleton": true,
+   "name": "4C Life Support"
+  },
+  {
+   "key": "LifeSupport.FourD",
+   "category": "LifeSupport",
+   "subtype": "LifeSupport",
+   "slotType": "Main",
+   "className": "4D",
+   "mClass": 4,
+   "grade": "D",
+   "singleton": true,
+   "name": "4D Life Support"
+  },
+  {
+   "key": "LifeSupport.FourE",
+   "category": "LifeSupport",
+   "subtype": "LifeSupport",
+   "slotType": "Main",
+   "className": "4E",
+   "mClass": 4,
+   "grade": "E",
+   "singleton": true,
+   "name": "4E Life Support"
+  },
+  {
+   "key": "LifeSupport.SecondA",
+   "category": "LifeSupport",
+   "subtype": "LifeSupport",
+   "slotType": "Main",
+   "className": "2A",
+   "mClass": 2,
+   "grade": "A",
+   "singleton": true,
+   "name": "2A Life Support"
+  },
+  {
+   "key": "LifeSupport.SecondB",
+   "category": "LifeSupport",
+   "subtype": "LifeSupport",
+   "slotType": "Main",
+   "className": "2B",
+   "mClass": 2,
+   "grade": "B",
+   "singleton": true,
+   "name": "2B Life Support"
+  },
+  {
+   "key": "LifeSupport.SecondC",
+   "category": "LifeSupport",
+   "subtype": "LifeSupport",
+   "slotType": "Main",
+   "className": "2C",
+   "mClass": 2,
+   "grade": "C",
+   "singleton": true,
+   "name": "2C Life Support"
+  },
+  {
+   "key": "LifeSupport.SecondD",
+   "category": "LifeSupport",
+   "subtype": "LifeSupport",
+   "slotType": "Main",
+   "className": "2D",
+   "mClass": 2,
+   "grade": "D",
+   "singleton": true,
+   "name": "2D Life Support"
+  },
+  {
+   "key": "LifeSupport.SecondE",
+   "category": "LifeSupport",
+   "subtype": "LifeSupport",
+   "slotType": "Main",
+   "className": "2E",
+   "mClass": 2,
+   "grade": "E",
+   "singleton": true,
+   "name": "2E Life Support"
+  },
+  {
+   "key": "LifeSupport.SixA",
+   "category": "LifeSupport",
+   "subtype": "LifeSupport",
+   "slotType": "Main",
+   "className": "6A",
+   "mClass": 6,
+   "grade": "A",
+   "singleton": true,
+   "name": "6A Life Support"
+  },
+  {
+   "key": "LifeSupport.SixB",
+   "category": "LifeSupport",
+   "subtype": "LifeSupport",
+   "slotType": "Main",
+   "className": "6B",
+   "mClass": 6,
+   "grade": "B",
+   "singleton": true,
+   "name": "6B Life Support"
+  },
+  {
+   "key": "LifeSupport.SixC",
+   "category": "LifeSupport",
+   "subtype": "LifeSupport",
+   "slotType": "Main",
+   "className": "6C",
+   "mClass": 6,
+   "grade": "C",
+   "singleton": true,
+   "name": "6C Life Support"
+  },
+  {
+   "key": "LifeSupport.SixD",
+   "category": "LifeSupport",
+   "subtype": "LifeSupport",
+   "slotType": "Main",
+   "className": "6D",
+   "mClass": 6,
+   "grade": "D",
+   "singleton": true,
+   "name": "6D Life Support"
+  },
+  {
+   "key": "LifeSupport.SixE",
+   "category": "LifeSupport",
+   "subtype": "LifeSupport",
+   "slotType": "Main",
+   "className": "6E",
+   "mClass": 6,
+   "grade": "E",
+   "singleton": true,
+   "name": "6E Life Support"
+  },
+  {
+   "key": "LifeSupport.ThirdA",
+   "category": "LifeSupport",
+   "subtype": "LifeSupport",
+   "slotType": "Main",
+   "className": "3A",
+   "mClass": 3,
+   "grade": "A",
+   "singleton": true,
+   "name": "3A Life Support"
+  },
+  {
+   "key": "LifeSupport.ThirdB",
+   "category": "LifeSupport",
+   "subtype": "LifeSupport",
+   "slotType": "Main",
+   "className": "3B",
+   "mClass": 3,
+   "grade": "B",
+   "singleton": true,
+   "name": "3B Life Support"
+  },
+  {
+   "key": "LifeSupport.ThirdC",
+   "category": "LifeSupport",
+   "subtype": "LifeSupport",
+   "slotType": "Main",
+   "className": "3C",
+   "mClass": 3,
+   "grade": "C",
+   "singleton": true,
+   "name": "3C Life Support"
+  },
+  {
+   "key": "LifeSupport.ThirdD",
+   "category": "LifeSupport",
+   "subtype": "LifeSupport",
+   "slotType": "Main",
+   "className": "3D",
+   "mClass": 3,
+   "grade": "D",
+   "singleton": true,
+   "name": "3D Life Support"
+  },
+  {
+   "key": "LifeSupport.ThirdE",
+   "category": "LifeSupport",
+   "subtype": "LifeSupport",
+   "slotType": "Main",
+   "className": "3E",
+   "mClass": 3,
+   "grade": "E",
+   "singleton": true,
+   "name": "3E Life Support"
+  },
+  {
+   "key": "MineWeapon.SecondD",
+   "category": "MineWeapon",
+   "subtype": "MineWeapon",
+   "slotType": "Weapon",
+   "className": "2D",
+   "mClass": 2,
+   "grade": "E",
+   "singleton": true,
+   "name": "2D Mines"
+  },
+  {
+   "key": "MineWeapon.ThirdD",
+   "category": "MineWeapon",
+   "subtype": "MineWeapon",
+   "slotType": "Weapon",
+   "className": "3D",
+   "mClass": 3,
+   "grade": "E",
+   "singleton": true,
+   "name": "3D Mines"
+  },
+  {
+   "key": "MiningWeapon.FirstD",
+   "category": "MiningWeapon",
+   "subtype": "MiningWeapon",
+   "slotType": "Weapon",
+   "className": "1D",
+   "mClass": 1,
+   "grade": "D",
+   "singleton": false,
+   "name": "1D Mining Laser"
+  },
+  {
+   "key": "MiningWeapon.SecondD",
+   "category": "MiningWeapon",
+   "subtype": "MiningWeapon",
+   "slotType": "Weapon",
+   "className": "2D",
+   "mClass": 2,
+   "grade": "D",
+   "singleton": false,
+   "name": "2D Mining Laser"
+  },
+  {
+   "key": "MissileWeapon.FirstD",
+   "category": "MissileWeapon",
+   "subtype": "MissileWeapon",
+   "slotType": "Weapon",
+   "className": "1D",
+   "mClass": 1,
+   "grade": "D",
+   "singleton": false,
+   "name": "1D Missiles"
+  },
+  {
+   "key": "MissileWeapon.FourD",
+   "category": "MissileWeapon",
+   "subtype": "MissileWeapon",
+   "slotType": "Weapon",
+   "className": "4D",
+   "mClass": 4,
+   "grade": "D",
+   "singleton": false,
+   "name": "4D Missiles"
+  },
+  {
+   "key": "MissileWeapon.SecondD",
+   "category": "MissileWeapon",
+   "subtype": "MissileWeapon",
+   "slotType": "Weapon",
+   "className": "2D",
+   "mClass": 2,
+   "grade": "D",
+   "singleton": false,
+   "name": "2D Missiles"
+  },
+  {
+   "key": "MissileWeapon.ThirdD",
+   "category": "MissileWeapon",
+   "subtype": "MissileWeapon",
+   "slotType": "Weapon",
+   "className": "3D",
+   "mClass": 3,
+   "grade": "D",
+   "singleton": false,
+   "name": "3D Missiles"
+  },
+  {
+   "key": "PhaseAnalyser.FirstE",
+   "category": "PhaseAnalyzer",
+   "subtype": "PhaseAnalyzer",
+   "slotType": "External",
+   "className": "E",
+   "mClass": 1,
+   "grade": "E",
+   "singleton": true,
+   "name": "E Energy wakes scanner"
+  },
+  {
+   "key": "PirateScanner.FirstA",
+   "category": "PirateScanner",
+   "subtype": "PirateScanner",
+   "slotType": "External",
+   "className": "A",
+   "mClass": 1,
+   "grade": "A",
+   "singleton": true,
+   "name": "A Criminals Scanner"
+  },
+  {
+   "key": "PirateScanner.FirstB",
+   "category": "PirateScanner",
+   "subtype": "PirateScanner",
+   "slotType": "External",
+   "className": "B",
+   "mClass": 1,
+   "grade": "B",
+   "singleton": true,
+   "name": "B Criminals Scanner"
+  },
+  {
+   "key": "PirateScanner.FirstC",
+   "category": "PirateScanner",
+   "subtype": "PirateScanner",
+   "slotType": "External",
+   "className": "C",
+   "mClass": 1,
+   "grade": "C",
+   "singleton": true,
+   "name": "C Criminals Scanner"
+  },
+  {
+   "key": "PirateScanner.FirstD",
+   "category": "PirateScanner",
+   "subtype": "PirateScanner",
+   "slotType": "External",
+   "className": "D",
+   "mClass": 1,
+   "grade": "D",
+   "singleton": true,
+   "name": "D Criminals Scanner"
+  },
+  {
+   "key": "PirateScanner.FirstE",
+   "category": "PirateScanner",
+   "subtype": "PirateScanner",
+   "slotType": "External",
+   "className": "E",
+   "mClass": 1,
+   "grade": "E",
+   "singleton": true,
+   "name": "E Criminals Scanner"
+  },
+  {
+   "key": "PlanetScanner.A",
+   "category": "PlanetScanner",
+   "subtype": "PlanetScanner",
+   "slotType": "Optional",
+   "className": "1A",
+   "mClass": 1,
+   "grade": "A",
+   "singleton": true,
+   "name": "1A Planet Scanner"
+  },
+  {
+   "key": "PlanetScanner.B",
+   "category": "PlanetScanner",
+   "subtype": "PlanetScanner",
+   "slotType": "Optional",
+   "className": "1B",
+   "mClass": 1,
+   "grade": "B",
+   "singleton": true,
+   "name": "1B Planet Scanner"
+  },
+  {
+   "key": "PlanetScanner.C",
+   "category": "PlanetScanner",
+   "subtype": "PlanetScanner",
+   "slotType": "Optional",
+   "className": "1C",
+   "mClass": 1,
+   "grade": "C",
+   "singleton": true,
+   "name": "1C Planet Scanner"
+  },
+  {
+   "key": "PlanetScanner.D",
+   "category": "PlanetScanner",
+   "subtype": "PlanetScanner",
+   "slotType": "Optional",
+   "className": "1D",
+   "mClass": 1,
+   "grade": "D",
+   "singleton": true,
+   "name": "1D Planet Scanner"
+  },
+  {
+   "key": "PlasmaGunWeapon.FourD",
+   "category": "PlasmaGunWeapon",
+   "subtype": "PlasmaGunWeapon",
+   "slotType": "Weapon",
+   "className": "4D",
+   "mClass": 4,
+   "grade": "D",
+   "singleton": false,
+   "name": "4D Plasma Cannon"
+  },
+  {
+   "key": "PlasmaGunWeapon.FourE",
+   "category": "PlasmaGunWeapon",
+   "subtype": "PlasmaGunWeapon",
+   "slotType": "Weapon",
+   "className": "4E",
+   "mClass": 4,
+   "grade": "E",
+   "singleton": false,
+   "name": "4E Plasma Cannon"
+  },
+  {
+   "key": "PlasmaGunWeapon.SecondD",
+   "category": "PlasmaGunWeapon",
+   "subtype": "PlasmaGunWeapon",
+   "slotType": "Weapon",
+   "className": "2D",
+   "mClass": 2,
+   "grade": "D",
+   "singleton": false,
+   "name": "2D Plasma Cannon"
+  },
+  {
+   "key": "PlasmaGunWeapon.SecondE",
+   "category": "PlasmaGunWeapon",
+   "subtype": "PlasmaGunWeapon",
+   "slotType": "Weapon",
+   "className": "2E",
+   "mClass": 2,
+   "grade": "E",
+   "singleton": false,
+   "name": "2E Plasma Cannon"
+  },
+  {
+   "key": "PlasmaGunWeapon.ThirdD",
+   "category": "PlasmaGunWeapon",
+   "subtype": "PlasmaGunWeapon",
+   "slotType": "Weapon",
+   "className": "3D",
+   "mClass": 3,
+   "grade": "D",
+   "singleton": false,
+   "name": "3D Plasma Cannon"
+  },
+  {
+   "key": "PlasmaGunWeapon.ThirdE",
+   "category": "PlasmaGunWeapon",
+   "subtype": "PlasmaGunWeapon",
+   "slotType": "Weapon",
+   "className": "3E",
+   "mClass": 3,
+   "grade": "E",
+   "singleton": false,
+   "name": "3E Plasma Cannon"
+  },
+  {
+   "key": "PowerDistributor.EightA",
+   "category": "PowerDistributor",
+   "subtype": "PowerDistributor",
+   "slotType": "Main",
+   "className": "8A",
+   "mClass": 8,
+   "grade": "A",
+   "singleton": true,
+   "name": "8A Power Distributor"
+  },
+  {
+   "key": "PowerDistributor.EightB",
+   "category": "PowerDistributor",
+   "subtype": "PowerDistributor",
+   "slotType": "Main",
+   "className": "8B",
+   "mClass": 8,
+   "grade": "B",
+   "singleton": true,
+   "name": "8B Power Distributor"
+  },
+  {
+   "key": "PowerDistributor.EightC",
+   "category": "PowerDistributor",
+   "subtype": "PowerDistributor",
+   "slotType": "Main",
+   "className": "8C",
+   "mClass": 8,
+   "grade": "C",
+   "singleton": true,
+   "name": "8C Power Distributor"
+  },
+  {
+   "key": "PowerDistributor.EightD",
+   "category": "PowerDistributor",
+   "subtype": "PowerDistributor",
+   "slotType": "Main",
+   "className": "8D",
+   "mClass": 8,
+   "grade": "D",
+   "singleton": true,
+   "name": "8D Power Distributor"
+  },
+  {
+   "key": "PowerDistributor.EightE",
+   "category": "PowerDistributor",
+   "subtype": "PowerDistributor",
+   "slotType": "Main",
+   "className": "8E",
+   "mClass": 8,
+   "grade": "E",
+   "singleton": true,
+   "name": "8E Power Distributor"
+  },
+  {
+   "key": "PowerDistributor.FirstA",
+   "category": "PowerDistributor",
+   "subtype": "PowerDistributor",
+   "slotType": "Main",
+   "className": "1A",
+   "mClass": 1,
+   "grade": "A",
+   "singleton": true,
+   "name": "1A Power Distributor"
+  },
+  {
+   "key": "PowerDistributor.FirstB",
+   "category": "PowerDistributor",
+   "subtype": "PowerDistributor",
+   "slotType": "Main",
+   "className": "1B",
+   "mClass": 1,
+   "grade": "B",
+   "singleton": true,
+   "name": "1B Power Distributor"
+  },
+  {
+   "key": "PowerDistributor.FirstC",
+   "category": "PowerDistributor",
+   "subtype": "PowerDistributor",
+   "slotType": "Main",
+   "className": "1C",
+   "mClass": 1,
+   "grade": "C",
+   "singleton": true,
+   "name": "1C Power Distributor"
+  },
+  {
+   "key": "PowerDistributor.FirstD",
+   "category": "PowerDistributor",
+   "subtype": "PowerDistributor",
+   "slotType": "Main",
+   "className": "1D",
+   "mClass": 1,
+   "grade": "D",
+   "singleton": true,
+   "name": "1D Power Distributor"
+  },
+  {
+   "key": "PowerDistributor.FirstE",
+   "category": "PowerDistributor",
+   "subtype": "PowerDistributor",
+   "slotType": "Main",
+   "className": "1E",
+   "mClass": 1,
+   "grade": "E",
+   "singleton": true,
+   "name": "1E Power Distributor"
+  },
+  {
+   "key": "PowerDistributor.FiveA",
+   "category": "PowerDistributor",
+   "subtype": "PowerDistributor",
+   "slotType": "Main",
+   "className": "5A",
+   "mClass": 5,
+   "grade": "A",
+   "singleton": true,
+   "name": "5A Power Distributor"
+  },
+  {
+   "key": "PowerDistributor.FiveB",
+   "category": "PowerDistributor",
+   "subtype": "PowerDistributor",
+   "slotType": "Main",
+   "className": "5B",
+   "mClass": 5,
+   "grade": "B",
+   "singleton": true,
+   "name": "5B Power Distributor"
+  },
+  {
+   "key": "PowerDistributor.FiveC",
+   "category": "PowerDistributor",
+   "subtype": "PowerDistributor",
+   "slotType": "Main",
+   "className": "5C",
+   "mClass": 5,
+   "grade": "C",
+   "singleton": true,
+   "name": "5C Power Distributor"
+  },
+  {
+   "key": "PowerDistributor.FiveD",
+   "category": "PowerDistributor",
+   "subtype": "PowerDistributor",
+   "slotType": "Main",
+   "className": "5D",
+   "mClass": 5,
+   "grade": "D",
+   "singleton": true,
+   "name": "5D Power Distributor"
+  },
+  {
+   "key": "PowerDistributor.FiveE",
+   "category": "PowerDistributor",
+   "subtype": "PowerDistributor",
+   "slotType": "Main",
+   "className": "5E",
+   "mClass": 5,
+   "grade": "E",
+   "singleton": true,
+   "name": "5E Power Distributor"
+  },
+  {
+   "key": "PowerDistributor.FourA",
+   "category": "PowerDistributor",
+   "subtype": "PowerDistributor",
+   "slotType": "Main",
+   "className": "4A",
+   "mClass": 4,
+   "grade": "A",
+   "singleton": true,
+   "name": "4A Power Distributor"
+  },
+  {
+   "key": "PowerDistributor.FourB",
+   "category": "PowerDistributor",
+   "subtype": "PowerDistributor",
+   "slotType": "Main",
+   "className": "4B",
+   "mClass": 4,
+   "grade": "B",
+   "singleton": true,
+   "name": "4B Power Distributor"
+  },
+  {
+   "key": "PowerDistributor.FourC",
+   "category": "PowerDistributor",
+   "subtype": "PowerDistributor",
+   "slotType": "Main",
+   "className": "4C",
+   "mClass": 4,
+   "grade": "C",
+   "singleton": true,
+   "name": "4C Power Distributor"
+  },
+  {
+   "key": "PowerDistributor.FourD",
+   "category": "PowerDistributor",
+   "subtype": "PowerDistributor",
+   "slotType": "Main",
+   "className": "4D",
+   "mClass": 4,
+   "grade": "D",
+   "singleton": true,
+   "name": "4D Power Distributor"
+  },
+  {
+   "key": "PowerDistributor.FourE",
+   "category": "PowerDistributor",
+   "subtype": "PowerDistributor",
+   "slotType": "Main",
+   "className": "4E",
+   "mClass": 4,
+   "grade": "E",
+   "singleton": true,
+   "name": "4E Power Distributor"
+  },
+  {
+   "key": "PowerDistributor.SecondA",
+   "category": "PowerDistributor",
+   "subtype": "PowerDistributor",
+   "slotType": "Main",
+   "className": "2A",
+   "mClass": 2,
+   "grade": "A",
+   "singleton": true,
+   "name": "2A Power Distributor"
+  },
+  {
+   "key": "PowerDistributor.SecondB",
+   "category": "PowerDistributor",
+   "subtype": "PowerDistributor",
+   "slotType": "Main",
+   "className": "2B",
+   "mClass": 2,
+   "grade": "B",
+   "singleton": true,
+   "name": "2B Power Distributor"
+  },
+  {
+   "key": "PowerDistributor.SecondC",
+   "category": "PowerDistributor",
+   "subtype": "PowerDistributor",
+   "slotType": "Main",
+   "className": "2C",
+   "mClass": 2,
+   "grade": "C",
+   "singleton": true,
+   "name": "2C Power Distributor"
+  },
+  {
+   "key": "PowerDistributor.SecondD",
+   "category": "PowerDistributor",
+   "subtype": "PowerDistributor",
+   "slotType": "Main",
+   "className": "2D",
+   "mClass": 2,
+   "grade": "D",
+   "singleton": true,
+   "name": "2D Power Distributor"
+  },
+  {
+   "key": "PowerDistributor.SecondE",
+   "category": "PowerDistributor",
+   "subtype": "PowerDistributor",
+   "slotType": "Main",
+   "className": "2E",
+   "mClass": 2,
+   "grade": "E",
+   "singleton": true,
+   "name": "2E Power Distributor"
+  },
+  {
+   "key": "PowerDistributor.SevenA",
+   "category": "PowerDistributor",
+   "subtype": "PowerDistributor",
+   "slotType": "Main",
+   "className": "7A",
+   "mClass": 7,
+   "grade": "A",
+   "singleton": true,
+   "name": "7A Power Distributor"
+  },
+  {
+   "key": "PowerDistributor.SevenB",
+   "category": "PowerDistributor",
+   "subtype": "PowerDistributor",
+   "slotType": "Main",
+   "className": "7B",
+   "mClass": 7,
+   "grade": "B",
+   "singleton": true,
+   "name": "7B Power Distributor"
+  },
+  {
+   "key": "PowerDistributor.SevenC",
+   "category": "PowerDistributor",
+   "subtype": "PowerDistributor",
+   "slotType": "Main",
+   "className": "7C",
+   "mClass": 7,
+   "grade": "C",
+   "singleton": true,
+   "name": "7C Power Distributor"
+  },
+  {
+   "key": "PowerDistributor.SevenD",
+   "category": "PowerDistributor",
+   "subtype": "PowerDistributor",
+   "slotType": "Main",
+   "className": "7D",
+   "mClass": 7,
+   "grade": "D",
+   "singleton": true,
+   "name": "7D Power Distributor"
+  },
+  {
+   "key": "PowerDistributor.SevenE",
+   "category": "PowerDistributor",
+   "subtype": "PowerDistributor",
+   "slotType": "Main",
+   "className": "7E",
+   "mClass": 7,
+   "grade": "E",
+   "singleton": true,
+   "name": "7E Power Distributor"
+  },
+  {
+   "key": "PowerDistributor.SixA",
+   "category": "PowerDistributor",
+   "subtype": "PowerDistributor",
+   "slotType": "Main",
+   "className": "6A",
+   "mClass": 6,
+   "grade": "A",
+   "singleton": true,
+   "name": "6A Power Distributor"
+  },
+  {
+   "key": "PowerDistributor.SixB",
+   "category": "PowerDistributor",
+   "subtype": "PowerDistributor",
+   "slotType": "Main",
+   "className": "6B",
+   "mClass": 6,
+   "grade": "B",
+   "singleton": true,
+   "name": "6B Power Distributor"
+  },
+  {
+   "key": "PowerDistributor.SixC",
+   "category": "PowerDistributor",
+   "subtype": "PowerDistributor",
+   "slotType": "Main",
+   "className": "6C",
+   "mClass": 6,
+   "grade": "C",
+   "singleton": true,
+   "name": "6C Power Distributor"
+  },
+  {
+   "key": "PowerDistributor.SixD",
+   "category": "PowerDistributor",
+   "subtype": "PowerDistributor",
+   "slotType": "Main",
+   "className": "6D",
+   "mClass": 6,
+   "grade": "D",
+   "singleton": true,
+   "name": "6D Power Distributor"
+  },
+  {
+   "key": "PowerDistributor.SixE",
+   "category": "PowerDistributor",
+   "subtype": "PowerDistributor",
+   "slotType": "Main",
+   "className": "6E",
+   "mClass": 6,
+   "grade": "E",
+   "singleton": true,
+   "name": "6E Power Distributor"
+  },
+  {
+   "key": "PowerDistributor.ThirdA",
+   "category": "PowerDistributor",
+   "subtype": "PowerDistributor",
+   "slotType": "Main",
+   "className": "3A",
+   "mClass": 3,
+   "grade": "A",
+   "singleton": true,
+   "name": "3A Power Distributor"
+  },
+  {
+   "key": "PowerDistributor.ThirdB",
+   "category": "PowerDistributor",
+   "subtype": "PowerDistributor",
+   "slotType": "Main",
+   "className": "3B",
+   "mClass": 3,
+   "grade": "B",
+   "singleton": true,
+   "name": "3B Power Distributor"
+  },
+  {
+   "key": "PowerDistributor.ThirdC",
+   "category": "PowerDistributor",
+   "subtype": "PowerDistributor",
+   "slotType": "Main",
+   "className": "3C",
+   "mClass": 3,
+   "grade": "C",
+   "singleton": true,
+   "name": "3C Power Distributor"
+  },
+  {
+   "key": "PowerDistributor.ThirdD",
+   "category": "PowerDistributor",
+   "subtype": "PowerDistributor",
+   "slotType": "Main",
+   "className": "3D",
+   "mClass": 3,
+   "grade": "D",
+   "singleton": true,
+   "name": "3D Power Distributor"
+  },
+  {
+   "key": "PowerDistributor.ThirdE",
+   "category": "PowerDistributor",
+   "subtype": "PowerDistributor",
+   "slotType": "Main",
+   "className": "3E",
+   "mClass": 3,
+   "grade": "E",
+   "singleton": true,
+   "name": "3E Power Distributor"
+  },
+  {
+   "key": "PowerPlant.EightA",
+   "category": "PowerPlant",
+   "subtype": "PowerPlant",
+   "slotType": "Main",
+   "className": "8A",
+   "mClass": 8,
+   "grade": "A",
+   "singleton": true,
+   "name": "8A Power Plant"
+  },
+  {
+   "key": "PowerPlant.EightB",
+   "category": "PowerPlant",
+   "subtype": "PowerPlant",
+   "slotType": "Main",
+   "className": "8B",
+   "mClass": 8,
+   "grade": "B",
+   "singleton": true,
+   "name": "8B Power Plant"
+  },
+  {
+   "key": "PowerPlant.EightC",
+   "category": "PowerPlant",
+   "subtype": "PowerPlant",
+   "slotType": "Main",
+   "className": "8C",
+   "mClass": 8,
+   "grade": "C",
+   "singleton": true,
+   "name": "8C Power Plant"
+  },
+  {
+   "key": "PowerPlant.EightD",
+   "category": "PowerPlant",
+   "subtype": "PowerPlant",
+   "slotType": "Main",
+   "className": "8D",
+   "mClass": 8,
+   "grade": "D",
+   "singleton": true,
+   "name": "8D Power Plant"
+  },
+  {
+   "key": "PowerPlant.EightE",
+   "category": "PowerPlant",
+   "subtype": "PowerPlant",
+   "slotType": "Main",
+   "className": "8E",
+   "mClass": 8,
+   "grade": "E",
+   "singleton": true,
+   "name": "8E Power Plant"
+  },
+  {
+   "key": "PowerPlant.FiveA",
+   "category": "PowerPlant",
+   "subtype": "PowerPlant",
+   "slotType": "Main",
+   "className": "5A",
+   "mClass": 5,
+   "grade": "A",
+   "singleton": true,
+   "name": "5A Power Plant"
+  },
+  {
+   "key": "PowerPlant.FiveB",
+   "category": "PowerPlant",
+   "subtype": "PowerPlant",
+   "slotType": "Main",
+   "className": "5B",
+   "mClass": 5,
+   "grade": "B",
+   "singleton": true,
+   "name": "5B Power Plant"
+  },
+  {
+   "key": "PowerPlant.FiveC",
+   "category": "PowerPlant",
+   "subtype": "PowerPlant",
+   "slotType": "Main",
+   "className": "5C",
+   "mClass": 5,
+   "grade": "C",
+   "singleton": true,
+   "name": "5C Power Plant"
+  },
+  {
+   "key": "PowerPlant.FiveD",
+   "category": "PowerPlant",
+   "subtype": "PowerPlant",
+   "slotType": "Main",
+   "className": "5D",
+   "mClass": 5,
+   "grade": "D",
+   "singleton": true,
+   "name": "5D Power Plant"
+  },
+  {
+   "key": "PowerPlant.FiveE",
+   "category": "PowerPlant",
+   "subtype": "PowerPlant",
+   "slotType": "Main",
+   "className": "5E",
+   "mClass": 5,
+   "grade": "E",
+   "singleton": true,
+   "name": "5E Power Plant"
+  },
+  {
+   "key": "PowerPlant.FourA",
+   "category": "PowerPlant",
+   "subtype": "PowerPlant",
+   "slotType": "Main",
+   "className": "4A",
+   "mClass": 4,
+   "grade": "A",
+   "singleton": true,
+   "name": "4A Power Plant"
+  },
+  {
+   "key": "PowerPlant.FourB",
+   "category": "PowerPlant",
+   "subtype": "PowerPlant",
+   "slotType": "Main",
+   "className": "4B",
+   "mClass": 4,
+   "grade": "B",
+   "singleton": true,
+   "name": "4B Power Plant"
+  },
+  {
+   "key": "PowerPlant.FourC",
+   "category": "PowerPlant",
+   "subtype": "PowerPlant",
+   "slotType": "Main",
+   "className": "4C",
+   "mClass": 4,
+   "grade": "C",
+   "singleton": true,
+   "name": "4C Power Plant"
+  },
+  {
+   "key": "PowerPlant.FourD",
+   "category": "PowerPlant",
+   "subtype": "PowerPlant",
+   "slotType": "Main",
+   "className": "4D",
+   "mClass": 4,
+   "grade": "D",
+   "singleton": true,
+   "name": "4D Power Plant"
+  },
+  {
+   "key": "PowerPlant.FourE",
+   "category": "PowerPlant",
+   "subtype": "PowerPlant",
+   "slotType": "Main",
+   "className": "4E",
+   "mClass": 4,
+   "grade": "E",
+   "singleton": true,
+   "name": "4E Power Plant"
+  },
+  {
+   "key": "PowerPlant.NineA",
+   "category": "PowerPlant",
+   "subtype": "PowerPlant",
+   "slotType": "Main",
+   "className": "9A",
+   "mClass": 9,
+   "grade": "A",
+   "singleton": true,
+   "name": "9A Power Plant"
+  },
+  {
+   "key": "PowerPlant.NineB",
+   "category": "PowerPlant",
+   "subtype": "PowerPlant",
+   "slotType": "Main",
+   "className": "9B",
+   "mClass": 9,
+   "grade": "B",
+   "singleton": true,
+   "name": "9B Power Plant"
+  },
+  {
+   "key": "PowerPlant.NineC",
+   "category": "PowerPlant",
+   "subtype": "PowerPlant",
+   "slotType": "Main",
+   "className": "9C",
+   "mClass": 9,
+   "grade": "C",
+   "singleton": true,
+   "name": "9C Power Plant"
+  },
+  {
+   "key": "PowerPlant.NineD",
+   "category": "PowerPlant",
+   "subtype": "PowerPlant",
+   "slotType": "Main",
+   "className": "9D",
+   "mClass": 9,
+   "grade": "D",
+   "singleton": true,
+   "name": "9D Power Plant"
+  },
+  {
+   "key": "PowerPlant.NineE",
+   "category": "PowerPlant",
+   "subtype": "PowerPlant",
+   "slotType": "Main",
+   "className": "9E",
+   "mClass": 9,
+   "grade": "E",
+   "singleton": true,
+   "name": "9E Power Plant"
+  },
+  {
+   "key": "PowerPlant.SecondA",
+   "category": "PowerPlant",
+   "subtype": "PowerPlant",
+   "slotType": "Main",
+   "className": "2A",
+   "mClass": 2,
+   "grade": "A",
+   "singleton": true,
+   "name": "2A Power Plant"
+  },
+  {
+   "key": "PowerPlant.SecondB",
+   "category": "PowerPlant",
+   "subtype": "PowerPlant",
+   "slotType": "Main",
+   "className": "2B",
+   "mClass": 2,
+   "grade": "B",
+   "singleton": true,
+   "name": "2B Power Plant"
+  },
+  {
+   "key": "PowerPlant.SecondC",
+   "category": "PowerPlant",
+   "subtype": "PowerPlant",
+   "slotType": "Main",
+   "className": "2C",
+   "mClass": 2,
+   "grade": "C",
+   "singleton": true,
+   "name": "2C Power Plant"
+  },
+  {
+   "key": "PowerPlant.SecondD",
+   "category": "PowerPlant",
+   "subtype": "PowerPlant",
+   "slotType": "Main",
+   "className": "2D",
+   "mClass": 2,
+   "grade": "D",
+   "singleton": true,
+   "name": "2D Power Plant"
+  },
+  {
+   "key": "PowerPlant.SecondE",
+   "category": "PowerPlant",
+   "subtype": "PowerPlant",
+   "slotType": "Main",
+   "className": "2E",
+   "mClass": 2,
+   "grade": "E",
+   "singleton": true,
+   "name": "2E Power Plant"
+  },
+  {
+   "key": "PowerPlant.SevenA",
+   "category": "PowerPlant",
+   "subtype": "PowerPlant",
+   "slotType": "Main",
+   "className": "7A",
+   "mClass": 7,
+   "grade": "A",
+   "singleton": true,
+   "name": "7A Power Plant"
+  },
+  {
+   "key": "PowerPlant.SevenB",
+   "category": "PowerPlant",
+   "subtype": "PowerPlant",
+   "slotType": "Main",
+   "className": "7B",
+   "mClass": 7,
+   "grade": "B",
+   "singleton": true,
+   "name": "7B Power Plant"
+  },
+  {
+   "key": "PowerPlant.SevenC",
+   "category": "PowerPlant",
+   "subtype": "PowerPlant",
+   "slotType": "Main",
+   "className": "7C",
+   "mClass": 7,
+   "grade": "C",
+   "singleton": true,
+   "name": "7C Power Plant"
+  },
+  {
+   "key": "PowerPlant.SevenD",
+   "category": "PowerPlant",
+   "subtype": "PowerPlant",
+   "slotType": "Main",
+   "className": "7D",
+   "mClass": 7,
+   "grade": "D",
+   "singleton": true,
+   "name": "7D Power Plant"
+  },
+  {
+   "key": "PowerPlant.SevenE",
+   "category": "PowerPlant",
+   "subtype": "PowerPlant",
+   "slotType": "Main",
+   "className": "7E",
+   "mClass": 7,
+   "grade": "E",
+   "singleton": true,
+   "name": "7E Power Plant"
+  },
+  {
+   "key": "PowerPlant.SixA",
+   "category": "PowerPlant",
+   "subtype": "PowerPlant",
+   "slotType": "Main",
+   "className": "6A",
+   "mClass": 6,
+   "grade": "A",
+   "singleton": true,
+   "name": "6A Power Plant"
+  },
+  {
+   "key": "PowerPlant.SixB",
+   "category": "PowerPlant",
+   "subtype": "PowerPlant",
+   "slotType": "Main",
+   "className": "6B",
+   "mClass": 6,
+   "grade": "B",
+   "singleton": true,
+   "name": "6B Power Plant"
+  },
+  {
+   "key": "PowerPlant.SixC",
+   "category": "PowerPlant",
+   "subtype": "PowerPlant",
+   "slotType": "Main",
+   "className": "6C",
+   "mClass": 6,
+   "grade": "C",
+   "singleton": true,
+   "name": "6C Power Plant"
+  },
+  {
+   "key": "PowerPlant.SixD",
+   "category": "PowerPlant",
+   "subtype": "PowerPlant",
+   "slotType": "Main",
+   "className": "6D",
+   "mClass": 6,
+   "grade": "D",
+   "singleton": true,
+   "name": "6D Power Plant"
+  },
+  {
+   "key": "PowerPlant.SixE",
+   "category": "PowerPlant",
+   "subtype": "PowerPlant",
+   "slotType": "Main",
+   "className": "6E",
+   "mClass": 6,
+   "grade": "E",
+   "singleton": true,
+   "name": "6E Power Plant"
+  },
+  {
+   "key": "PowerPlant.ThirdA",
+   "category": "PowerPlant",
+   "subtype": "PowerPlant",
+   "slotType": "Main",
+   "className": "3A",
+   "mClass": 3,
+   "grade": "A",
+   "singleton": true,
+   "name": "3A Power Plant"
+  },
+  {
+   "key": "PowerPlant.ThirdB",
+   "category": "PowerPlant",
+   "subtype": "PowerPlant",
+   "slotType": "Main",
+   "className": "3B",
+   "mClass": 3,
+   "grade": "B",
+   "singleton": true,
+   "name": "3B Power Plant"
+  },
+  {
+   "key": "PowerPlant.ThirdC",
+   "category": "PowerPlant",
+   "subtype": "PowerPlant",
+   "slotType": "Main",
+   "className": "3C",
+   "mClass": 3,
+   "grade": "C",
+   "singleton": true,
+   "name": "3C Power Plant"
+  },
+  {
+   "key": "PowerPlant.ThirdD",
+   "category": "PowerPlant",
+   "subtype": "PowerPlant",
+   "slotType": "Main",
+   "className": "3D",
+   "mClass": 3,
+   "grade": "D",
+   "singleton": true,
+   "name": "3D Power Plant"
+  },
+  {
+   "key": "PowerPlant.ThirdE",
+   "category": "PowerPlant",
+   "subtype": "PowerPlant",
+   "slotType": "Main",
+   "className": "3E",
+   "mClass": 3,
+   "grade": "E",
+   "singleton": true,
+   "name": "3E Power Plant"
+  },
+  {
+   "key": "PulseLaserWeapon.FirstD",
+   "category": "PulseLaserWeapon",
+   "subtype": "PulseLaserWeapon",
+   "slotType": "Weapon",
+   "className": "1D",
+   "mClass": 1,
+   "grade": "D",
+   "singleton": false,
+   "name": "1D Pulse Laser"
+  },
+  {
+   "key": "PulseLaserWeapon.FirstE",
+   "category": "PulseLaserWeapon",
+   "subtype": "PulseLaserWeapon",
+   "slotType": "Weapon",
+   "className": "1E",
+   "mClass": 1,
+   "grade": "E",
+   "singleton": false,
+   "name": "1E Pulse Laser"
+  },
+  {
+   "key": "PulseLaserWeapon.FourD",
+   "category": "PulseLaserWeapon",
+   "subtype": "PulseLaserWeapon",
+   "slotType": "Weapon",
+   "className": "4D",
+   "mClass": 4,
+   "grade": "D",
+   "singleton": false,
+   "name": "4D Pulse Laser"
+  },
+  {
+   "key": "PulseLaserWeapon.FourE",
+   "category": "PulseLaserWeapon",
+   "subtype": "PulseLaserWeapon",
+   "slotType": "Weapon",
+   "className": "4E",
+   "mClass": 4,
+   "grade": "E",
+   "singleton": false,
+   "name": "4E Pulse Laser"
+  },
+  {
+   "key": "PulseLaserWeapon.SecondD",
+   "category": "PulseLaserWeapon",
+   "subtype": "PulseLaserWeapon",
+   "slotType": "Weapon",
+   "className": "2D",
+   "mClass": 2,
+   "grade": "D",
+   "singleton": false,
+   "name": "2D Pulse Laser"
+  },
+  {
+   "key": "PulseLaserWeapon.SecondE",
+   "category": "PulseLaserWeapon",
+   "subtype": "PulseLaserWeapon",
+   "slotType": "Weapon",
+   "className": "2E",
+   "mClass": 2,
+   "grade": "E",
+   "singleton": false,
+   "name": "2E Pulse Laser"
+  },
+  {
+   "key": "PulseLaserWeapon.ThirdD",
+   "category": "PulseLaserWeapon",
+   "subtype": "PulseLaserWeapon",
+   "slotType": "Weapon",
+   "className": "3D",
+   "mClass": 3,
+   "grade": "D",
+   "singleton": false,
+   "name": "3D Pulse Laser"
+  },
+  {
+   "key": "PulseLaserWeapon.ThirdE",
+   "category": "PulseLaserWeapon",
+   "subtype": "PulseLaserWeapon",
+   "slotType": "Weapon",
+   "className": "3E",
+   "mClass": 3,
+   "grade": "D",
+   "singleton": false,
+   "name": "3E Pulse Laser"
+  },
+  {
+   "key": "RailgunWeapon.FiveD",
+   "category": "RailgunWeapon",
+   "subtype": "RailgunWeapon",
+   "slotType": "Weapon",
+   "className": "5D",
+   "mClass": 5,
+   "grade": "D",
+   "singleton": false,
+   "name": "5D Railgun"
+  },
+  {
+   "key": "RailgunWeapon.FourD",
+   "category": "RailgunWeapon",
+   "subtype": "RailgunWeapon",
+   "slotType": "Weapon",
+   "className": "4D",
+   "mClass": 4,
+   "grade": "D",
+   "singleton": false,
+   "name": "4D Railgun"
+  },
+  {
+   "key": "RailgunWeapon.SecondD",
+   "category": "RailgunWeapon",
+   "subtype": "RailgunWeapon",
+   "slotType": "Weapon",
+   "className": "2D",
+   "mClass": 2,
+   "grade": "D",
+   "singleton": false,
+   "name": "2D Railgun"
+  },
+  {
+   "key": "RailgunWeapon.ThirdD",
+   "category": "RailgunWeapon",
+   "subtype": "RailgunWeapon",
+   "slotType": "Weapon",
+   "className": "3D",
+   "mClass": 3,
+   "grade": "D",
+   "singleton": false,
+   "name": "3D Railgun"
+  },
+  {
+   "key": "RepairModule.FirstA",
+   "category": "RepairModule",
+   "subtype": "RepairModule",
+   "slotType": "Optional",
+   "className": "1A",
+   "mClass": 1,
+   "grade": "A",
+   "singleton": true,
+   "name": "1A Repair Module"
+  },
+  {
+   "key": "RepairModule.FirstD",
+   "category": "RepairModule",
+   "subtype": "RepairModule",
+   "slotType": "Optional",
+   "className": "1D",
+   "mClass": 1,
+   "grade": "D",
+   "singleton": true,
+   "name": "1D Repair Module"
+  },
+  {
+   "key": "RepairModule.FiveA",
+   "category": "RepairModule",
+   "subtype": "RepairModule",
+   "slotType": "Optional",
+   "className": "5A",
+   "mClass": 5,
+   "grade": "A",
+   "singleton": true,
+   "name": "5A Repair Module"
+  },
+  {
+   "key": "RepairModule.FiveD",
+   "category": "RepairModule",
+   "subtype": "RepairModule",
+   "slotType": "Optional",
+   "className": "5D",
+   "mClass": 5,
+   "grade": "D",
+   "singleton": true,
+   "name": "5D Repair Module"
+  },
+  {
+   "key": "RepairModule.SixA",
+   "category": "RepairModule",
+   "subtype": "RepairModule",
+   "slotType": "Optional",
+   "className": "6A",
+   "mClass": 6,
+   "grade": "A",
+   "singleton": true,
+   "name": "6A Repair Module"
+  },
+  {
+   "key": "RepairModule.SixD",
+   "category": "RepairModule",
+   "subtype": "RepairModule",
+   "slotType": "Optional",
+   "className": "6D",
+   "mClass": 6,
+   "grade": "D",
+   "singleton": true,
+   "name": "6D Repair Module"
+  },
+  {
+   "key": "RepairModule.ThirdA",
+   "category": "RepairModule",
+   "subtype": "RepairModule",
+   "slotType": "Optional",
+   "className": "3A",
+   "mClass": 3,
+   "grade": "A",
+   "singleton": true,
+   "name": "3A Repair Module"
+  },
+  {
+   "key": "RepairModule.ThirdD",
+   "category": "RepairModule",
+   "subtype": "RepairModule",
+   "slotType": "Optional",
+   "className": "3D",
+   "mClass": 3,
+   "grade": "D",
+   "singleton": true,
+   "name": "3D Repair Module"
+  },
+  {
+   "key": "SeismicCharges.SecondD",
+   "category": "SeismicCharges",
+   "subtype": "SeismicCharges",
+   "slotType": "Weapon",
+   "className": "2D",
+   "mClass": 2,
+   "grade": "D",
+   "singleton": true,
+   "name": "2D Seismic charges"
+  },
+  {
+   "key": "Sensors.EightA",
+   "category": "Sensors",
+   "subtype": "Sensors",
+   "slotType": "Main",
+   "className": "8A",
+   "mClass": 8,
+   "grade": "A",
+   "singleton": true,
+   "name": "8A Sensors"
+  },
+  {
+   "key": "Sensors.EightB",
+   "category": "Sensors",
+   "subtype": "Sensors",
+   "slotType": "Main",
+   "className": "8B",
+   "mClass": 8,
+   "grade": "B",
+   "singleton": true,
+   "name": "8B Sensors"
+  },
+  {
+   "key": "Sensors.EightC",
+   "category": "Sensors",
+   "subtype": "Sensors",
+   "slotType": "Main",
+   "className": "8C",
+   "mClass": 8,
+   "grade": "C",
+   "singleton": true,
+   "name": "8C Sensors"
+  },
+  {
+   "key": "Sensors.EightD",
+   "category": "Sensors",
+   "subtype": "Sensors",
+   "slotType": "Main",
+   "className": "8D",
+   "mClass": 8,
+   "grade": "D",
+   "singleton": true,
+   "name": "8D Sensors"
+  },
+  {
+   "key": "Sensors.EightE",
+   "category": "Sensors",
+   "subtype": "Sensors",
+   "slotType": "Main",
+   "className": "8E",
+   "mClass": 8,
+   "grade": "E",
+   "singleton": true,
+   "name": "8E Sensors"
+  },
+  {
+   "key": "Sensors.FirstA",
+   "category": "Sensors",
+   "subtype": "Sensors",
+   "slotType": "Main",
+   "className": "1A",
+   "mClass": 1,
+   "grade": "A",
+   "singleton": true,
+   "name": "1A Sensors"
+  },
+  {
+   "key": "Sensors.FirstB",
+   "category": "Sensors",
+   "subtype": "Sensors",
+   "slotType": "Main",
+   "className": "1B",
+   "mClass": 1,
+   "grade": "B",
+   "singleton": true,
+   "name": "1B Sensors"
+  },
+  {
+   "key": "Sensors.FirstC",
+   "category": "Sensors",
+   "subtype": "Sensors",
+   "slotType": "Main",
+   "className": "1C",
+   "mClass": 1,
+   "grade": "C",
+   "singleton": true,
+   "name": "1C Sensors"
+  },
+  {
+   "key": "Sensors.FirstD",
+   "category": "Sensors",
+   "subtype": "Sensors",
+   "slotType": "Main",
+   "className": "1D",
+   "mClass": 1,
+   "grade": "D",
+   "singleton": true,
+   "name": "1D Sensors"
+  },
+  {
+   "key": "Sensors.FirstE",
+   "category": "Sensors",
+   "subtype": "Sensors",
+   "slotType": "Main",
+   "className": "1E",
+   "mClass": 1,
+   "grade": "E",
+   "singleton": true,
+   "name": "1E Sensors"
+  },
+  {
+   "key": "Sensors.FiveA",
+   "category": "Sensors",
+   "subtype": "Sensors",
+   "slotType": "Main",
+   "className": "5A",
+   "mClass": 5,
+   "grade": "A",
+   "singleton": true,
+   "name": "5A Sensors"
+  },
+  {
+   "key": "Sensors.FiveB",
+   "category": "Sensors",
+   "subtype": "Sensors",
+   "slotType": "Main",
+   "className": "5B",
+   "mClass": 5,
+   "grade": "B",
+   "singleton": true,
+   "name": "5B Sensors"
+  },
+  {
+   "key": "Sensors.FiveC",
+   "category": "Sensors",
+   "subtype": "Sensors",
+   "slotType": "Main",
+   "className": "5C",
+   "mClass": 5,
+   "grade": "C",
+   "singleton": true,
+   "name": "5C Sensors"
+  },
+  {
+   "key": "Sensors.FiveD",
+   "category": "Sensors",
+   "subtype": "Sensors",
+   "slotType": "Main",
+   "className": "5D",
+   "mClass": 5,
+   "grade": "D",
+   "singleton": true,
+   "name": "5D Sensors"
+  },
+  {
+   "key": "Sensors.FiveE",
+   "category": "Sensors",
+   "subtype": "Sensors",
+   "slotType": "Main",
+   "className": "5E",
+   "mClass": 5,
+   "grade": "E",
+   "singleton": true,
+   "name": "5E Sensors"
+  },
+  {
+   "key": "Sensors.FourA",
+   "category": "Sensors",
+   "subtype": "Sensors",
+   "slotType": "Main",
+   "className": "4A",
+   "mClass": 4,
+   "grade": "A",
+   "singleton": true,
+   "name": "4A Sensors"
+  },
+  {
+   "key": "Sensors.FourB",
+   "category": "Sensors",
+   "subtype": "Sensors",
+   "slotType": "Main",
+   "className": "4B",
+   "mClass": 4,
+   "grade": "B",
+   "singleton": true,
+   "name": "4B Sensors"
+  },
+  {
+   "key": "Sensors.FourC",
+   "category": "Sensors",
+   "subtype": "Sensors",
+   "slotType": "Main",
+   "className": "4C",
+   "mClass": 4,
+   "grade": "C",
+   "singleton": true,
+   "name": "4C Sensors"
+  },
+  {
+   "key": "Sensors.FourD",
+   "category": "Sensors",
+   "subtype": "Sensors",
+   "slotType": "Main",
+   "className": "4D",
+   "mClass": 4,
+   "grade": "D",
+   "singleton": true,
+   "name": "4D Sensors"
+  },
+  {
+   "key": "Sensors.FourE",
+   "category": "Sensors",
+   "subtype": "Sensors",
+   "slotType": "Main",
+   "className": "4E",
+   "mClass": 4,
+   "grade": "E",
+   "singleton": true,
+   "name": "4E Sensors"
+  },
+  {
+   "key": "Sensors.NineD",
+   "category": "Sensors",
+   "subtype": "Sensors",
+   "slotType": "Main",
+   "className": "9D",
+   "mClass": 9,
+   "grade": "D",
+   "singleton": true,
+   "name": "9D Sensors"
+  },
+  {
+   "key": "Sensors.NineE",
+   "category": "Sensors",
+   "subtype": "Sensors",
+   "slotType": "Main",
+   "className": "9E",
+   "mClass": 9,
+   "grade": "E",
+   "singleton": true,
+   "name": "9E Sensors"
+  },
+  {
+   "key": "Sensors.SecondA",
+   "category": "Sensors",
+   "subtype": "Sensors",
+   "slotType": "Main",
+   "className": "2A",
+   "mClass": 2,
+   "grade": "A",
+   "singleton": true,
+   "name": "2A Sensors"
+  },
+  {
+   "key": "Sensors.SecondB",
+   "category": "Sensors",
+   "subtype": "Sensors",
+   "slotType": "Main",
+   "className": "2B",
+   "mClass": 2,
+   "grade": "B",
+   "singleton": true,
+   "name": "2B Sensors"
+  },
+  {
+   "key": "Sensors.SecondC",
+   "category": "Sensors",
+   "subtype": "Sensors",
+   "slotType": "Main",
+   "className": "2C",
+   "mClass": 2,
+   "grade": "C",
+   "singleton": true,
+   "name": "2C Sensors"
+  },
+  {
+   "key": "Sensors.SecondD",
+   "category": "Sensors",
+   "subtype": "Sensors",
+   "slotType": "Main",
+   "className": "2D",
+   "mClass": 2,
+   "grade": "D",
+   "singleton": true,
+   "name": "2D Sensors"
+  },
+  {
+   "key": "Sensors.SecondE",
+   "category": "Sensors",
+   "subtype": "Sensors",
+   "slotType": "Main",
+   "className": "2E",
+   "mClass": 2,
+   "grade": "E",
+   "singleton": true,
+   "name": "2E Sensors"
+  },
+  {
+   "key": "Sensors.SevenA",
+   "category": "Sensors",
+   "subtype": "Sensors",
+   "slotType": "Main",
+   "className": "7A",
+   "mClass": 7,
+   "grade": "A",
+   "singleton": true,
+   "name": "7A Sensors"
+  },
+  {
+   "key": "Sensors.SevenB",
+   "category": "Sensors",
+   "subtype": "Sensors",
+   "slotType": "Main",
+   "className": "7B",
+   "mClass": 7,
+   "grade": "B",
+   "singleton": true,
+   "name": "7B Sensors"
+  },
+  {
+   "key": "Sensors.SevenC",
+   "category": "Sensors",
+   "subtype": "Sensors",
+   "slotType": "Main",
+   "className": "7C",
+   "mClass": 7,
+   "grade": "C",
+   "singleton": true,
+   "name": "7C Sensors"
+  },
+  {
+   "key": "Sensors.SevenD",
+   "category": "Sensors",
+   "subtype": "Sensors",
+   "slotType": "Main",
+   "className": "7D",
+   "mClass": 7,
+   "grade": "D",
+   "singleton": true,
+   "name": "7D Sensors"
+  },
+  {
+   "key": "Sensors.SevenE",
+   "category": "Sensors",
+   "subtype": "Sensors",
+   "slotType": "Main",
+   "className": "7E",
+   "mClass": 7,
+   "grade": "E",
+   "singleton": true,
+   "name": "7E Sensors"
+  },
+  {
+   "key": "Sensors.SixA",
+   "category": "Sensors",
+   "subtype": "Sensors",
+   "slotType": "Main",
+   "className": "6A",
+   "mClass": 6,
+   "grade": "A",
+   "singleton": true,
+   "name": "6A Sensors"
+  },
+  {
+   "key": "Sensors.SixB",
+   "category": "Sensors",
+   "subtype": "Sensors",
+   "slotType": "Main",
+   "className": "6B",
+   "mClass": 6,
+   "grade": "B",
+   "singleton": true,
+   "name": "6B Sensors"
+  },
+  {
+   "key": "Sensors.SixC",
+   "category": "Sensors",
+   "subtype": "Sensors",
+   "slotType": "Main",
+   "className": "6C",
+   "mClass": 6,
+   "grade": "C",
+   "singleton": true,
+   "name": "6C Sensors"
+  },
+  {
+   "key": "Sensors.SixD",
+   "category": "Sensors",
+   "subtype": "Sensors",
+   "slotType": "Main",
+   "className": "6D",
+   "mClass": 6,
+   "grade": "D",
+   "singleton": true,
+   "name": "6D Sensors"
+  },
+  {
+   "key": "Sensors.SixE",
+   "category": "Sensors",
+   "subtype": "Sensors",
+   "slotType": "Main",
+   "className": "6E",
+   "mClass": 6,
+   "grade": "E",
+   "singleton": true,
+   "name": "6E Sensors"
+  },
+  {
+   "key": "Sensors.ThirdA",
+   "category": "Sensors",
+   "subtype": "Sensors",
+   "slotType": "Main",
+   "className": "3A",
+   "mClass": 3,
+   "grade": "A",
+   "singleton": true,
+   "name": "3A Sensors"
+  },
+  {
+   "key": "Sensors.ThirdB",
+   "category": "Sensors",
+   "subtype": "Sensors",
+   "slotType": "Main",
+   "className": "3B",
+   "mClass": 3,
+   "grade": "B",
+   "singleton": true,
+   "name": "3B Sensors"
+  },
+  {
+   "key": "Sensors.ThirdC",
+   "category": "Sensors",
+   "subtype": "Sensors",
+   "slotType": "Main",
+   "className": "3C",
+   "mClass": 3,
+   "grade": "C",
+   "singleton": true,
+   "name": "3C Sensors"
+  },
+  {
+   "key": "Sensors.ThirdD",
+   "category": "Sensors",
+   "subtype": "Sensors",
+   "slotType": "Main",
+   "className": "3D",
+   "mClass": 3,
+   "grade": "D",
+   "singleton": true,
+   "name": "3D Sensors"
+  },
+  {
+   "key": "Sensors.ThirdE",
+   "category": "Sensors",
+   "subtype": "Sensors",
+   "slotType": "Main",
+   "className": "3E",
+   "mClass": 3,
+   "grade": "E",
+   "singleton": true,
+   "name": "3E Sensors"
+  },
+  {
+   "key": "ShieldCellBank.FirstA",
+   "category": "ShieldCellBank",
+   "subtype": "ShieldsCellBank",
+   "slotType": "Military",
+   "className": "1A",
+   "mClass": 1,
+   "grade": "A",
+   "singleton": true,
+   "name": "1A Shields Cell Bank"
+  },
+  {
+   "key": "ShieldCellBank.FirstD",
+   "category": "ShieldCellBank",
+   "subtype": "ShieldsCellBank",
+   "slotType": "Military",
+   "className": "1D",
+   "mClass": 1,
+   "grade": "D",
+   "singleton": true,
+   "name": "1D Shields Cell Bank"
+  },
+  {
+   "key": "ShieldCellBank.FiveA",
+   "category": "ShieldCellBank",
+   "subtype": "ShieldsCellBank",
+   "slotType": "Military",
+   "className": "5A",
+   "mClass": 5,
+   "grade": "A",
+   "singleton": true,
+   "name": "5A Shields Cell Bank"
+  },
+  {
+   "key": "ShieldCellBank.FiveD",
+   "category": "ShieldCellBank",
+   "subtype": "ShieldsCellBank",
+   "slotType": "Military",
+   "className": "5D",
+   "mClass": 5,
+   "grade": "D",
+   "singleton": true,
+   "name": "5D Shields Cell Bank"
+  },
+  {
+   "key": "ShieldCellBank.SixA",
+   "category": "ShieldCellBank",
+   "subtype": "ShieldsCellBank",
+   "slotType": "Military",
+   "className": "6A",
+   "mClass": 6,
+   "grade": "A",
+   "singleton": true,
+   "name": "6A Shields Cell Bank"
+  },
+  {
+   "key": "ShieldCellBank.SixD",
+   "category": "ShieldCellBank",
+   "subtype": "ShieldsCellBank",
+   "slotType": "Military",
+   "className": "6D",
+   "mClass": 6,
+   "grade": "D",
+   "singleton": true,
+   "name": "6D Shields Cell Bank"
+  },
+  {
+   "key": "ShieldCellBank.ThirdA",
+   "category": "ShieldCellBank",
+   "subtype": "ShieldsCellBank",
+   "slotType": "Military",
+   "className": "3A",
+   "mClass": 3,
+   "grade": "A",
+   "singleton": true,
+   "name": "3A Shields Cell Bank"
+  },
+  {
+   "key": "ShieldCellBank.ThirdD",
+   "category": "ShieldCellBank",
+   "subtype": "ShieldsCellBank",
+   "slotType": "Military",
+   "className": "3D",
+   "mClass": 3,
+   "grade": "D",
+   "singleton": true,
+   "name": "3D Shields Cell Bank"
+  },
+  {
+   "key": "Shields.EightA",
+   "category": "Shields",
+   "subtype": "Shields",
+   "slotType": "Optional",
+   "className": "8A",
+   "mClass": 8,
+   "grade": "A",
+   "singleton": true,
+   "name": "8A Shields"
+  },
+  {
+   "key": "Shields.EightB",
+   "category": "Shields",
+   "subtype": "Shields",
+   "slotType": "Optional",
+   "className": "8B",
+   "mClass": 8,
+   "grade": "B",
+   "singleton": true,
+   "name": "8B Shields"
+  },
+  {
+   "key": "Shields.EightC",
+   "category": "Shields",
+   "subtype": "Shields",
+   "slotType": "Optional",
+   "className": "8C",
+   "mClass": 8,
+   "grade": "C",
+   "singleton": true,
+   "name": "8C Shields"
+  },
+  {
+   "key": "Shields.EightD",
+   "category": "Shields",
+   "subtype": "Shields",
+   "slotType": "Optional",
+   "className": "8D",
+   "mClass": 8,
+   "grade": "D",
+   "singleton": true,
+   "name": "8D Shields"
+  },
+  {
+   "key": "Shields.EightE",
+   "category": "Shields",
+   "subtype": "Shields",
+   "slotType": "Optional",
+   "className": "8E",
+   "mClass": 8,
+   "grade": "E",
+   "singleton": true,
+   "name": "8E Shields"
+  },
+  {
+   "key": "Shields.FiveA",
+   "category": "Shields",
+   "subtype": "Shields",
+   "slotType": "Optional",
+   "className": "5A",
+   "mClass": 5,
+   "grade": "A",
+   "singleton": true,
+   "name": "5A Shields"
+  },
+  {
+   "key": "Shields.FiveB",
+   "category": "Shields",
+   "subtype": "Shields",
+   "slotType": "Optional",
+   "className": "5B",
+   "mClass": 5,
+   "grade": "B",
+   "singleton": true,
+   "name": "5B Shields"
+  },
+  {
+   "key": "Shields.FiveC",
+   "category": "Shields",
+   "subtype": "Shields",
+   "slotType": "Optional",
+   "className": "5C",
+   "mClass": 5,
+   "grade": "C",
+   "singleton": true,
+   "name": "5C Shields"
+  },
+  {
+   "key": "Shields.FiveD",
+   "category": "Shields",
+   "subtype": "Shields",
+   "slotType": "Optional",
+   "className": "5D",
+   "mClass": 5,
+   "grade": "D",
+   "singleton": true,
+   "name": "5D Shields"
+  },
+  {
+   "key": "Shields.FiveE",
+   "category": "Shields",
+   "subtype": "Shields",
+   "slotType": "Optional",
+   "className": "5E",
+   "mClass": 5,
+   "grade": "E",
+   "singleton": true,
+   "name": "5E Shields"
+  },
+  {
+   "key": "Shields.FourA",
+   "category": "Shields",
+   "subtype": "Shields",
+   "slotType": "Optional",
+   "className": "4A",
+   "mClass": 4,
+   "grade": "A",
+   "singleton": true,
+   "name": "4A Shields"
+  },
+  {
+   "key": "Shields.FourB",
+   "category": "Shields",
+   "subtype": "Shields",
+   "slotType": "Optional",
+   "className": "4B",
+   "mClass": 4,
+   "grade": "B",
+   "singleton": true,
+   "name": "4B Shields"
+  },
+  {
+   "key": "Shields.FourC",
+   "category": "Shields",
+   "subtype": "Shields",
+   "slotType": "Optional",
+   "className": "4C",
+   "mClass": 4,
+   "grade": "C",
+   "singleton": true,
+   "name": "4C Shields"
+  },
+  {
+   "key": "Shields.FourD",
+   "category": "Shields",
+   "subtype": "Shields",
+   "slotType": "Optional",
+   "className": "4D",
+   "mClass": 4,
+   "grade": "D",
+   "singleton": true,
+   "name": "4D Shields"
+  },
+  {
+   "key": "Shields.FourE",
+   "category": "Shields",
+   "subtype": "Shields",
+   "slotType": "Optional",
+   "className": "4E",
+   "mClass": 4,
+   "grade": "E",
+   "singleton": true,
+   "name": "4E Shields"
+  },
+  {
+   "key": "Shields.SecondA",
+   "category": "Shields",
+   "subtype": "Shields",
+   "slotType": "Optional",
+   "className": "2A",
+   "mClass": 2,
+   "grade": "A",
+   "singleton": true,
+   "name": "2A Shields"
+  },
+  {
+   "key": "Shields.SecondB",
+   "category": "Shields",
+   "subtype": "Shields",
+   "slotType": "Optional",
+   "className": "2B",
+   "mClass": 2,
+   "grade": "B",
+   "singleton": true,
+   "name": "2B Shields"
+  },
+  {
+   "key": "Shields.SecondC",
+   "category": "Shields",
+   "subtype": "Shields",
+   "slotType": "Optional",
+   "className": "2C",
+   "mClass": 2,
+   "grade": "C",
+   "singleton": true,
+   "name": "2C Shields"
+  },
+  {
+   "key": "Shields.SecondD",
+   "category": "Shields",
+   "subtype": "Shields",
+   "slotType": "Optional",
+   "className": "2D",
+   "mClass": 2,
+   "grade": "D",
+   "singleton": true,
+   "name": "2D Shields"
+  },
+  {
+   "key": "Shields.SecondE",
+   "category": "Shields",
+   "subtype": "Shields",
+   "slotType": "Optional",
+   "className": "2E",
+   "mClass": 2,
+   "grade": "E",
+   "singleton": true,
+   "name": "2E Shields"
+  },
+  {
+   "key": "Shields.SevenA",
+   "category": "Shields",
+   "subtype": "Shields",
+   "slotType": "Optional",
+   "className": "7A",
+   "mClass": 7,
+   "grade": "A",
+   "singleton": true,
+   "name": "7A Shields"
+  },
+  {
+   "key": "Shields.SevenB",
+   "category": "Shields",
+   "subtype": "Shields",
+   "slotType": "Optional",
+   "className": "7B",
+   "mClass": 7,
+   "grade": "B",
+   "singleton": true,
+   "name": "7B Shields"
+  },
+  {
+   "key": "Shields.SevenC",
+   "category": "Shields",
+   "subtype": "Shields",
+   "slotType": "Optional",
+   "className": "7C",
+   "mClass": 7,
+   "grade": "C",
+   "singleton": true,
+   "name": "7C Shields"
+  },
+  {
+   "key": "Shields.SevenD",
+   "category": "Shields",
+   "subtype": "Shields",
+   "slotType": "Optional",
+   "className": "7D",
+   "mClass": 7,
+   "grade": "D",
+   "singleton": true,
+   "name": "7D Shields"
+  },
+  {
+   "key": "Shields.SevenE",
+   "category": "Shields",
+   "subtype": "Shields",
+   "slotType": "Optional",
+   "className": "7E",
+   "mClass": 7,
+   "grade": "E",
+   "singleton": true,
+   "name": "7E Shields"
+  },
+  {
+   "key": "Shields.SixA",
+   "category": "Shields",
+   "subtype": "Shields",
+   "slotType": "Optional",
+   "className": "6A",
+   "mClass": 6,
+   "grade": "A",
+   "singleton": true,
+   "name": "6A Shields"
+  },
+  {
+   "key": "Shields.SixB",
+   "category": "Shields",
+   "subtype": "Shields",
+   "slotType": "Optional",
+   "className": "6B",
+   "mClass": 6,
+   "grade": "B",
+   "singleton": true,
+   "name": "6B Shields"
+  },
+  {
+   "key": "Shields.SixC",
+   "category": "Shields",
+   "subtype": "Shields",
+   "slotType": "Optional",
+   "className": "6C",
+   "mClass": 6,
+   "grade": "C",
+   "singleton": true,
+   "name": "6C Shields"
+  },
+  {
+   "key": "Shields.SixD",
+   "category": "Shields",
+   "subtype": "Shields",
+   "slotType": "Optional",
+   "className": "6D",
+   "mClass": 6,
+   "grade": "D",
+   "singleton": true,
+   "name": "6D Shields"
+  },
+  {
+   "key": "Shields.SixE",
+   "category": "Shields",
+   "subtype": "Shields",
+   "slotType": "Optional",
+   "className": "6E",
+   "mClass": 6,
+   "grade": "E",
+   "singleton": true,
+   "name": "6E Shields"
+  },
+  {
+   "key": "Shields.ThirdA",
+   "category": "Shields",
+   "subtype": "Shields",
+   "slotType": "Optional",
+   "className": "3A",
+   "mClass": 3,
+   "grade": "A",
+   "singleton": true,
+   "name": "3A Shields"
+  },
+  {
+   "key": "Shields.ThirdB",
+   "category": "Shields",
+   "subtype": "Shields",
+   "slotType": "Optional",
+   "className": "3B",
+   "mClass": 3,
+   "grade": "B",
+   "singleton": true,
+   "name": "3B Shields"
+  },
+  {
+   "key": "Shields.ThirdC",
+   "category": "Shields",
+   "subtype": "Shields",
+   "slotType": "Optional",
+   "className": "3C",
+   "mClass": 3,
+   "grade": "C",
+   "singleton": true,
+   "name": "3C Shields"
+  },
+  {
+   "key": "Shields.ThirdD",
+   "category": "Shields",
+   "subtype": "Shields",
+   "slotType": "Optional",
+   "className": "3D",
+   "mClass": 3,
+   "grade": "D",
+   "singleton": true,
+   "name": "3D Shields"
+  },
+  {
+   "key": "Shields.ThirdE",
+   "category": "Shields",
+   "subtype": "Shields",
+   "slotType": "Optional",
+   "className": "3E",
+   "mClass": 3,
+   "grade": "E",
+   "singleton": true,
+   "name": "3E Shields"
+  },
+  {
+   "key": "ShieldsBooster.BoosterA",
+   "category": "ShieldsBooster",
+   "subtype": "ShieldsBooster",
+   "slotType": "External",
+   "className": "1A",
+   "mClass": 1,
+   "grade": "A",
+   "singleton": false,
+   "name": "1A Shields Booster"
+  },
+  {
+   "key": "ShieldsBooster.BoosterB",
+   "category": "ShieldsBooster",
+   "subtype": "ShieldsBooster",
+   "slotType": "External",
+   "className": "1B",
+   "mClass": 1,
+   "grade": "B",
+   "singleton": false,
+   "name": "1B Shields Booster"
+  },
+  {
+   "key": "ShieldsBooster.BoosterC",
+   "category": "ShieldsBooster",
+   "subtype": "ShieldsBooster",
+   "slotType": "External",
+   "className": "1C",
+   "mClass": 1,
+   "grade": "C",
+   "singleton": false,
+   "name": "1C Shields Booster"
+  },
+  {
+   "key": "ShieldsBooster.BoosterD",
+   "category": "ShieldsBooster",
+   "subtype": "ShieldsBooster",
+   "slotType": "External",
+   "className": "1D",
+   "mClass": 1,
+   "grade": "D",
+   "singleton": false,
+   "name": "1D Shields Booster"
+  },
+  {
+   "key": "ShieldsBooster.BoosterE",
+   "category": "ShieldsBooster",
+   "subtype": "ShieldsBooster",
+   "slotType": "External",
+   "className": "1E",
+   "mClass": 1,
+   "grade": "E",
+   "singleton": false,
+   "name": "1E Shields Booster"
+  },
+  {
+   "key": "SpectrumAnalyzer.SpectrumAnalyzerE",
+   "category": "SpectrumAnalyzer",
+   "subtype": "SpectrumAnalyzer",
+   "slotType": "External",
+   "className": "1E",
+   "mClass": 1,
+   "grade": "E",
+   "singleton": true,
+   "name": "1E Spectrum Analyzer"
+  },
+  {
+   "key": "Thrusters.EightA",
+   "category": "Thrusters",
+   "subtype": "Thrusters",
+   "slotType": "Main",
+   "className": "8A",
+   "mClass": 8,
+   "grade": "A",
+   "singleton": true,
+   "name": "8A Thrusters"
+  },
+  {
+   "key": "Thrusters.EightB",
+   "category": "Thrusters",
+   "subtype": "Thrusters",
+   "slotType": "Main",
+   "className": "8B",
+   "mClass": 8,
+   "grade": "B",
+   "singleton": true,
+   "name": "8B Thrusters"
+  },
+  {
+   "key": "Thrusters.EightC",
+   "category": "Thrusters",
+   "subtype": "Thrusters",
+   "slotType": "Main",
+   "className": "8C",
+   "mClass": 8,
+   "grade": "C",
+   "singleton": true,
+   "name": "8C Thrusters"
+  },
+  {
+   "key": "Thrusters.EightD",
+   "category": "Thrusters",
+   "subtype": "Thrusters",
+   "slotType": "Main",
+   "className": "8D",
+   "mClass": 8,
+   "grade": "D",
+   "singleton": true,
+   "name": "8D Thrusters"
+  },
+  {
+   "key": "Thrusters.EightE",
+   "category": "Thrusters",
+   "subtype": "Thrusters",
+   "slotType": "Main",
+   "className": "8E",
+   "mClass": 8,
+   "grade": "E",
+   "singleton": true,
+   "name": "8E Thrusters"
+  },
+  {
+   "key": "Thrusters.FiveA",
+   "category": "Thrusters",
+   "subtype": "Thrusters",
+   "slotType": "Main",
+   "className": "5A",
+   "mClass": 5,
+   "grade": "A",
+   "singleton": true,
+   "name": "5A Thrusters"
+  },
+  {
+   "key": "Thrusters.FiveB",
+   "category": "Thrusters",
+   "subtype": "Thrusters",
+   "slotType": "Main",
+   "className": "5B",
+   "mClass": 5,
+   "grade": "B",
+   "singleton": true,
+   "name": "5B Thrusters"
+  },
+  {
+   "key": "Thrusters.FiveC",
+   "category": "Thrusters",
+   "subtype": "Thrusters",
+   "slotType": "Main",
+   "className": "5C",
+   "mClass": 5,
+   "grade": "C",
+   "singleton": true,
+   "name": "5C Thrusters"
+  },
+  {
+   "key": "Thrusters.FiveD",
+   "category": "Thrusters",
+   "subtype": "Thrusters",
+   "slotType": "Main",
+   "className": "5D",
+   "mClass": 5,
+   "grade": "D",
+   "singleton": true,
+   "name": "5D Thrusters"
+  },
+  {
+   "key": "Thrusters.FiveE",
+   "category": "Thrusters",
+   "subtype": "Thrusters",
+   "slotType": "Main",
+   "className": "5E",
+   "mClass": 5,
+   "grade": "E",
+   "singleton": true,
+   "name": "5E Thrusters"
+  },
+  {
+   "key": "Thrusters.FourA",
+   "category": "Thrusters",
+   "subtype": "Thrusters",
+   "slotType": "Main",
+   "className": "4A",
+   "mClass": 4,
+   "grade": "A",
+   "singleton": true,
+   "name": "4A Thrusters"
+  },
+  {
+   "key": "Thrusters.FourB",
+   "category": "Thrusters",
+   "subtype": "Thrusters",
+   "slotType": "Main",
+   "className": "4B",
+   "mClass": 4,
+   "grade": "B",
+   "singleton": true,
+   "name": "4B Thrusters"
+  },
+  {
+   "key": "Thrusters.FourC",
+   "category": "Thrusters",
+   "subtype": "Thrusters",
+   "slotType": "Main",
+   "className": "4C",
+   "mClass": 4,
+   "grade": "C",
+   "singleton": true,
+   "name": "4C Thrusters"
+  },
+  {
+   "key": "Thrusters.FourD",
+   "category": "Thrusters",
+   "subtype": "Thrusters",
+   "slotType": "Main",
+   "className": "4D",
+   "mClass": 4,
+   "grade": "D",
+   "singleton": true,
+   "name": "4D Thrusters"
+  },
+  {
+   "key": "Thrusters.FourE",
+   "category": "Thrusters",
+   "subtype": "Thrusters",
+   "slotType": "Main",
+   "className": "4E",
+   "mClass": 4,
+   "grade": "E",
+   "singleton": true,
+   "name": "4E Thrusters"
+  },
+  {
+   "key": "Thrusters.SecondA",
+   "category": "Thrusters",
+   "subtype": "Thrusters",
+   "slotType": "Main",
+   "className": "2A",
+   "mClass": 2,
+   "grade": "A",
+   "singleton": true,
+   "name": "2A Thrusters"
+  },
+  {
+   "key": "Thrusters.SecondB",
+   "category": "Thrusters",
+   "subtype": "Thrusters",
+   "slotType": "Main",
+   "className": "2B",
+   "mClass": 2,
+   "grade": "B",
+   "singleton": true,
+   "name": "2B Thrusters"
+  },
+  {
+   "key": "Thrusters.SecondC",
+   "category": "Thrusters",
+   "subtype": "Thrusters",
+   "slotType": "Main",
+   "className": "2C",
+   "mClass": 2,
+   "grade": "C",
+   "singleton": true,
+   "name": "2C Thrusters"
+  },
+  {
+   "key": "Thrusters.SecondD",
+   "category": "Thrusters",
+   "subtype": "Thrusters",
+   "slotType": "Main",
+   "className": "2D",
+   "mClass": 2,
+   "grade": "D",
+   "singleton": true,
+   "name": "2D Thrusters"
+  },
+  {
+   "key": "Thrusters.SecondE",
+   "category": "Thrusters",
+   "subtype": "Thrusters",
+   "slotType": "Main",
+   "className": "2E",
+   "mClass": 2,
+   "grade": "E",
+   "singleton": true,
+   "name": "2E Thrusters"
+  },
+  {
+   "key": "Thrusters.SevenA",
+   "category": "Thrusters",
+   "subtype": "Thrusters",
+   "slotType": "Main",
+   "className": "7A",
+   "mClass": 7,
+   "grade": "A",
+   "singleton": true,
+   "name": "7A Thrusters"
+  },
+  {
+   "key": "Thrusters.SevenB",
+   "category": "Thrusters",
+   "subtype": "Thrusters",
+   "slotType": "Main",
+   "className": "7B",
+   "mClass": 7,
+   "grade": "B",
+   "singleton": true,
+   "name": "7B Thrusters"
+  },
+  {
+   "key": "Thrusters.SevenC",
+   "category": "Thrusters",
+   "subtype": "Thrusters",
+   "slotType": "Main",
+   "className": "7C",
+   "mClass": 7,
+   "grade": "C",
+   "singleton": true,
+   "name": "7C Thrusters"
+  },
+  {
+   "key": "Thrusters.SevenD",
+   "category": "Thrusters",
+   "subtype": "Thrusters",
+   "slotType": "Main",
+   "className": "7D",
+   "mClass": 7,
+   "grade": "D",
+   "singleton": true,
+   "name": "7D Thrusters"
+  },
+  {
+   "key": "Thrusters.SevenE",
+   "category": "Thrusters",
+   "subtype": "Thrusters",
+   "slotType": "Main",
+   "className": "7E",
+   "mClass": 7,
+   "grade": "E",
+   "singleton": true,
+   "name": "7E Thrusters"
+  },
+  {
+   "key": "Thrusters.SixA",
+   "category": "Thrusters",
+   "subtype": "Thrusters",
+   "slotType": "Main",
+   "className": "6A",
+   "mClass": 6,
+   "grade": "A",
+   "singleton": true,
+   "name": "6A Thrusters"
+  },
+  {
+   "key": "Thrusters.SixB",
+   "category": "Thrusters",
+   "subtype": "Thrusters",
+   "slotType": "Main",
+   "className": "6B",
+   "mClass": 6,
+   "grade": "B",
+   "singleton": true,
+   "name": "6B Thrusters"
+  },
+  {
+   "key": "Thrusters.SixC",
+   "category": "Thrusters",
+   "subtype": "Thrusters",
+   "slotType": "Main",
+   "className": "6C",
+   "mClass": 6,
+   "grade": "C",
+   "singleton": true,
+   "name": "6C Thrusters"
+  },
+  {
+   "key": "Thrusters.SixD",
+   "category": "Thrusters",
+   "subtype": "Thrusters",
+   "slotType": "Main",
+   "className": "6D",
+   "mClass": 6,
+   "grade": "D",
+   "singleton": true,
+   "name": "6D Thrusters"
+  },
+  {
+   "key": "Thrusters.SixE",
+   "category": "Thrusters",
+   "subtype": "Thrusters",
+   "slotType": "Main",
+   "className": "6E",
+   "mClass": 6,
+   "grade": "E",
+   "singleton": true,
+   "name": "6E Thrusters"
+  },
+  {
+   "key": "Thrusters.ThirdA",
+   "category": "Thrusters",
+   "subtype": "Thrusters",
+   "slotType": "Main",
+   "className": "3A",
+   "mClass": 3,
+   "grade": "A",
+   "singleton": true,
+   "name": "3A Thrusters"
+  },
+  {
+   "key": "Thrusters.ThirdB",
+   "category": "Thrusters",
+   "subtype": "Thrusters",
+   "slotType": "Main",
+   "className": "3B",
+   "mClass": 3,
+   "grade": "B",
+   "singleton": true,
+   "name": "3B Thrusters"
+  },
+  {
+   "key": "Thrusters.ThirdC",
+   "category": "Thrusters",
+   "subtype": "Thrusters",
+   "slotType": "Main",
+   "className": "3C",
+   "mClass": 3,
+   "grade": "C",
+   "singleton": true,
+   "name": "3C Thrusters"
+  },
+  {
+   "key": "Thrusters.ThirdD",
+   "category": "Thrusters",
+   "subtype": "Thrusters",
+   "slotType": "Main",
+   "className": "3D",
+   "mClass": 3,
+   "grade": "D",
+   "singleton": true,
+   "name": "3D Thrusters"
+  },
+  {
+   "key": "Thrusters.ThirdE",
+   "category": "Thrusters",
+   "subtype": "Thrusters",
+   "slotType": "Main",
+   "className": "3E",
+   "mClass": 3,
+   "grade": "E",
+   "singleton": true,
+   "name": "3E Thrusters"
+  },
+  {
+   "key": "TitanLanceWeapon.FiveD",
+   "category": "TitanLanceWeapon",
+   "subtype": "TitanLanceWeapon",
+   "slotType": "Weapon",
+   "className": "5D",
+   "mClass": 5,
+   "grade": "D",
+   "singleton": false,
+   "name": "5D Energy Lance"
+  },
+  {
+   "key": "TitanLanceWeapon.FourD",
+   "category": "TitanLanceWeapon",
+   "subtype": "TitanLanceWeapon",
+   "slotType": "Weapon",
+   "className": "4D",
+   "mClass": 4,
+   "grade": "D",
+   "singleton": false,
+   "name": "4D Energy Lance"
+  },
+  {
+   "key": "TitanLanceWeapon.SecondD",
+   "category": "TitanLanceWeapon",
+   "subtype": "TitanLanceWeapon",
+   "slotType": "Weapon",
+   "className": "2D",
+   "mClass": 2,
+   "grade": "D",
+   "singleton": false,
+   "name": "2D Energy Lance"
+  },
+  {
+   "key": "TitanLanceWeapon.ThirdD",
+   "category": "TitanLanceWeapon",
+   "subtype": "TitanLanceWeapon",
+   "slotType": "Weapon",
+   "className": "3D",
+   "mClass": 3,
+   "grade": "D",
+   "singleton": false,
+   "name": "3D Energy Lance"
+  },
+  {
+   "key": "TorpedoWeapon.FirstD",
+   "category": "TorpedoWeapon",
+   "subtype": "TorpedoWeapon",
+   "slotType": "Weapon",
+   "className": "1D",
+   "mClass": 1,
+   "grade": "D",
+   "singleton": false,
+   "name": "1D Torpedoes"
+  },
+  {
+   "key": "TorpedoWeapon.FourD",
+   "category": "TorpedoWeapon",
+   "subtype": "TorpedoWeapon",
+   "slotType": "Weapon",
+   "className": "4D",
+   "mClass": 4,
+   "grade": "D",
+   "singleton": false,
+   "name": "4D Torpedoes"
+  },
+  {
+   "key": "TorpedoWeapon.SecondD",
+   "category": "TorpedoWeapon",
+   "subtype": "TorpedoWeapon",
+   "slotType": "Weapon",
+   "className": "2D",
+   "mClass": 2,
+   "grade": "D",
+   "singleton": false,
+   "name": "2D Torpedoes"
+  },
+  {
+   "key": "TorpedoWeapon.ThirdD",
+   "category": "TorpedoWeapon",
+   "subtype": "TorpedoWeapon",
+   "slotType": "Weapon",
+   "className": "3D",
+   "mClass": 3,
+   "grade": "D",
+   "singleton": false,
+   "name": "3D Torpedoes"
+  },
+  {
+   "key": "VehicleHangar.VehicleHangarTwo",
+   "category": "PlanetaryVehicle",
+   "subtype": "PlanetaryVehicle",
+   "slotType": "Military",
+   "className": "2E",
+   "mClass": 2,
+   "grade": "E",
+   "singleton": true,
+   "name": "2E Planetary Vehicle"
+  },
+  {
+   "key": "VehicleHangar.VehicleHangarTwoLight",
+   "category": "PlanetaryVehicle",
+   "subtype": "PlanetaryVehicle",
+   "slotType": "Military",
+   "className": "2D",
+   "mClass": 2,
+   "grade": "D",
+   "singleton": true,
+   "name": "2D Planetary Vehicle"
+  },
+  {
+   "key": "ZenLaserWeapon.FirstD",
+   "category": "ZenLaserWeapon",
+   "subtype": "ZenLaserWeapon",
+   "slotType": "Weapon",
+   "className": "1D",
+   "mClass": 1,
+   "grade": "D",
+   "singleton": false,
+   "name": "1D Zentarks cannon"
+  },
+  {
+   "key": "ZenLaserWeapon.FirstE",
+   "category": "ZenLaserWeapon",
+   "subtype": "ZenLaserWeapon",
+   "slotType": "Weapon",
+   "className": "1E",
+   "mClass": 1,
+   "grade": "E",
+   "singleton": false,
+   "name": "1E Zentarks cannon"
+  },
+  {
+   "key": "ZenLaserWeapon.FourD",
+   "category": "ZenLaserWeapon",
+   "subtype": "ZenLaserWeapon",
+   "slotType": "Weapon",
+   "className": "4D",
+   "mClass": 4,
+   "grade": "D",
+   "singleton": false,
+   "name": "4D Zentarks cannon"
+  },
+  {
+   "key": "ZenLaserWeapon.FourE",
+   "category": "ZenLaserWeapon",
+   "subtype": "ZenLaserWeapon",
+   "slotType": "Weapon",
+   "className": "4E",
+   "mClass": 4,
+   "grade": "E",
+   "singleton": false,
+   "name": "4E Zentarks cannon"
+  },
+  {
+   "key": "ZenLaserWeapon.SecondD",
+   "category": "ZenLaserWeapon",
+   "subtype": "ZenLaserWeapon",
+   "slotType": "Weapon",
+   "className": "2D",
+   "mClass": 2,
+   "grade": "D",
+   "singleton": false,
+   "name": "2D Zentarks cannon"
+  },
+  {
+   "key": "ZenLaserWeapon.SecondE",
+   "category": "ZenLaserWeapon",
+   "subtype": "ZenLaserWeapon",
+   "slotType": "Weapon",
+   "className": "2E",
+   "mClass": 2,
+   "grade": "E",
+   "singleton": false,
+   "name": "2E Zentarks cannon"
+  },
+  {
+   "key": "ZenLaserWeapon.ThirdD",
+   "category": "ZenLaserWeapon",
+   "subtype": "ZenLaserWeapon",
+   "slotType": "Weapon",
+   "className": "3D",
+   "mClass": 3,
+   "grade": "D",
+   "singleton": false,
+   "name": "3D Zentarks cannon"
+  },
+  {
+   "key": "ZenLaserWeapon.ThirdE",
+   "category": "ZenLaserWeapon",
+   "subtype": "ZenLaserWeapon",
+   "slotType": "Weapon",
+   "className": "3E",
+   "mClass": 3,
+   "grade": "D",
+   "singleton": false,
+   "name": "3E Zentarks cannon"
+  },
+  {
+   "key": "ZentarksShadowModule.ThirdD",
+   "category": "ZenShadowModule",
+   "subtype": "ZenShadowModule",
+   "slotType": "Optional",
+   "className": "3D",
+   "mClass": 3,
+   "grade": "D",
+   "singleton": false,
+   "name": "3D Shadow jump module"
+  }
+ ],
+ "ships": [
+  {
+   "key": "Angler-B",
+   "var": "ANGLER_B",
+   "baseCost": 16200,
+   "optional": [
+    0,
+    2,
+    0,
+    0,
+    0,
+    0
+   ],
+   "optionalMilitary": [],
+   "weapons": [
+    0,
+    1,
+    0
+   ],
+   "external": [
+    0,
+    0,
+    0
+   ],
+   "maxDSD": 2,
+   "maxThrusters": 2,
+   "maxPowerPlant": 2,
+   "maxPowerDistributor": 2,
+   "maxTank": 1,
+   "defaultLifeSupport": "LifeSupport.FirstE",
+   "defaultSensors": "Sensors.SecondD",
+   "defaultShields": null,
+   "defaultHull": "Hull.Light",
+   "maxFighterHangar": null
+  },
+  {
+   "key": "Atom",
+   "var": "ATOM",
+   "baseCost": 87000,
+   "optional": [
+    4,
+    1,
+    2,
+    0,
+    0,
+    0
+   ],
+   "optionalMilitary": [],
+   "weapons": [
+    2,
+    1,
+    0
+   ],
+   "external": [
+    2,
+    0,
+    0
+   ],
+   "maxDSD": 3,
+   "maxThrusters": 3,
+   "maxPowerPlant": 3,
+   "maxPowerDistributor": 2,
+   "maxTank": 3,
+   "defaultLifeSupport": "LifeSupport.FirstE",
+   "defaultSensors": "Sensors.ThirdE",
+   "defaultShields": "Shields.ThirdE",
+   "defaultHull": "Hull.Light",
+   "maxFighterHangar": null
+  },
+  {
+   "key": "Automaton",
+   "var": "AUTOMATON",
+   "baseCost": 183150000,
+   "optional": [
+    1,
+    0,
+    1,
+    1,
+    2,
+    3,
+    0,
+    2
+   ],
+   "optionalMilitary": [
+    0,
+    0,
+    0,
+    2,
+    2,
+    2
+   ],
+   "weapons": [
+    0,
+    0,
+    2,
+    2
+   ],
+   "external": [
+    0,
+    0,
+    0
+   ],
+   "maxDSD": 7,
+   "maxThrusters": 8,
+   "maxPowerPlant": 8,
+   "maxPowerDistributor": 8,
+   "maxTank": 6,
+   "defaultLifeSupport": "LifeSupport.FiveD",
+   "defaultSensors": "Sensors.SevenD",
+   "defaultShields": "Shields.EightB",
+   "defaultHull": "Hull.Light",
+   "maxFighterHangar": null
+  },
+  {
+   "key": "Avant",
+   "var": "AVANT",
+   "baseCost": 39100310,
+   "optional": [
+    1,
+    1,
+    2,
+    1,
+    2,
+    2
+   ],
+   "optionalMilitary": [
+    0,
+    0,
+    0,
+    0,
+    1,
+    0
+   ],
+   "weapons": [
+    0,
+    2,
+    3
+   ],
+   "external": [
+    4,
+    0,
+    0
+   ],
+   "maxDSD": 5,
+   "maxThrusters": 6,
+   "maxPowerPlant": 7,
+   "maxPowerDistributor": 7,
+   "maxTank": 5,
+   "defaultLifeSupport": "LifeSupport.FourE",
+   "defaultSensors": "Sensors.SixE",
+   "defaultShields": "Shields.SixE",
+   "defaultHull": "Hull.Light",
+   "maxFighterHangar": "FighterHangar.FighterHangarFive"
+  },
+  {
+   "key": "Buran",
+   "var": "BURAN",
+   "baseCost": 2970450,
+   "optional": [
+    2,
+    2,
+    1,
+    1,
+    2,
+    0
+   ],
+   "optionalMilitary": [],
+   "weapons": [
+    2,
+    2,
+    0
+   ],
+   "external": [
+    3,
+    0,
+    0
+   ],
+   "maxDSD": 4,
+   "maxThrusters": 4,
+   "maxPowerPlant": 4,
+   "maxPowerDistributor": 3,
+   "maxTank": 4,
+   "defaultLifeSupport": "LifeSupport.FirstE",
+   "defaultSensors": "Sensors.SecondE",
+   "defaultShields": "Shields.ThirdE",
+   "defaultHull": "Hull.Light",
+   "maxFighterHangar": null
+  },
+  {
+   "key": "Cardinal",
+   "var": "CARDINAL",
+   "baseCost": 119240890,
+   "optional": [
+    2,
+    1,
+    0,
+    3,
+    3,
+    3,
+    1,
+    0
+   ],
+   "optionalMilitary": [
+    0,
+    0,
+    0,
+    0,
+    1,
+    0
+   ],
+   "weapons": [
+    2,
+    2,
+    3,
+    1
+   ],
+   "external": [
+    8,
+    0,
+    0
+   ],
+   "maxDSD": 6,
+   "maxThrusters": 7,
+   "maxPowerPlant": 8,
+   "maxPowerDistributor": 8,
+   "maxTank": 5,
+   "defaultLifeSupport": "LifeSupport.FiveE",
+   "defaultSensors": "Sensors.EightE",
+   "defaultShields": "Shields.SixE",
+   "defaultHull": "Hull.Light",
+   "maxFighterHangar": "FighterHangar.FighterHangarSix"
+  },
+  {
+   "key": "Chaser",
+   "var": "CHASER",
+   "baseCost": 118000,
+   "optional": [
+    4,
+    2,
+    1,
+    0,
+    0,
+    0
+   ],
+   "optionalMilitary": [],
+   "weapons": [
+    2,
+    1,
+    0
+   ],
+   "external": [
+    1,
+    0,
+    0
+   ],
+   "maxDSD": 3,
+   "maxThrusters": 3,
+   "maxPowerPlant": 3,
+   "maxPowerDistributor": 2,
+   "maxTank": 2,
+   "defaultLifeSupport": "LifeSupport.FirstE",
+   "defaultSensors": "Sensors.SecondE",
+   "defaultShields": "Shields.ThirdE",
+   "defaultHull": "Hull.Light",
+   "maxFighterHangar": null
+  },
+  {
+   "key": "Delver",
+   "var": "DELVER",
+   "baseCost": 29450900,
+   "optional": [
+    1,
+    1,
+    2,
+    1,
+    4,
+    3,
+    0
+   ],
+   "optionalMilitary": [
+    0,
+    0,
+    0,
+    0,
+    0,
+    0
+   ],
+   "weapons": [
+    3,
+    2,
+    0
+   ],
+   "external": [
+    4,
+    0,
+    0
+   ],
+   "maxDSD": 5,
+   "maxThrusters": 5,
+   "maxPowerPlant": 5,
+   "maxPowerDistributor": 4,
+   "maxTank": 5,
+   "defaultLifeSupport": "LifeSupport.FourE",
+   "defaultSensors": "Sensors.FourE",
+   "defaultShields": "Shields.FourE",
+   "defaultHull": "Hull.Light",
+   "maxFighterHangar": null
+  },
+  {
+   "key": "Discordia",
+   "var": "DISCORDIA",
+   "baseCost": 292190560,
+   "optional": [
+    1,
+    0,
+    1,
+    1,
+    1,
+    3,
+    1,
+    4
+   ],
+   "optionalMilitary": [
+    0,
+    0,
+    0,
+    1,
+    3,
+    0
+   ],
+   "weapons": [
+    1,
+    2,
+    2,
+    2
+   ],
+   "external": [
+    8,
+    0,
+    0
+   ],
+   "maxDSD": 8,
+   "maxThrusters": 8,
+   "maxPowerPlant": 9,
+   "maxPowerDistributor": 8,
+   "maxTank": 6,
+   "defaultLifeSupport": "LifeSupport.SixE",
+   "defaultSensors": "Sensors.EightE",
+   "defaultShields": "Shields.EightD",
+   "defaultHull": "Hull.Light",
+   "maxFighterHangar": "FighterHangar.FighterHangarEight"
+  },
+  {
+   "key": "Falcon",
+   "var": "FALCON",
+   "baseCost": 5849900,
+   "optional": [
+    2,
+    2,
+    3,
+    0,
+    1,
+    1
+   ],
+   "optionalMilitary": [],
+   "weapons": [
+    4,
+    2,
+    0
+   ],
+   "external": [
+    4,
+    0,
+    0
+   ],
+   "maxDSD": 5,
+   "maxThrusters": 5,
+   "maxPowerPlant": 5,
+   "maxPowerDistributor": 4,
+   "maxTank": 5,
+   "defaultLifeSupport": "LifeSupport.FourE",
+   "defaultSensors": "Sensors.FiveE",
+   "defaultShields": "Shields.FiveE",
+   "defaultHull": "Hull.Light",
+   "maxFighterHangar": null
+  },
+  {
+   "key": "Gladiator",
+   "var": "GLADIATOR",
+   "baseCost": 30190240,
+   "optional": [
+    1,
+    2,
+    2,
+    3,
+    0,
+    2
+   ],
+   "optionalMilitary": [
+    0,
+    0,
+    0,
+    3,
+    0,
+    0
+   ],
+   "weapons": [
+    3,
+    3,
+    1
+   ],
+   "external": [
+    4,
+    0,
+    0
+   ],
+   "maxDSD": 5,
+   "maxThrusters": 6,
+   "maxPowerPlant": 6,
+   "maxPowerDistributor": 6,
+   "maxTank": 4,
+   "defaultLifeSupport": "LifeSupport.FiveE",
+   "defaultSensors": "Sensors.FourE",
+   "defaultShields": "Shields.SixE",
+   "defaultHull": "Hull.Light",
+   "maxFighterHangar": null
+  },
+  {
+   "key": "Goliath",
+   "var": "GOLIATH",
+   "baseCost": 183150000,
+   "optional": [
+    1,
+    0,
+    1,
+    1,
+    2,
+    3,
+    0,
+    2
+   ],
+   "optionalMilitary": [
+    0,
+    0,
+    0,
+    0,
+    2,
+    0
+   ],
+   "weapons": [
+    0,
+    4,
+    2,
+    1
+   ],
+   "external": [
+    8,
+    0,
+    0
+   ],
+   "maxDSD": 7,
+   "maxThrusters": 8,
+   "maxPowerPlant": 8,
+   "maxPowerDistributor": 7,
+   "maxTank": 6,
+   "defaultLifeSupport": "LifeSupport.FiveD",
+   "defaultSensors": "Sensors.SevenD",
+   "defaultShields": "Shields.EightD",
+   "defaultHull": "Hull.Light",
+   "maxFighterHangar": "FighterHangar.FighterHangarSix"
+  },
+  {
+   "key": "Grinder",
+   "var": "GRINDER",
+   "baseCost": 215060890,
+   "optional": [
+    1,
+    1,
+    0,
+    0,
+    5,
+    2,
+    2,
+    2
+   ],
+   "optionalMilitary": [
+    0,
+    0,
+    0,
+    0,
+    0,
+    0
+   ],
+   "weapons": [
+    0,
+    0,
+    3,
+    3
+   ],
+   "external": [
+    6,
+    0,
+    0
+   ],
+   "maxDSD": 8,
+   "maxThrusters": 8,
+   "maxPowerPlant": 8,
+   "maxPowerDistributor": 8,
+   "maxTank": 6,
+   "defaultLifeSupport": "LifeSupport.SixD",
+   "defaultSensors": "Sensors.EightE",
+   "defaultShields": "Shields.EightE",
+   "defaultHull": "Hull.Light",
+   "maxFighterHangar": "FighterHangar.FighterHangarSeven"
+  },
+  {
+   "key": "Hawk",
+   "var": "HAWK",
+   "baseCost": 1570890,
+   "optional": [
+    3,
+    2,
+    2,
+    2,
+    0,
+    0
+   ],
+   "optionalMilitary": [],
+   "weapons": [
+    0,
+    2,
+    1
+   ],
+   "external": [
+    4,
+    0,
+    0
+   ],
+   "maxDSD": 5,
+   "maxThrusters": 4,
+   "maxPowerPlant": 4,
+   "maxPowerDistributor": 4,
+   "maxTank": 5,
+   "defaultLifeSupport": "LifeSupport.ThirdE",
+   "defaultSensors": "Sensors.ThirdE",
+   "defaultShields": "Shields.FourE",
+   "defaultHull": "Hull.Light",
+   "maxFighterHangar": null
+  },
+  {
+   "key": "Hyperion",
+   "var": "HYPERION",
+   "baseCost": 392170990,
+   "optional": [
+    1,
+    0,
+    1,
+    1,
+    2,
+    1,
+    0,
+    8
+   ],
+   "optionalMilitary": [
+    0,
+    0,
+    0,
+    0,
+    4,
+    0
+   ],
+   "weapons": [
+    0,
+    2,
+    5,
+    3
+   ],
+   "external": [
+    8,
+    0,
+    0
+   ],
+   "maxDSD": 8,
+   "maxThrusters": 8,
+   "maxPowerPlant": 9,
+   "maxPowerDistributor": 8,
+   "maxTank": 6,
+   "defaultLifeSupport": "LifeSupport.SixE",
+   "defaultSensors": "Sensors.NineE",
+   "defaultShields": "Shields.EightD",
+   "defaultHull": "Hull.Light",
+   "maxFighterHangar": "FighterHangar.FighterHangarSeven"
+  },
+  {
+   "key": "Ion",
+   "var": "ION",
+   "baseCost": 32000,
+   "optional": [
+    5,
+    2,
+    0,
+    0,
+    0,
+    0
+   ],
+   "optionalMilitary": [],
+   "weapons": [
+    2,
+    0,
+    0
+   ],
+   "external": [
+    2,
+    0,
+    0
+   ],
+   "maxDSD": 2,
+   "maxThrusters": 2,
+   "maxPowerPlant": 2,
+   "maxPowerDistributor": 1,
+   "maxTank": 1,
+   "defaultLifeSupport": "LifeSupport.FirstE",
+   "defaultSensors": "Sensors.SecondE",
+   "defaultShields": "Shields.SecondE",
+   "defaultHull": "Hull.Light",
+   "maxFighterHangar": null
+  },
+  {
+   "key": "KLA-6",
+   "var": "KLA6",
+   "baseCost": 367990,
+   "optional": [
+    3,
+    3,
+    0,
+    3,
+    0,
+    0
+   ],
+   "optionalMilitary": [],
+   "weapons": [
+    2,
+    2,
+    0
+   ],
+   "external": [
+    2,
+    0,
+    0
+   ],
+   "maxDSD": 4,
+   "maxThrusters": 4,
+   "maxPowerPlant": 4,
+   "maxPowerDistributor": 3,
+   "maxTank": 4,
+   "defaultLifeSupport": "LifeSupport.ThirdE",
+   "defaultSensors": "Sensors.ThirdE",
+   "defaultShields": "Shields.FourE",
+   "defaultHull": "Hull.Light",
+   "maxFighterHangar": null
+  },
+  {
+   "key": "KLA8M",
+   "var": "KLA8M",
+   "baseCost": 42950711,
+   "optional": [
+    2,
+    1,
+    2,
+    1,
+    2,
+    3
+   ],
+   "optionalMilitary": [],
+   "weapons": [
+    0,
+    2,
+    3
+   ],
+   "external": [
+    4,
+    0,
+    0
+   ],
+   "maxDSD": 5,
+   "maxThrusters": 6,
+   "maxPowerPlant": 7,
+   "maxPowerDistributor": 7,
+   "maxTank": 5,
+   "defaultLifeSupport": "LifeSupport.FourE",
+   "defaultSensors": "Sensors.SixE",
+   "defaultShields": "Shields.SixE",
+   "defaultHull": "Hull.Light",
+   "maxFighterHangar": null
+  },
+  {
+   "key": "KLA9",
+   "var": "KLA9",
+   "baseCost": 75490750,
+   "optional": [
+    2,
+    1,
+    2,
+    2,
+    1,
+    1,
+    1,
+    2
+   ],
+   "optionalMilitary": [],
+   "weapons": [
+    2,
+    3,
+    0
+   ],
+   "external": [
+    4,
+    0,
+    0
+   ],
+   "maxDSD": 6,
+   "maxThrusters": 7,
+   "maxPowerPlant": 6,
+   "maxPowerDistributor": 6,
+   "maxTank": 6,
+   "defaultLifeSupport": "LifeSupport.FiveE",
+   "defaultSensors": "Sensors.FourE",
+   "defaultShields": "Shields.SixE",
+   "defaultHull": "Hull.Light",
+   "maxFighterHangar": "FighterHangar.FighterHangarSix"
+  },
+  {
+   "key": "Keeper",
+   "var": "KEEPER",
+   "baseCost": 35700450,
+   "optional": [
+    1,
+    1,
+    0,
+    1,
+    2,
+    2,
+    2,
+    0
+   ],
+   "optionalMilitary": [],
+   "weapons": [
+    5,
+    1,
+    0
+   ],
+   "external": [
+    4,
+    0,
+    0
+   ],
+   "maxDSD": 5,
+   "maxThrusters": 5,
+   "maxPowerPlant": 5,
+   "maxPowerDistributor": 4,
+   "maxTank": 5,
+   "defaultLifeSupport": "LifeSupport.ThirdE",
+   "defaultSensors": "Sensors.ThirdE",
+   "defaultShields": "Shields.FourE",
+   "defaultHull": "Hull.Light",
+   "maxFighterHangar": null
+  },
+  {
+   "key": "Kraken",
+   "var": "KRAKEN",
+   "baseCost": 124597330,
+   "optional": [
+    1,
+    1,
+    2,
+    2,
+    3,
+    1,
+    1,
+    1
+   ],
+   "optionalMilitary": [],
+   "weapons": [
+    2,
+    3,
+    4
+   ],
+   "external": [
+    8,
+    0,
+    0
+   ],
+   "maxDSD": 6,
+   "maxThrusters": 7,
+   "maxPowerPlant": 8,
+   "maxPowerDistributor": 6,
+   "maxTank": 6,
+   "defaultLifeSupport": "LifeSupport.FiveE",
+   "defaultSensors": "Sensors.FourE",
+   "defaultShields": "Shields.SixE",
+   "defaultHull": "Hull.Light",
+   "maxFighterHangar": "FighterHangar.FighterHangarSix"
+  },
+  {
+   "key": "MValkyrie",
+   "var": "VALKIRIA_PIRATES",
+   "baseCost": 22500800,
+   "optional": [
+    1,
+    2,
+    0,
+    1,
+    1,
+    1
+   ],
+   "optionalMilitary": [
+    0,
+    0,
+    0,
+    3,
+    0,
+    0
+   ],
+   "weapons": [
+    2,
+    1,
+    3
+   ],
+   "external": [
+    2,
+    0,
+    0
+   ],
+   "maxDSD": 5,
+   "maxThrusters": 6,
+   "maxPowerPlant": 6,
+   "maxPowerDistributor": 6,
+   "maxTank": 4,
+   "defaultLifeSupport": "LifeSupport.FiveE",
+   "defaultSensors": "Sensors.FourE",
+   "defaultShields": "Shields.FiveE",
+   "defaultHull": "Hull.Light",
+   "maxFighterHangar": null
+  },
+  {
+   "key": "Mantis",
+   "var": "MANTIS",
+   "baseCost": 142340570,
+   "optional": [
+    2,
+    0,
+    1,
+    2,
+    2,
+    2,
+    3,
+    0
+   ],
+   "optionalMilitary": [
+    0,
+    0,
+    0,
+    0,
+    2,
+    0
+   ],
+   "weapons": [
+    0,
+    2,
+    1,
+    3
+   ],
+   "external": [
+    8,
+    0,
+    0
+   ],
+   "maxDSD": 6,
+   "maxThrusters": 7,
+   "maxPowerPlant": 8,
+   "maxPowerDistributor": 8,
+   "maxTank": 5,
+   "defaultLifeSupport": "LifeSupport.FiveE",
+   "defaultSensors": "Sensors.EightE",
+   "defaultShields": "Shields.SevenE",
+   "defaultHull": "Hull.Light",
+   "maxFighterHangar": "FighterHangar.FighterHangarSix"
+  },
+  {
+   "key": "Mother",
+   "var": "ANGLER_MOTHER",
+   "baseCost": 142340570,
+   "optional": [
+    1,
+    2,
+    2,
+    3,
+    2,
+    2,
+    1,
+    0
+   ],
+   "optionalMilitary": [
+    0,
+    0,
+    0,
+    0,
+    0,
+    0
+   ],
+   "weapons": [
+    0,
+    0,
+    0,
+    1
+   ],
+   "external": [
+    0,
+    0,
+    0
+   ],
+   "maxDSD": 6,
+   "maxThrusters": 7,
+   "maxPowerPlant": 8,
+   "maxPowerDistributor": 8,
+   "maxTank": 5,
+   "defaultLifeSupport": "LifeSupport.FiveE",
+   "defaultSensors": "Sensors.EightE",
+   "defaultShields": null,
+   "defaultHull": "Hull.Light",
+   "maxFighterHangar": "FighterHangar.FighterHangarSeven"
+  },
+  {
+   "key": "Nemesis",
+   "var": "NEMESIS",
+   "baseCost": 289223500,
+   "optional": [
+    1,
+    0,
+    1,
+    1,
+    2,
+    3,
+    0,
+    0
+   ],
+   "optionalMilitary": [
+    0,
+    0,
+    0,
+    0,
+    1,
+    0
+   ],
+   "weapons": [
+    0,
+    0,
+    2,
+    2
+   ],
+   "external": [
+    6,
+    0,
+    0
+   ],
+   "maxDSD": 8,
+   "maxThrusters": 8,
+   "maxPowerPlant": 8,
+   "maxPowerDistributor": 8,
+   "maxTank": 6,
+   "defaultLifeSupport": "LifeSupport.FiveD",
+   "defaultSensors": "Sensors.EightE",
+   "defaultShields": "Shields.SixE",
+   "defaultHull": "Hull.Light",
+   "maxFighterHangar": "FighterHangar.FighterHangarFive"
+  },
+  {
+   "key": "Overseer",
+   "var": "OVERSEER",
+   "baseCost": 23400890,
+   "optional": [
+    1,
+    2,
+    2,
+    2,
+    0,
+    1,
+    1
+   ],
+   "optionalMilitary": [
+    0,
+    0,
+    0,
+    0,
+    0,
+    0
+   ],
+   "weapons": [
+    0,
+    2,
+    2
+   ],
+   "external": [
+    4,
+    0,
+    0
+   ],
+   "maxDSD": 5,
+   "maxThrusters": 6,
+   "maxPowerPlant": 6,
+   "maxPowerDistributor": 6,
+   "maxTank": 4,
+   "defaultLifeSupport": "LifeSupport.FiveE",
+   "defaultSensors": "Sensors.FiveE",
+   "defaultShields": "Shields.SixE",
+   "defaultHull": "Hull.Light",
+   "maxFighterHangar": null
+  },
+  {
+   "key": "PangolinMK2",
+   "var": "PANGOLINMK2",
+   "baseCost": 767200,
+   "optional": [
+    2,
+    2,
+    2,
+    4,
+    0,
+    0
+   ],
+   "optionalMilitary": [],
+   "weapons": [
+    0,
+    5,
+    0
+   ],
+   "external": [
+    2,
+    0,
+    0
+   ],
+   "maxDSD": 4,
+   "maxThrusters": 4,
+   "maxPowerPlant": 4,
+   "maxPowerDistributor": 3,
+   "maxTank": 4,
+   "defaultLifeSupport": "LifeSupport.ThirdE",
+   "defaultSensors": "Sensors.ThirdE",
+   "defaultShields": "Shields.FourE",
+   "defaultHull": "Hull.Light",
+   "maxFighterHangar": null
+  },
+  {
+   "key": "Phasis",
+   "var": "PHASIS",
+   "baseCost": 51630970,
+   "optional": [
+    1,
+    1,
+    2,
+    0,
+    2,
+    0
+   ],
+   "optionalMilitary": [
+    0,
+    0,
+    0,
+    0,
+    0,
+    0
+   ],
+   "weapons": [
+    2,
+    2,
+    0
+   ],
+   "external": [
+    4,
+    0,
+    0
+   ],
+   "maxDSD": 5,
+   "maxThrusters": 5,
+   "maxPowerPlant": 6,
+   "maxPowerDistributor": 6,
+   "maxTank": 5,
+   "defaultLifeSupport": "LifeSupport.FourE",
+   "defaultSensors": "Sensors.SixE",
+   "defaultShields": "Shields.ThirdE",
+   "defaultHull": "Hull.Light",
+   "maxFighterHangar": null
+  },
+  {
+   "key": "Phoenix",
+   "var": "PHOENIX",
+   "baseCost": 552990,
+   "optional": [
+    2,
+    1,
+    3,
+    0,
+    0,
+    0
+   ],
+   "optionalMilitary": [],
+   "weapons": [
+    2,
+    2,
+    0
+   ],
+   "external": [
+    4,
+    0,
+    0
+   ],
+   "maxDSD": 4,
+   "maxThrusters": 4,
+   "maxPowerPlant": 4,
+   "maxPowerDistributor": 3,
+   "maxTank": 4,
+   "defaultLifeSupport": "LifeSupport.SecondE",
+   "defaultSensors": "Sensors.SecondE",
+   "defaultShields": "Shields.ThirdE",
+   "defaultHull": "Hull.Light",
+   "maxFighterHangar": null
+  },
+  {
+   "key": "Pilgrim",
+   "var": "PILGRIM",
+   "baseCost": 46570800,
+   "optional": [
+    1,
+    2,
+    1,
+    1,
+    3,
+    1,
+    0,
+    0
+   ],
+   "optionalMilitary": [
+    0,
+    0,
+    0,
+    0,
+    0,
+    0
+   ],
+   "weapons": [
+    0,
+    2,
+    2,
+    0
+   ],
+   "external": [
+    4,
+    0,
+    0
+   ],
+   "maxDSD": 5,
+   "maxThrusters": 6,
+   "maxPowerPlant": 5,
+   "maxPowerDistributor": 5,
+   "maxTank": 5,
+   "defaultLifeSupport": "LifeSupport.SixE",
+   "defaultSensors": "Sensors.FourE",
+   "defaultShields": "Shields.FiveE",
+   "defaultHull": "Hull.Light",
+   "maxFighterHangar": null
+  },
+  {
+   "key": "Porter",
+   "var": "PORTER",
+   "baseCost": 17890500,
+   "optional": [
+    1,
+    1,
+    2,
+    0,
+    3,
+    3,
+    0
+   ],
+   "optionalMilitary": [
+    0,
+    0,
+    0,
+    0,
+    0,
+    0
+   ],
+   "weapons": [
+    4,
+    0,
+    0
+   ],
+   "external": [
+    4,
+    0,
+    0
+   ],
+   "maxDSD": 5,
+   "maxThrusters": 5,
+   "maxPowerPlant": 4,
+   "maxPowerDistributor": 3,
+   "maxTank": 5,
+   "defaultLifeSupport": "LifeSupport.FourE",
+   "defaultSensors": "Sensors.ThirdE",
+   "defaultShields": "Shields.FourE",
+   "defaultHull": "Hull.Light",
+   "maxFighterHangar": null
+  },
+  {
+   "key": "Rogue",
+   "var": "ROGUE",
+   "baseCost": 16200,
+   "optional": [
+    0,
+    2,
+    0,
+    0,
+    0,
+    0
+   ],
+   "optionalMilitary": [],
+   "weapons": [
+    0,
+    2,
+    0
+   ],
+   "external": [
+    0,
+    0,
+    0
+   ],
+   "maxDSD": 2,
+   "maxThrusters": 2,
+   "maxPowerPlant": 2,
+   "maxPowerDistributor": 2,
+   "maxTank": 1,
+   "defaultLifeSupport": "LifeSupport.FirstE",
+   "defaultSensors": "Sensors.SecondD",
+   "defaultShields": "Shields.SecondB",
+   "defaultHull": "Hull.Light",
+   "maxFighterHangar": null
+  },
+  {
+   "key": "SarffGiant",
+   "var": "SARF_GIANT",
+   "baseCost": 580000000,
+   "optional": [
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    8
+   ],
+   "optionalMilitary": [
+    0,
+    0,
+    0,
+    0,
+    0,
+    0
+   ],
+   "weapons": [
+    0,
+    0,
+    0,
+    4,
+    1
+   ],
+   "external": [
+    0,
+    0,
+    0
+   ],
+   "maxDSD": 8,
+   "maxThrusters": 8,
+   "maxPowerPlant": 9,
+   "maxPowerDistributor": 8,
+   "maxTank": 7,
+   "defaultLifeSupport": "LifeSupport.SixD",
+   "defaultSensors": "Sensors.NineD",
+   "defaultShields": "Shields.EightA",
+   "defaultHull": "Hull.Military",
+   "maxFighterHangar": "FighterHangar.FighterHangarSeven"
+  },
+  {
+   "key": "Scorpion",
+   "var": "SCORPION",
+   "baseCost": 34260920,
+   "optional": [
+    3,
+    1,
+    0,
+    2,
+    1,
+    0,
+    0,
+    0
+   ],
+   "optionalMilitary": [
+    0,
+    0,
+    0,
+    0,
+    0,
+    0
+   ],
+   "weapons": [
+    0,
+    4,
+    0,
+    1
+   ],
+   "external": [
+    6,
+    0,
+    0
+   ],
+   "maxDSD": 4,
+   "maxThrusters": 5,
+   "maxPowerPlant": 6,
+   "maxPowerDistributor": 6,
+   "maxTank": 3,
+   "defaultLifeSupport": "LifeSupport.FourE",
+   "defaultSensors": "Sensors.FourE",
+   "defaultShields": "Shields.FourE",
+   "defaultHull": "Hull.Light",
+   "maxFighterHangar": null
+  },
+  {
+   "key": "Specter",
+   "var": "SPECTER",
+   "baseCost": 38500320,
+   "optional": [
+    1,
+    1,
+    3,
+    0,
+    3,
+    1
+   ],
+   "optionalMilitary": [
+    0,
+    0,
+    0,
+    0,
+    0,
+    0
+   ],
+   "weapons": [
+    0,
+    2,
+    2
+   ],
+   "external": [
+    4,
+    0,
+    0
+   ],
+   "maxDSD": 5,
+   "maxThrusters": 6,
+   "maxPowerPlant": 7,
+   "maxPowerDistributor": 7,
+   "maxTank": 5,
+   "defaultLifeSupport": "LifeSupport.FourE",
+   "defaultSensors": "Sensors.SixE",
+   "defaultShields": "Shields.SixE",
+   "defaultHull": "Hull.Light",
+   "maxFighterHangar": null
+  },
+  {
+   "key": "Therion",
+   "var": "THERION",
+   "baseCost": 30490500,
+   "optional": [
+    1,
+    2,
+    0,
+    0,
+    1,
+    2
+   ],
+   "optionalMilitary": [
+    0,
+    0,
+    0,
+    3,
+    0,
+    0
+   ],
+   "weapons": [
+    2,
+    4,
+    1
+   ],
+   "external": [
+    4,
+    0,
+    0
+   ],
+   "maxDSD": 5,
+   "maxThrusters": 6,
+   "maxPowerPlant": 6,
+   "maxPowerDistributor": 7,
+   "maxTank": 4,
+   "defaultLifeSupport": "LifeSupport.FiveE",
+   "defaultSensors": "Sensors.FiveE",
+   "defaultShields": "Shields.SixE",
+   "defaultHull": "Hull.Light",
+   "maxFighterHangar": null
+  },
+  {
+   "key": "Thorn",
+   "var": "THORN",
+   "baseCost": 16200,
+   "optional": [
+    0,
+    2,
+    0,
+    0,
+    0,
+    0
+   ],
+   "optionalMilitary": [],
+   "weapons": [
+    0,
+    2,
+    0
+   ],
+   "external": [
+    0,
+    0,
+    0
+   ],
+   "maxDSD": 2,
+   "maxThrusters": 2,
+   "maxPowerPlant": 2,
+   "maxPowerDistributor": 2,
+   "maxTank": 1,
+   "defaultLifeSupport": "LifeSupport.FirstE",
+   "defaultSensors": "Sensors.SecondD",
+   "defaultShields": "Shields.SecondB",
+   "defaultHull": "Hull.Light",
+   "maxFighterHangar": null
+  },
+  {
+   "key": "Titan",
+   "var": "TITAN",
+   "baseCost": 393800500,
+   "optional": [
+    1,
+    0,
+    1,
+    2,
+    1,
+    0,
+    0,
+    5
+   ],
+   "optionalMilitary": [
+    0,
+    0,
+    0,
+    0,
+    6,
+    0
+   ],
+   "weapons": [
+    0,
+    1,
+    2,
+    4,
+    1
+   ],
+   "external": [
+    8,
+    0,
+    0
+   ],
+   "maxDSD": 8,
+   "maxThrusters": 8,
+   "maxPowerPlant": 9,
+   "maxPowerDistributor": 8,
+   "maxTank": 7,
+   "defaultLifeSupport": "LifeSupport.SixE",
+   "defaultSensors": "Sensors.NineE",
+   "defaultShields": "Shields.EightD",
+   "defaultHull": "Hull.Light",
+   "maxFighterHangar": "FighterHangar.FighterHangarSeven"
+  },
+  {
+   "key": "Valkyrie",
+   "var": "VALKIRIA",
+   "baseCost": 19600930,
+   "optional": [
+    1,
+    2,
+    0,
+    1,
+    1,
+    1
+   ],
+   "optionalMilitary": [
+    0,
+    0,
+    0,
+    3,
+    0,
+    0
+   ],
+   "weapons": [
+    3,
+    1,
+    2
+   ],
+   "external": [
+    4,
+    0,
+    0
+   ],
+   "maxDSD": 5,
+   "maxThrusters": 6,
+   "maxPowerPlant": 6,
+   "maxPowerDistributor": 6,
+   "maxTank": 4,
+   "defaultLifeSupport": "LifeSupport.FiveE",
+   "defaultSensors": "Sensors.FourE",
+   "defaultShields": "Shields.FiveE",
+   "defaultHull": "Hull.Light",
+   "maxFighterHangar": null
+  },
+  {
+   "key": "Vertex",
+   "var": "VERTEX",
+   "baseCost": 115000,
+   "optional": [
+    4,
+    1,
+    2,
+    0,
+    0,
+    0
+   ],
+   "optionalMilitary": [
+    0,
+    0,
+    1,
+    0,
+    0,
+    0
+   ],
+   "weapons": [
+    2,
+    2,
+    0
+   ],
+   "external": [
+    2,
+    0,
+    0
+   ],
+   "maxDSD": 3,
+   "maxThrusters": 3,
+   "maxPowerPlant": 3,
+   "maxPowerDistributor": 3,
+   "maxTank": 2,
+   "defaultLifeSupport": "LifeSupport.SecondE",
+   "defaultSensors": "Sensors.ThirdE",
+   "defaultShields": "Shields.ThirdE",
+   "defaultHull": "Hull.Light",
+   "maxFighterHangar": null
+  },
+  {
+   "key": "VertexF",
+   "var": "VERTEX_F",
+   "baseCost": 90000,
+   "optional": [
+    4,
+    1,
+    2,
+    0,
+    0,
+    0
+   ],
+   "optionalMilitary": [
+    0,
+    0,
+    1,
+    0,
+    0,
+    0
+   ],
+   "weapons": [
+    2,
+    2,
+    0
+   ],
+   "external": [
+    2,
+    0,
+    0
+   ],
+   "maxDSD": 3,
+   "maxThrusters": 3,
+   "maxPowerPlant": 3,
+   "maxPowerDistributor": 3,
+   "maxTank": 2,
+   "defaultLifeSupport": "LifeSupport.SecondD",
+   "defaultSensors": "Sensors.ThirdD",
+   "defaultShields": "Shields.ThirdB",
+   "defaultHull": "Hull.Light",
+   "maxFighterHangar": null
+  },
+  {
+   "key": "Viking",
+   "var": "VIKING",
+   "baseCost": 18430700,
+   "optional": [
+    1,
+    2,
+    1,
+    1,
+    2,
+    0
+   ],
+   "optionalMilitary": [
+    0,
+    0,
+    0,
+    2,
+    0,
+    0
+   ],
+   "weapons": [
+    0,
+    2,
+    2
+   ],
+   "external": [
+    4,
+    0,
+    0
+   ],
+   "maxDSD": 5,
+   "maxThrusters": 6,
+   "maxPowerPlant": 6,
+   "maxPowerDistributor": 6,
+   "maxTank": 4,
+   "defaultLifeSupport": "LifeSupport.FiveE",
+   "defaultSensors": "Sensors.FourE",
+   "defaultShields": "Shields.FiveE",
+   "defaultHull": "Hull.Light",
+   "maxFighterHangar": null
+  },
+  {
+   "key": "Wasp",
+   "var": "WASP",
+   "baseCost": 4320780,
+   "optional": [
+    5,
+    1,
+    0,
+    1,
+    1,
+    0,
+    0,
+    0
+   ],
+   "optionalMilitary": [
+    0,
+    0,
+    0,
+    0,
+    1,
+    0
+   ],
+   "weapons": [
+    0,
+    0,
+    2
+   ],
+   "external": [
+    4,
+    0,
+    0
+   ],
+   "maxDSD": 4,
+   "maxThrusters": 5,
+   "maxPowerPlant": 4,
+   "maxPowerDistributor": 5,
+   "maxTank": 3,
+   "defaultLifeSupport": "LifeSupport.ThirdE",
+   "defaultSensors": "Sensors.FourE",
+   "defaultShields": "Shields.FiveE",
+   "defaultHull": "Hull.Light",
+   "maxFighterHangar": null
+  },
+  {
+   "key": "Zeus",
+   "var": "ZEUS",
+   "baseCost": 45130980,
+   "optional": [
+    1,
+    2,
+    1,
+    1,
+    1,
+    0
+   ],
+   "optionalMilitary": [],
+   "weapons": [
+    2,
+    0,
+    2,
+    1
+   ],
+   "external": [
+    6,
+    0,
+    0
+   ],
+   "maxDSD": 4,
+   "maxThrusters": 5,
+   "maxPowerPlant": 6,
+   "maxPowerDistributor": 6,
+   "maxTank": 3,
+   "defaultLifeSupport": "LifeSupport.FourE",
+   "defaultSensors": "Sensors.FourE",
+   "defaultShields": "Shields.FiveE",
+   "defaultHull": "Hull.Light",
+   "maxFighterHangar": null
+  },
+  {
+   "key": "sarffScout",
+   "var": "SARF_SCOUT",
+   "baseCost": 10902560,
+   "optional": [
+    5,
+    1,
+    0,
+    1,
+    2,
+    0,
+    0,
+    0
+   ],
+   "optionalMilitary": [
+    0,
+    0,
+    0,
+    0,
+    1,
+    0
+   ],
+   "weapons": [
+    0,
+    0,
+    0,
+    2
+   ],
+   "external": [
+    4,
+    0,
+    0
+   ],
+   "maxDSD": 5,
+   "maxThrusters": 5,
+   "maxPowerPlant": 5,
+   "maxPowerDistributor": 5,
+   "maxTank": 3,
+   "defaultLifeSupport": "LifeSupport.ThirdE",
+   "defaultSensors": "Sensors.FourE",
+   "defaultShields": "Shields.FiveA",
+   "defaultHull": "Hull.Light",
+   "maxFighterHangar": null
+  }
+ ],
+ "goods": [
+  {
+   "key": "Narcotics",
+   "market": "NonLegal",
+   "basicCost": 4.2,
+   "showOnMarket": true,
+   "name": "Tretonin"
+  },
+  {
+   "key": "Slaves",
+   "market": "NonLegal",
+   "basicCost": 7.2,
+   "showOnMarket": true,
+   "name": "Slaves"
+  },
+  {
+   "key": "BasicMedicines",
+   "market": "Medicines",
+   "basicCost": 0.3,
+   "showOnMarket": true,
+   "name": "Basic Medicines"
+  },
+  {
+   "key": "NanoMedicines",
+   "market": "Medicines",
+   "basicCost": 0.6,
+   "showOnMarket": true,
+   "name": "Nano Medicines"
+  },
+  {
+   "key": "Grain",
+   "market": "Food",
+   "basicCost": 0.1,
+   "showOnMarket": true,
+   "name": "Grain"
+  },
+  {
+   "key": "Fish",
+   "market": "Food",
+   "basicCost": 0.2,
+   "showOnMarket": true,
+   "name": "Fish"
+  },
+  {
+   "key": "Tea",
+   "market": "Food",
+   "basicCost": 0.12,
+   "showOnMarket": true,
+   "name": "Tea"
+  },
+  {
+   "key": "Meat",
+   "market": "Food",
+   "basicCost": 0.15,
+   "showOnMarket": true,
+   "name": "Meat"
+  },
+  {
+   "key": "FruitAndVegetables",
+   "market": "Food",
+   "basicCost": 0.11,
+   "showOnMarket": true,
+   "name": "Fruit And Vegetables"
+  },
+  {
+   "key": "ComputerComponents",
+   "market": "Technology",
+   "basicCost": 0.8,
+   "showOnMarket": true,
+   "name": "Computer Components"
+  },
+  {
+   "key": "Robotics",
+   "market": "Technology",
+   "basicCost": 1.0,
+   "showOnMarket": true,
+   "name": "Robotics"
+  },
+  {
+   "key": "PersonalWeapons",
+   "market": "Weapons",
+   "basicCost": 0.8,
+   "showOnMarket": true,
+   "name": "Personal Weapons"
+  },
+  {
+   "key": "BattleWeapons",
+   "market": "Weapons",
+   "basicCost": 1.0,
+   "showOnMarket": true,
+   "name": "Battle Weapons"
+  },
+  {
+   "key": "Leather",
+   "market": "Textiles",
+   "basicCost": 0.8,
+   "showOnMarket": true,
+   "name": "Leather"
+  },
+  {
+   "key": "NaturalFabrics",
+   "market": "Textiles",
+   "basicCost": 0.3,
+   "showOnMarket": true,
+   "name": "Natural Fabrics"
+  },
+  {
+   "key": "SyntheticFabrics",
+   "market": "Textiles",
+   "basicCost": 0.2,
+   "showOnMarket": true,
+   "name": "Synthetic Fabrics"
+  },
+  {
+   "key": "MilitaryFabrics",
+   "market": "Textiles",
+   "basicCost": 0.7,
+   "showOnMarket": true,
+   "name": "Military Fabrics"
+  },
+  {
+   "key": "Aluminium",
+   "market": "Metals",
+   "basicCost": 0.1,
+   "showOnMarket": true,
+   "name": "Aluminium"
+  },
+  {
+   "key": "Gold",
+   "market": "Metals",
+   "basicCost": 0.85,
+   "showOnMarket": true,
+   "name": "Gold"
+  },
+  {
+   "key": "Titanium",
+   "market": "Metals",
+   "basicCost": 0.2,
+   "showOnMarket": true,
+   "name": "Titanium"
+  },
+  {
+   "key": "Copper",
+   "market": "Metals",
+   "basicCost": 0.23,
+   "showOnMarket": true,
+   "name": "Copper"
+  },
+  {
+   "key": "Iron",
+   "market": "Metals",
+   "basicCost": 0.1,
+   "showOnMarket": true,
+   "name": "Iron"
+  },
+  {
+   "key": "Platinum",
+   "market": "Metals",
+   "basicCost": 2.2,
+   "showOnMarket": true,
+   "name": "Platinum"
+  },
+  {
+   "key": "Thorium",
+   "market": "Metals",
+   "basicCost": 0.78,
+   "showOnMarket": true,
+   "name": "Thorium"
+  },
+  {
+   "key": "Uranium",
+   "market": "Metals",
+   "basicCost": 0.39,
+   "showOnMarket": true,
+   "name": "Uranium"
+  },
+  {
+   "key": "Samarium",
+   "market": "Metals",
+   "basicCost": 0.82,
+   "showOnMarket": true,
+   "name": "Samarium"
+  },
+  {
+   "key": "Hafnium",
+   "market": "Metals",
+   "basicCost": 3.1,
+   "showOnMarket": true,
+   "name": "Hafnium"
+  },
+  {
+   "key": "Thallium",
+   "market": "Metals",
+   "basicCost": 0.32,
+   "showOnMarket": true,
+   "name": "Thallium"
+  },
+  {
+   "key": "Tantalum",
+   "market": "Metals",
+   "basicCost": 0.29,
+   "showOnMarket": true,
+   "name": "Tantalum"
+  },
+  {
+   "key": "SurvivalEquipment",
+   "market": "ConsumerItems",
+   "basicCost": 0.1,
+   "showOnMarket": true,
+   "name": "Survival Equipment"
+  },
+  {
+   "key": "Clothing",
+   "market": "ConsumerItems",
+   "basicCost": 0.08,
+   "showOnMarket": true,
+   "name": "Clothing"
+  },
+  {
+   "key": "DomesticAppliances",
+   "market": "ConsumerItems",
+   "basicCost": 0.12,
+   "showOnMarket": true,
+   "name": "Domestic Appliances"
+  },
+  {
+   "key": "Oil",
+   "market": "Chemicals",
+   "basicCost": 0.15,
+   "showOnMarket": true,
+   "name": "Oil"
+  },
+  {
+   "key": "HydrogenFuel",
+   "market": "Chemicals",
+   "basicCost": 0.11,
+   "showOnMarket": true,
+   "name": "Hydrogen Fuel"
+  },
+  {
+   "key": "Water",
+   "market": "Chemicals",
+   "basicCost": 0.06,
+   "showOnMarket": true,
+   "name": "Water"
+  },
+  {
+   "key": "LiquidOxygen",
+   "market": "Chemicals",
+   "basicCost": 0.17,
+   "showOnMarket": true,
+   "name": "Liquid Oxygen"
+  },
+  {
+   "key": "Diamonds",
+   "market": "Minerals",
+   "basicCost": 1.0,
+   "showOnMarket": true,
+   "name": "Diamonds"
+  },
+  {
+   "key": "Alexandrite",
+   "market": "Minerals",
+   "basicCost": 2.1,
+   "showOnMarket": true,
+   "name": "Alexandrite"
+  },
+  {
+   "key": "Bouxite",
+   "market": "Minerals",
+   "basicCost": 0.05,
+   "showOnMarket": true,
+   "name": "Bouxite"
+  },
+  {
+   "key": "Gallite",
+   "market": "Minerals",
+   "basicCost": 0.2,
+   "showOnMarket": true,
+   "name": "Gallite"
+  },
+  {
+   "key": "Coltan",
+   "market": "Minerals",
+   "basicCost": 0.09,
+   "showOnMarket": true,
+   "name": "Coltan"
+  },
+  {
+   "key": "Bromellite",
+   "market": "Minerals",
+   "basicCost": 0.8,
+   "showOnMarket": true,
+   "name": "Bromellite"
+  },
+  {
+   "key": "Rutile",
+   "market": "Minerals",
+   "basicCost": 0.08,
+   "showOnMarket": true,
+   "name": "Rutile"
+  },
+  {
+   "key": "Uraninite",
+   "market": "Minerals",
+   "basicCost": 0.21,
+   "showOnMarket": true,
+   "name": "Uraninite"
+  },
+  {
+   "key": "Monazite",
+   "market": "Minerals",
+   "basicCost": 1.3,
+   "showOnMarket": true,
+   "name": "Monazite"
+  },
+  {
+   "key": "Painite",
+   "market": "Minerals",
+   "basicCost": 1.1,
+   "showOnMarket": true,
+   "name": "Painite"
+  },
+  {
+   "key": "Lepidolite",
+   "market": "Minerals",
+   "basicCost": 0.15,
+   "showOnMarket": true,
+   "name": "Lepidolite"
+  },
+  {
+   "key": "LithiumHydroxide",
+   "market": "Minerals",
+   "basicCost": 0.22,
+   "showOnMarket": true,
+   "name": "Lithium Hydroxide"
+  },
+  {
+   "key": "MethaneClathrate",
+   "market": "Minerals",
+   "basicCost": 0.25,
+   "showOnMarket": true,
+   "name": "Methane Clathrate"
+  },
+  {
+   "key": "EscapePod",
+   "market": "Other",
+   "basicCost": 10.0,
+   "showOnMarket": false,
+   "name": "Escape Pod"
+  },
+  {
+   "key": "AnglerEye",
+   "market": "Other",
+   "basicCost": 150.0,
+   "showOnMarket": true,
+   "name": "Angler Eye"
+  },
+  {
+   "key": "AnglerFang",
+   "market": "Other",
+   "basicCost": 25.0,
+   "showOnMarket": true,
+   "name": "Angler Fang"
+  },
+  {
+   "key": "AutomatonComponent",
+   "market": "Other",
+   "basicCost": 300.0,
+   "showOnMarket": true,
+   "name": "Automaton Component"
+  },
+  {
+   "key": "EscapePodRare",
+   "market": "Other",
+   "basicCost": 20.0,
+   "showOnMarket": false,
+   "name": "Escape Pod Rare"
+  },
+  {
+   "key": "EscapePodPirate",
+   "market": "Other",
+   "basicCost": 10.0,
+   "showOnMarket": false,
+   "name": "Escape Pod Pirate"
+  },
+  {
+   "key": "EscapePodRarePirate",
+   "market": "Other",
+   "basicCost": 20.0,
+   "showOnMarket": false,
+   "name": "Escape Pod Pirate Rare"
+  },
+  {
+   "key": "Zentarks Diamond",
+   "market": "Other",
+   "basicCost": 450.0,
+   "showOnMarket": true,
+   "name": "Zentarks Stone"
+  },
+  {
+   "key": "Drone",
+   "market": "Other",
+   "basicCost": 0.1,
+   "showOnMarket": false,
+   "name": "Drone"
+  },
+  {
+   "key": "VoidOpal",
+   "market": "Minerals",
+   "basicCost": 15.0,
+   "showOnMarket": true,
+   "name": "Void Opal"
+  },
+  {
+   "key": "Musgravite",
+   "market": "Minerals",
+   "basicCost": 10.0,
+   "showOnMarket": true,
+   "name": "Musgravite"
+  }
+ ],
+ "materials": [
+  {
+   "id": 0,
+   "key": "WarpAnalysis",
+   "type": "Data",
+   "rare": 1.0,
+   "name": "Warp Trail Analysis Data"
+  },
+  {
+   "id": 1,
+   "key": "ShieldsAnalysis",
+   "type": "Data",
+   "rare": 0.7,
+   "name": "Shield Analysis Data"
+  },
+  {
+   "id": 2,
+   "key": "LegacyFirmware",
+   "type": "Data",
+   "rare": 0.5,
+   "name": "Special firmware"
+  },
+  {
+   "id": 3,
+   "key": "AutomatonData",
+   "type": "Data",
+   "rare": 0.2,
+   "name": "Automaton data"
+  },
+  {
+   "id": 4,
+   "key": "SecurityFirmware",
+   "type": "Data",
+   "rare": 0.4,
+   "name": "System Guardians Data"
+  },
+  {
+   "id": 5,
+   "key": "Sulphur",
+   "type": "Element",
+   "rare": 1.0,
+   "name": "Sulphur"
+  },
+  {
+   "id": 6,
+   "key": "Nickel",
+   "type": "Element",
+   "rare": 1.0,
+   "name": "Nickel"
+  },
+  {
+   "id": 7,
+   "key": "Iron",
+   "type": "Element",
+   "rare": 1.0,
+   "name": "Iron"
+  },
+  {
+   "id": 8,
+   "key": "Manganese",
+   "type": "Element",
+   "rare": 1.0,
+   "name": "Manganese"
+  },
+  {
+   "id": 9,
+   "key": "Chromium",
+   "type": "Element",
+   "rare": 0.8,
+   "name": "Chromium"
+  },
+  {
+   "id": 10,
+   "key": "Phosphorus",
+   "type": "Element",
+   "rare": 0.7,
+   "name": "Phosphorus"
+  },
+  {
+   "id": 11,
+   "key": "Carbon",
+   "type": "Element",
+   "rare": 1.0,
+   "name": "Carbon"
+  },
+  {
+   "id": 12,
+   "key": "Vanadium",
+   "type": "Element",
+   "rare": 0.4,
+   "name": "Vanadium"
+  },
+  {
+   "id": 13,
+   "key": "Selenium",
+   "type": "Element",
+   "rare": 0.2,
+   "name": "Selenium"
+  },
+  {
+   "id": 14,
+   "key": "Cadmium",
+   "type": "Element",
+   "rare": 0.3,
+   "name": "Cadmium"
+  },
+  {
+   "id": 15,
+   "key": "Polonium",
+   "type": "Element",
+   "rare": 0.2,
+   "name": "Polonium"
+  },
+  {
+   "id": 16,
+   "key": "Germanium",
+   "type": "Element",
+   "rare": 0.2,
+   "name": "Germanium"
+  },
+  {
+   "id": 17,
+   "key": "Tellurium",
+   "type": "Element",
+   "rare": 0.3,
+   "name": "Tellurium"
+  },
+  {
+   "id": 18,
+   "key": "WeaponParts",
+   "type": "Material",
+   "rare": 1.0,
+   "name": "Weapon parts"
+  },
+  {
+   "id": 19,
+   "key": "SensorFragment",
+   "type": "Material",
+   "rare": 1.0,
+   "name": "Fragment of sensors"
+  },
+  {
+   "id": 20,
+   "key": "ChemicalProcessors",
+   "type": "Material",
+   "rare": 1.0,
+   "name": "Chemical processors"
+  },
+  {
+   "id": 21,
+   "key": "MicroResistors",
+   "type": "Material",
+   "rare": 1.0,
+   "name": "Microresistors"
+  },
+  {
+   "id": 22,
+   "key": "HeatExchanger",
+   "type": "Material",
+   "rare": 1.0,
+   "name": "Heat exchanger"
+  },
+  {
+   "id": 23,
+   "key": "NanoCapacitors",
+   "type": "Material",
+   "rare": 1.0,
+   "name": "Nano capacitors"
+  },
+  {
+   "id": 24,
+   "key": "ChemicalManipulators",
+   "type": "Material",
+   "rare": 0.5,
+   "name": "Chemical manipulators"
+  },
+  {
+   "id": 25,
+   "key": "ConductiveCeramics",
+   "type": "Material",
+   "rare": 0.5,
+   "name": "Conductive ceramics"
+  },
+  {
+   "id": 26,
+   "key": "FocusCrystals",
+   "type": "Material",
+   "rare": 0.5,
+   "name": "Focusing Crystals"
+  },
+  {
+   "id": 27,
+   "key": "MilitaryAlloys",
+   "type": "Material",
+   "rare": 0.5,
+   "name": "Military alloys"
+  },
+  {
+   "id": 28,
+   "key": "ConductivePolymers",
+   "type": "Material",
+   "rare": 0.2,
+   "name": "Conductive polymers"
+  },
+  {
+   "id": 29,
+   "key": "ShieldEmitters",
+   "type": "Material",
+   "rare": 0.2,
+   "name": "Shield emitters"
+  },
+  {
+   "id": 30,
+   "key": "HeatDispersionPlate",
+   "type": "Material",
+   "rare": 0.2,
+   "name": "Heat diffuser"
+  },
+  {
+   "id": 31,
+   "key": "AutomatonComponent",
+   "type": "Material",
+   "rare": 0.2,
+   "name": "Automaton component"
+  }
+ ],
+ "grades": [
+  {
+   "letter": "E",
+   "value": 1
+  },
+  {
+   "letter": "D",
+   "value": 2
+  },
+  {
+   "letter": "C",
+   "value": 3
+  },
+  {
+   "letter": "B",
+   "value": 4
+  },
+  {
+   "letter": "A",
+   "value": 5
+  }
+ ],
+ "materialCountMax": 50
+}
