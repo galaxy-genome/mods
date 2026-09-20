@@ -1,0 +1,33 @@
+export default {
+  title: 'Save file',
+  rotate: 'Turn your device sideways',
+  rotateHelp: 'The station screens are landscape, as in the game.',
+
+  load: 'LOAD',
+  loadTitle: 'Save file',
+  loadHelp: 'Open Save1.SOL, Save2.SOL or Save3.SOL from the game folder. Nothing is overwritten: an edited save leaves as a new download.',
+  loadFailed: 'That file is not a Galaxy Genome save.',
+  loaded: '{file} loaded',
+
+  station: 'STATION',
+  ship: 'SHIP',
+  credits: 'CREDITS',
+  modules: 'MODULES',
+  shipyard: 'SHIPYARD',
+  market: 'MARKET',
+  service: 'SERVICE',
+  storage: 'STORAGE',
+  ships: 'SHIPS',
+  galaxy: 'GALAXY',
+  cargo: 'CARGO',
+  specs: 'SPECS',
+  soon: 'Not in this version yet',
+
+  balance: 'Balance',
+  owner: 'Owner',
+  ownerLocal: 'Local game',
+  save: 'SAVE',
+  back: 'BACK',
+  blocked: 'Blocked, {field}: {message}',
+  saved: '{file} downloaded',
+}

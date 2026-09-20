@@ -42,6 +42,9 @@ import { StepsPage } from '@/features/steps/StepsPage'
 import { splitViewId } from '@/lib/mods'
 import { local, usePart } from '@/store/editor'
 
+/** The save editor is its own chunk: the codec and the game data tables load only on this route. */
+const SaveRoute = React.lazy(() => import('@/features/save/SaveRoute'))
+
 function ModOverview() {
   const { modId } = useParams()
   const mod = usePart(modId)
@@ -135,6 +138,7 @@ function AppRoutes() {
           <Route path="map" element={<StarsMapPage />} />
           <Route path="*" element={<ModContents />} />
         </Route>
+        <Route path="/savefile" element={<React.Suspense fallback={null}><SaveRoute /></React.Suspense>} />
         <Route path="/map/:mode" element={<MapRoute />} />
         <Route path="/series/:modId?" element={<SeriesMapPage />} />
         <Route path="/share" element={<SharedFile />} />
