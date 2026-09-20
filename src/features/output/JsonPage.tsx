@@ -31,7 +31,7 @@ export function JsonPage() {
     <Page>
       <div className="-mx-4 overflow-x-auto px-4">
         <div role="tablist" aria-label={t('output.jsonPart')} className="flex gap-1.5">
-          {[{ id: 'all', label: t('output.jsonWhole') }, ...q.steps.map((s, i) => ({ id: s.id, label: t('output.stepN', { n: i + 1 }) }))].map((x) => (
+          {[{ id: 'all', label: t('output.jsonWhole') }, ...q.steps.map((s, i) => ({ id: s.id, label: t('output.stepN', { n: i }) }))].map((x) => (
             <button
               key={x.id}
               role="tab"

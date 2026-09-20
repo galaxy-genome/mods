@@ -24,7 +24,7 @@ export default {
   'term.mission': 'Station mission',
   'term.version': 'Language version',
   'def.step': 'One stage of a quest. It shows dialogue, spawns ships and gives orders when it starts, then waits for its Finishes when condition.',
-  'def.checkpoint': 'A step that saves the quest when it begins. Reloading resumes there, without that step’s dialogue, ships or orders. Before the first checkpoint, reloading resumes at step 1.',
+  'def.checkpoint': 'A step that saves the quest when it begins. Reloading resumes there, without that step’s dialogue, ships or orders. Before the first checkpoint, reloading resumes at step 0.',
   'def.journal': 'The line in the player’s journal while a step is active. Write it as an instruction.',
   'def.condition': 'Something that happens in the game, such as arriving in a system or a ship being destroyed. It finishes or fails a step.',
   'def.choice': 'A button on the last line of dialogue. Each choice goes to a step you pick. The game shows at most 3.',
@@ -116,7 +116,7 @@ export default {
   smIntro: 'A station mission puts a card on a station’s mission board while its step is active. It takes two steps: the mission’s step finishes on Accept a story mission, the next on Collect a story mission reward. Add station mission on the Steps page creates both.',
   sm1: 'The game caps mission credits at 100,000 CR and reputation at 3.',
   sm2: 'If the target station is the offering station, the game picks another within 100 ly.',
-  sm3: 'Keep Story on. Only story missions raise the accept and reward conditions, and only they never time out. The board never shows a mission from step 1.',
+  sm3: 'Keep Story on. Only story missions raise the accept and reward conditions, and only they never time out. The board never shows a mission from step 0.',
   smTypes: 'Types',
 
   rwIntro: 'The game pays mod quests itself. The Reward and Karma reward fields in the file are ignored.',

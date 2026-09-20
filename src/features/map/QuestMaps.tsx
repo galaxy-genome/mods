@@ -86,7 +86,7 @@ export function QuestOverviewMap({ q, modId, selected, onSelect }: { q: QuestCon
     // Steps without a place that a route passes through: small hollow pins on the way.
     for (const w of waypoints) {
       const id = `via:${w.step}`
-      pins.set(id, { id, x: w.x, y: w.y, text: String(w.step + 1), colour: NEXT, hollow: true, steps: [w.step], places: [], problem: problemSteps.has(w.step) })
+      pins.set(id, { id, x: w.x, y: w.y, text: String(w.step), colour: NEXT, hollow: true, steps: [w.step], places: [], problem: problemSteps.has(w.step) })
       overlay.pins.push(pins.get(id)!)
     }
     const onRoute = new Set(waypoints.map((w) => w.step))
@@ -138,7 +138,7 @@ export function QuestOverviewMap({ q, modId, selected, onSelect }: { q: QuestCon
         {step && selected !== null && (
           <Card className="absolute inset-x-2 bottom-2 flex flex-col gap-1.5 bg-deep/95 p-3 sm:right-auto sm:w-[340px]">
             <p className="flex items-center gap-2 text-[15px] text-white">
-              <span className="font-mono text-[12px] text-dim">{selected + 1}</span>
+              <span className="font-mono text-[12px] text-dim">{selected}</span>
               <span className="min-w-0 flex-1 truncate font-semibold">{step.name || t('output.untitled')}</span>
               <Button size="icon-sm" variant="ghost" aria-label={t('steps.previousStep')} disabled={selected === 0} onClick={() => setSelected(selected - 1)}><ChevronLeft className="size-4" /></Button>
               <Button size="icon-sm" variant="ghost" aria-label={t('steps.nextStep')} disabled={selected === q.steps.length - 1} onClick={() => setSelected(selected + 1)}><ChevronRight className="size-4" /></Button>
@@ -163,7 +163,7 @@ export function QuestOverviewMap({ q, modId, selected, onSelect }: { q: QuestCon
             {strip.map((i) => (
               <button key={q.steps[i].id} type="button" onClick={() => setSelected(i)} aria-pressed={selected === i}
                 className={cn('flex min-h-11 shrink-0 items-center gap-2 rounded-[2px] border px-3 text-[13px]', selected === i ? 'border-cyan text-white' : isGameOver(q.steps[i]) ? 'border-danger text-ink' : 'border-edge text-ink')}>
-                <span className="font-mono text-[12px] text-dim">{isGameOver(q.steps[i]) && '💥'}{i + 1}</span>{clip(q.steps[i].name || t('output.untitled'), 22)}
+                <span className="font-mono text-[12px] text-dim">{isGameOver(q.steps[i]) && '💥'}{i}</span>{clip(q.steps[i].name || t('output.untitled'), 22)}
                 {model.problemSteps.has(i) && <AlertTriangle className="size-3.5 text-amber" />}
               </button>
             ))}

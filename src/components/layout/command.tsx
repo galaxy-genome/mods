@@ -57,8 +57,8 @@ export function CommandLayer() {
                 </Command.Item>
               ))}
               {quest?.steps.map((s, i) => (
-                <Command.Item key={s.id} value={`step ${i + 1} ${s.name} ${s.id}`} onSelect={() => run(() => navigate(`/mod/${modId}/steps/${s.id}`))} className={item}>
-                  <span className="w-4 text-center font-mono text-[12px] text-dim">{i + 1}</span>{s.name || t('shell.untitledStep')}
+                <Command.Item key={s.id} value={`step ${i} ${s.name} ${s.id}`} onSelect={() => run(() => navigate(`/mod/${modId}/steps/${s.id}`))} className={item}>
+                  <span className="w-4 text-center font-mono text-[12px] text-dim">{i}</span>{s.name || t('shell.untitledStep')}
                 </Command.Item>
               ))}
             </Command.Group>

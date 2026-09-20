@@ -124,7 +124,7 @@ export function placeLabel(places: Place[], area: string) {
 }
 
 export interface QuestPlaces {
-  /** Places per step, in step order; step 1 also holds the offer station or start area. */
+  /** Places per step, in step order; step 0 also holds the offer station or start area. */
   steps: Place[][]
   unresolved: { step: number; place: Unresolved }[]
 }

@@ -67,7 +67,7 @@ export function LibraryQuestPage() {
               <Card className="flex gap-3 p-3">
                 <span className="grid size-7 shrink-0 place-items-center rounded-[2px] border border-edge font-mono text-[12px] text-cyan">{i + 1}</span>
                 <div className="flex min-w-0 flex-1 flex-col gap-1">
-                  <span className="text-[15px] font-semibold text-white">{s.name.trim() || t('startLib.stepN', { n: i + 1 })}</span>
+                  <span className="text-[15px] font-semibold text-white">{s.name.trim() || t('startLib.stepN', { n: i })}</span>
                   {s.todo && <span className="text-[13px] leading-snug text-ink/85">{t('startLib.journal', { text: s.todo })}</span>}
                   <span className="flex items-start gap-1.5 text-[13px] text-ink">
                     <Flag className="mt-0.5 size-3.5 shrink-0 text-dim" />

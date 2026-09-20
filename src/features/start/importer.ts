@@ -191,7 +191,7 @@ export function importText(raw: string): ImportOutcome {
   }
 
   parts.forEach((p, i) => {
-    const where = tr('whereStep', { n: i + 1 })
+    const where = tr('whereStep', { n: i })
     const step = steps[i]
     step.name = str(get(p, 'name')) || where
     step.journal = str(get(p, 'TODO'))

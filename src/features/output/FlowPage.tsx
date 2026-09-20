@@ -50,7 +50,7 @@ function addJumpChoice(modId: string, from: number, to: number) {
       line = newLine({ speaker: q.settings.charName, portrait: q.settings.charImage, text: '' })
       step.dialogue.push(line)
     }
-    line.choices.push({ id: uid('ch'), text: t('output.goToStep', { name: target.name || t('output.stepLower', { n: to + 1 }) }).replace(/[;=]/g, ''), targetStepId: target.id })
+    line.choices.push({ id: uid('ch'), text: t('output.goToStep', { name: target.name || t('output.stepLower', { n: to }) }).replace(/[;=]/g, ''), targetStepId: target.id })
   })
   toast.success(t('output.flChoiceAdded'), { description: t('output.flChoiceAddedHint') })
 }
@@ -193,7 +193,7 @@ function Graph({ q, selected, onSelect, onOpen }: { q: QuestContent; selected: n
                 key={s.id}
                 role="link"
                 tabIndex={0}
-                aria-label={t(unreachable ? 'output.flNodeUnreachable' : 'output.flNodeLabel', { n: i + 1, name: s.name || t('output.untitled') })}
+                aria-label={t(unreachable ? 'output.flNodeUnreachable' : 'output.flNodeLabel', { n: i, name: s.name || t('output.untitled') })}
                 transform={`translate(${nx(i)},${ny(i)})`}
                 aria-current={selected === i || undefined}
                 onClick={() => { if (moved.current <= 6) (selected === i ? onOpen : onSelect)(i) }}
@@ -242,7 +242,7 @@ function StepList({ q, modId }: { q: QuestContent; modId: string }) {
         return (
           <button key={s.id} type="button" onClick={() => navigate(`/mod/${modId}/steps/${s.id}`)} className="flex w-full flex-col gap-1 px-3 py-2.5 text-left hover:bg-white/[0.03]">
             <span className="flex items-center gap-2">
-              <span className="font-mono text-[12px] text-dim">{i + 1}</span>
+              <span className="font-mono text-[12px] text-dim">{i}</span>
               <span className="text-[15px] text-white">{s.name || t('output.untitled')}</span>
               {s.checkpoint && <Badge tone="success">{t('output.checkpoint')}</Badge>}
               {i > 0 && !reachable.has(i) && <Badge tone="amber">{t('output.flNothingLeads')}</Badge>}

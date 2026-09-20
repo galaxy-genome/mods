@@ -42,13 +42,13 @@ export function StepEditorPage() {
 
   useShellHeader({
     back: `${base}/steps`,
-    subtitle: step ? `${t('steps.stepOf', { n: index + 1, total })}${isGameOver(step) ? ` · ${t('conditions.gameOver')}` : ''}` : undefined,
+    subtitle: step ? `${t('steps.stepOf', { n: index, total })}${isGameOver(step) ? ` · ${t('conditions.gameOver')}` : ''}` : undefined,
     title: step ? (
       <input
         aria-label={t('steps.stepName')}
         readOnly={readOnly}
         value={step.name}
-        placeholder={t('steps.stepN', { n: index + 1 })}
+        placeholder={t('steps.stepN', { n: index })}
         onChange={(e) => update((s) => { s.name = e.target.value })}
         className="w-full min-w-0 rounded-[2px] border border-transparent bg-transparent text-[17px] font-semibold text-white outline-none placeholder:text-white/60 hover:border-edge focus:border-cyan"
       />
@@ -67,6 +67,10 @@ export function StepEditorPage() {
   const problems = list.filter((p) => p.location.path === here.slice(base.length + 1))
   const cpWarning = problems.find((p) => p.location.field === 'checkpoint')
   const mission = step.mission && MISSION_TYPES.find((m) => m.key === step.mission!.type)
+  // Collecting a reward finishes the step that waits on a mission an earlier step posted; name it, since this step lists none.
+  const from = step.finishWhen === 'GET_STORY_REWARD' && !step.mission
+    ? quest.steps.slice(0, index).map((st, i) => ({ step: st, index: i })).reverse().find((x) => x.step.mission)
+    : undefined
 
   return (
     <Page className="pb-28">
@@ -104,11 +108,11 @@ export function StepEditorPage() {
       <div className="flex flex-col gap-2">
         <SectionLabel>{t('steps.whenStarts')}</SectionLabel>
         <RowGroup>
-          <ListRow icon={<MessageSquare />} title={t('steps.dialogue')} value={step.dialogue.length ? t('steps.lines', { count: step.dialogue.length }) : t('steps.none')} muted={!step.dialogue.length} onClick={() => navigate(`${here}/dialogue`)} />
-          <ListRow icon={<Rocket />} title={t('steps.shipsAppear')} value={step.ships.length ? t('steps.ships', { count: step.ships.length }) : t('steps.none')} muted={!step.ships.length} onClick={() => navigate(`${here}/ships`)} />
-          <ListRow icon={<Swords />} title={t('steps.shipOrders')} value={step.orders.length ? t('steps.orders', { count: step.orders.length }) : t('steps.none')} muted={!step.orders.length} onClick={() => navigate(`${here}/orders`)} />
+          <ListRow icon={<MessageSquare />} title={t('steps.dialogue')} value={step.dialogue.length ? t('steps.lines', { count: step.dialogue.length }) : t('steps.noLines')} muted={!step.dialogue.length} onClick={() => navigate(`${here}/dialogue`)} />
+          <ListRow icon={<Rocket />} title={t('steps.shipsAppear')} value={step.ships.length ? t('steps.ships', { count: step.ships.length }) : t('steps.noShips')} muted={!step.ships.length} onClick={() => navigate(`${here}/ships`)} />
+          <ListRow icon={<Swords />} title={t('steps.shipOrders')} value={step.orders.length ? t('steps.orders', { count: step.orders.length }) : t('steps.noOrders')} muted={!step.orders.length} onClick={() => navigate(`${here}/orders`)} />
           <ListRow icon={<Landmark />} title={t('steps.stationMission')} subtitle={step.mission ? `${mission?.name ?? step.mission.type} · ${step.mission.homeStation}` : undefined}
-            value={step.mission ? undefined : t('steps.none')} muted={!step.mission} onClick={() => navigate(`${here}/mission`)} />
+            value={step.mission ? undefined : t('steps.noMission')} muted={!step.mission} onClick={() => navigate(`${here}/mission`)} />
         </RowGroup>
       </div>
 
@@ -121,6 +125,12 @@ export function StepEditorPage() {
             : <span className="text-danger">{t('steps.chooseFinish')}</span>}
         </SentenceCard>
         {step.finishWhen && <span className="pl-3"><AdvancedKey k={step.finishWhen} /></span>}
+        {from && (
+          <button onClick={() => navigate(`${base}/steps/${from.step.id}`)} className="flex items-start gap-1.5 pl-3 text-left text-[12px] leading-snug text-ink/75 hover:text-cyan">
+            <Landmark className="mt-px size-3.5 shrink-0 text-cyan" />
+            {t('steps.missionFrom', { n: from.index, mission: [MISSION_TYPES.find((m) => m.key === from.step.mission!.type)?.name ?? from.step.mission!.type, from.step.mission!.targetStation, from.step.mission!.targetSystem].filter(Boolean).join(' · ') })}
+          </button>
+        )}
         <p className="text-[12px] leading-snug text-ink/75">{t('steps.finishHint')}</p>
       </div>
 

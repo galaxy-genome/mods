@@ -17,7 +17,7 @@ export function textFields(c: QuestContent): TextField[] {
     { key: 'char', group: t('output.trGroupQuest'), label: t('output.trContact'), get: (x) => x.settings.charName, set: (x, v) => { x.settings.charName = v } },
   ]
   c.steps.forEach((s, i) => {
-    const group = t('output.trGroupStep', { n: i + 1, name: s.name || t('output.untitled') })
+    const group = t('output.trGroupStep', { n: i, name: s.name || t('output.untitled') })
     out.push({ key: `j${i}`, group, label: t('output.trJournal'), get: (x) => x.steps[i].journal, set: (x, v) => { x.steps[i].journal = v } })
     s.dialogue.forEach((l, li) => {
       out.push({ key: `d${i}-${li}`, group, label: t('output.trLine', { n: li + 1, speaker: l.speaker || t('output.trSpeaker') }), get: (x) => x.steps[i].dialogue[li].text, set: (x, v) => { x.steps[i].dialogue[li].text = v } })

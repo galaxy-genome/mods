@@ -53,7 +53,7 @@ assert.equal(space.versions.en!.settings.startMode, 'bar')
 // Finishes when is one action.
 assert.deepEqual(ids(quest([newStep({ finishWhen: 'NO_ENEMY;ACTION_WARP_END' }), newStep()])), ['finish-joined:error'])
 
-// Station missions: accept then hand in, Story on, not on step 1.
+// Station missions: accept then hand in, Story on, not on step 0.
 const mission = (partial = {}) => newMission({ homeStation: 'Thunder Station', ...partial })
 const good = quest([newStep(), newStep({ mission: mission(), finishWhen: 'CLICK_ACCEPT_STORY_MISSION' }), newStep({ finishWhen: 'GET_STORY_REWARD' })])
 assert.deepEqual(ids(good), [])

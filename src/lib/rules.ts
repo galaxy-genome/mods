@@ -31,7 +31,7 @@ export function rewardEstimate(q: QuestContent) {
     else lines.push({ amount: 50, reason: t('rules.rewardAttack') })
   }
   q.steps.forEach((s, i) => {
-    if (s.finishWhen?.startsWith('ACTION_WARP_END')) lines.push({ amount: 20, reason: t('rules.rewardArrival', { n: i + 1 }) })
+    if (s.finishWhen?.startsWith('ACTION_WARP_END')) lines.push({ amount: 20, reason: t('rules.rewardArrival', { n: i }) })
   })
   const total = Math.min(250, lines.reduce((a, l) => a + l.amount, 0))
   return { total, lines, capped: lines.reduce((a, l) => a + l.amount, 0) > 250 }
@@ -216,7 +216,7 @@ export function questProblems(mod: QuestView, all: ModPart[], galaxy = getGalaxy
 
   const { edges, reachable } = stepGraph(q.steps)
   q.steps.forEach((step, i) => {
-    const n = i + 1
+    const n = i
     const path = `steps/${step.id}`
     const label = t('rules.labelStep', { n, name: step.name || t('rules.untitled') })
     if (hasMechanics(step) && mod.meta.origin !== 'game') {
@@ -283,8 +283,8 @@ export function questProblems(mod: QuestView, all: ModPart[], galaxy = getGalaxy
       const stranded = strandedPilots(q.steps, i, edges)
       stranded.forEach(({ pilot, spawnedAt }) => {
         const to = checkpointMove(q.steps, i, edges)
-        add('warning', `cp-stranded-${step.id}-${pilot}`, t('rules.checkpointStranded', { step: step.name || n, pilot, n: spawnedAt + 1 }), path, label, 'checkpoint', to === null ? undefined : {
-          label: t('rules.checkpointMove', { n: to + 1 }),
+        add('warning', `cp-stranded-${step.id}-${pilot}`, t('rules.checkpointStranded', { step: step.name || n, pilot, n: spawnedAt }), path, label, 'checkpoint', to === null ? undefined : {
+          label: t('rules.checkpointMove', { n: to }),
           apply: () => updateQuest(mod.meta.id, (d) => { d.steps[i].checkpoint = false; d.steps[to].checkpoint = true }),
         })
       })
@@ -372,7 +372,7 @@ export function questProblems(mod: QuestView, all: ModPart[], galaxy = getGalaxy
   fallThroughs(edges).forEach((e) => {
     const from = q.steps[e.from]
     const to = q.steps[e.to]
-    add('warning', `fall-${from.id}`, t('rules.fallThrough', { from: from.name, to: to.name }), `steps/${from.id}`, t('rules.labelStep', { n: e.from + 1, name: from.name }))
+    add('warning', `fall-${from.id}`, t('rules.fallThrough', { from: from.name, to: to.name }), `steps/${from.id}`, t('rules.labelStep', { n: e.from, name: from.name }))
   })
 
   dependencyProblems(mod, all, galaxy, add)
@@ -454,7 +454,7 @@ export function strandedPilots(steps: Step[], c: number, edges = stepGraph(steps
   return [...out].map(([pilot, at]) => ({ pilot, spawnedAt: at }))
 }
 
-/** The latest step before c that saves (not step 1) and strands nothing once it holds c's checkpoint, or null. */
+/** The latest step before c that saves (not step 0) and strands nothing once it holds c's checkpoint, or null. */
 export function checkpointMove(steps: Step[], c: number, edges = stepGraph(steps).edges) {
   for (let n = c - 1; n > 0; n--) {
     if (steps[n].checkpoint) continue

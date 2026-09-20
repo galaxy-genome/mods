@@ -132,7 +132,7 @@ export function LineEditorSheet({ list, lineId, onClose }: {
                       <button type="button" onClick={() => setGoesTo(c.id)} className="flex min-h-11 items-center gap-2 rounded-[2px] pl-8 pr-2 text-left hover:bg-white/5">
                         <span className="text-[13px] text-dim">{t('steps.goesTo')}</span>
                         <span className="flex-1 truncate text-[14px] text-white">
-                          {target >= 0 ? <><span className="font-mono text-cyan">{t('steps.stepN', { n: target + 1 })}</span> {stepName(quest.steps[target], target)}</> : t('steps.continueNext')}
+                          {target >= 0 ? <><span className="font-mono text-cyan">{t('steps.stepN', { n: target })}</span> {stepName(quest.steps[target], target)}</> : t('steps.continueNext')}
                         </span>
                         <ChevronRight className="size-4 text-dim" />
                       </button>

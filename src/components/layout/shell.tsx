@@ -318,8 +318,8 @@ export function ModShell() {
   // The Steps and Flow tabs carry the step the other one has selected or open.
   const inMod = location.pathname.slice(base.length)
   const stepIds = questOf(mod)?.steps.map((x) => x.id) ?? []
-  const stepN = (inMod.startsWith('/steps/') ? stepIds.indexOf(inMod.split('/')[2]) : listParam(new URLSearchParams(location.search), 'step', stepIds.length) ?? -1) + 1
-  const tabTo = (path: string) => `${base}/${path}${stepN && (path === 'flow' || path === 'steps') ? `?step=${stepN}` : ''}`
+  const stepN = inMod.startsWith('/steps/') ? stepIds.indexOf(inMod.split('/')[2]) : listParam(new URLSearchParams(location.search), 'step', stepIds.length) ?? -1
+  const tabTo = (path: string) => `${base}/${path}${stepN >= 0 && (path === 'flow' || path === 'steps') ? `?step=${stepN}` : ''}`
   const menu = [
     ...(!desktop ? [{ label: t('shell.redo'), icon: <Redo2 />, onSelect: () => redo(modId), disabled: !canRedo(modId) }] : []),
     { label: t('shell.modSettings'), icon: <Layers />, onSelect: () => navigate(contentsPath, { state: { contents: true } }) },

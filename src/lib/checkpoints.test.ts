@@ -1,4 +1,4 @@
-// node src/lib/checkpoints.test.ts — checkpoint rules: stranded pilots, step 1, dialogue on reload.
+// node src/lib/checkpoints.test.ts — checkpoint rules: stranded pilots, step 0, dialogue on reload.
 import { strict as assert } from 'node:assert'
 import { readdirSync, readFileSync } from 'node:fs'
 import { registerHooks } from 'node:module'
@@ -82,7 +82,7 @@ fixable.fix!.apply()
 assert.deepEqual(fall.versions.en!.steps.map((s) => s.checkpoint), [false, true, false, false, false])
 assert.deepEqual(ids(fall), [])
 
-// Step 1 never saves.
+// Step 0 never saves.
 assert.deepEqual(ids(quest([newStep({ checkpoint: true, finishWhen: warp }), newStep()])), ['cp-first'])
 assert.deepEqual(ids(quest([newStep({ finishWhen: warp }), newStep({ finishWhen: warp })])), [])
 

@@ -19,7 +19,7 @@ export function ReminderPage() {
   const t = useT()
   const [editing, setEditing] = React.useState<string | null>(null)
 
-  useShellHeader({ title: t('steps.reminder'), subtitle: step ? t('steps.stepSubtitle', { n: index + 1, name: stepName(step, index) }) : undefined, back: step ? `${base}/steps/${step.id}` : `${base}/steps` }, [step?.id, step?.name, index])
+  useShellHeader({ title: t('steps.reminder'), subtitle: step ? t('steps.stepSubtitle', { n: index, name: stepName(step, index) }) : undefined, back: step ? `${base}/steps/${step.id}` : `${base}/steps` }, [step?.id, step?.name, index])
 
   if (!quest || !step) return <EmptyNotFound />
 

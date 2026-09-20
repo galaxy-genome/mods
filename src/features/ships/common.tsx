@@ -25,7 +25,7 @@ export function useStepRoute() {
 }
 
 export function useStepHeader(title: string, r: ReturnType<typeof useStepRoute>) {
-  const subtitle = r.step ? `${t('ships.stepOf', { n: r.index + 1, total: r.quest!.steps.length })}${r.step.name ? ` · ${r.step.name}` : ''}` : undefined
+  const subtitle = r.step ? `${t('ships.stepOf', { n: r.index, total: r.quest!.steps.length })}${r.step.name ? ` · ${r.step.name}` : ''}` : undefined
   useShellHeader({ title, subtitle, back: r.base }, [title, subtitle, r.base])
 }
 

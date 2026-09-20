@@ -39,9 +39,9 @@ export function StepsPage() {
     const s = newStep()
     updateQuest(modId, (q) => { q.steps.splice(at, 0, s) })
     if (open) navigate(`${base}/steps/${s.id}`)
-    else toast(t('steps.addedStep', { n: at + 1 }))
+    else toast(t('steps.addedStep', { n: at }))
   }
-  /** A mission step that finishes on accept, then a step that finishes on the reward; the board skips step 1, so a briefing step leads when the quest is empty. */
+  /** A mission step that finishes on accept, then a step that finishes on the reward; the board skips step 0, so a briefing step leads when the quest is empty. */
   const addMission = () => {
     const station = quest.settings.stationName || newMission().homeStation
     const offer = newStep({ name: t('steps.missionStepName'), journal: t('steps.missionJournal', { station }), mission: newMission({ homeStation: station }), finishWhen: 'CLICK_ACCEPT_STORY_MISSION' })
@@ -51,10 +51,10 @@ export function StepsPage() {
   }
   const duplicate = (i: number) => {
     updateQuest(modId, (q) => { q.steps.splice(i + 1, 0, cloneStep(q.steps[i])) })
-    toast(t('steps.duplicatedStep', { n: i + 1 }))
+    toast(t('steps.duplicatedStep', { n: i }))
   }
   const remove = (i: number) => {
-    void addHistory(modId, t('steps.beforeDeleting', { n: i + 1 }), true)
+    void addHistory(modId, t('steps.beforeDeleting', { n: i }), true)
     updateWithUndo(modId, t('steps.deletedStep', { name: stepName(steps[i], i) }), () => updateQuest(modId, (q) => { q.steps.splice(i, 1) }))
   }
 
@@ -90,7 +90,7 @@ export function StepsPage() {
             onReorder={(items) => updateQuest(modId, (q) => { q.steps = items })}
             render={(s, handle, i) => (
               <Card className="flex items-center gap-2 py-1 pl-3">
-                <span className="w-6 font-mono text-[13px] text-cyan">{i + 1}</span>
+                <span className="w-6 font-mono text-[13px] text-cyan">{i}</span>
                 <span className="flex-1 truncate text-[15px] text-white">{stepName(s, i)}</span>
                 {handle}
               </Card>
@@ -111,7 +111,7 @@ export function StepsPage() {
                         {chosen ? <><CornerDownRight className="size-3.5" />{t('steps.reachedByChoice')}</> : t('steps.nothingLeadsHere')}
                       </span>
                     )}
-                    <button aria-label={t('steps.insertBeforeN', { n: i + 1 })} onClick={() => insert(i)}
+                    <button aria-label={t('steps.insertBeforeN', { n: i })} onClick={() => insert(i)}
                       className="absolute right-2 top-1/2 grid size-11 -translate-y-1/2 place-items-center text-dim hover:text-cyan">
                       <span className="grid size-6 place-items-center rounded-full border border-edge bg-void"><Plus className="size-3.5" /></span>
                     </button>
@@ -182,7 +182,7 @@ function StepCard({ step, index, steps, problem, selected, onSelect, onOpen, onL
         role="button"
         onFocus={(e) => { if (e.target === e.currentTarget) onSelect() }}
         tabIndex={0}
-        aria-label={t('steps.stepCardLabel', { n: index + 1, name: stepName(step, index) })}
+        aria-label={t('steps.stepCardLabel', { n: index, name: stepName(step, index) })}
         onClick={() => { if (!pressed.current) onOpen() }}
         onKeyDown={(e) => { if (e.target === e.currentTarget && (e.key === 'Enter' || e.key === ' ')) { e.preventDefault(); onOpen() } }}
         onPointerDown={start} onPointerUp={cancel} onPointerLeave={cancel} onPointerMove={(e) => { if (Math.abs(e.movementX) + Math.abs(e.movementY) > 3) cancel() }}
@@ -190,13 +190,13 @@ function StepCard({ step, index, steps, problem, selected, onSelect, onOpen, onL
         className={cn('flex cursor-pointer select-none flex-col gap-2 py-2 pl-3 pr-1 transition-colors hover:border-grid-strong focus-visible:border-cyan focus-visible:outline-none', selected && 'border-cyan')}
       >
         <div className="flex items-center gap-2">
-          <span className="w-6 font-mono text-[15px] text-cyan">{index + 1}</span>
+          <span className="w-6 font-mono text-[15px] text-cyan">{index}</span>
           <span className={cn('min-w-0 flex-1 truncate text-[16px] font-semibold', step.name ? 'text-white' : 'text-ink')}>{stepName(step, index)}</span>
           {step.checkpoint && <Badge tone="cyan" icon={<Diamond />}>{t('steps.checkpointShort')}</Badge>}
           {isGameOver(step) && <Badge tone="danger">{t('conditions.gameOver')}</Badge>}
           {problem && <span title={problem.message} aria-label={problem.message} className="grid size-6 place-items-center"><SeverityIcon severity={problem.severity} className="size-4" /></span>}
           <span className="contents" onClick={(e) => e.stopPropagation()} onPointerDown={(e) => e.stopPropagation()} onKeyDown={(e) => e.stopPropagation()}>
-          <Menu label={t('steps.stepActions', { n: index + 1 })} items={[
+          <Menu label={t('steps.stepActions', { n: index })} items={[
             { label: t('common.duplicate'), icon: <Copy />, onSelect: onDuplicate },
             { label: t('steps.insertBefore'), icon: <Plus />, onSelect: onInsertBefore },
             { label: t('steps.insertAfter'), icon: <Plus />, onSelect: onInsertAfter },

@@ -134,7 +134,7 @@ export function useSelectionNav(count: number, selected: number | null, select: 
 /** The 0-based row `?<name>=<1-based n>` names, or null. */
 export function listParam(params: URLSearchParams, name: string, count = Infinity) {
   const n = Number(params.get(name))
-  return Number.isInteger(n) && n >= 1 && n <= count ? n - 1 : null
+  return Number.isInteger(n) && n >= 0 && n < count ? n : null
 }
 
 /** Writes one list's `?<name>=<value>`, replaced rather than pushed; null removes it. */
@@ -149,7 +149,7 @@ export function useListParam(name: string, count: number) {
   const [params] = useSearchParams()
   const write = useWriteListParam()
   const selected = listParam(params, name, count)
-  const select = (i: number | null) => write(name, i === null ? null : String(i + 1))
+  const select = (i: number | null) => write(name, i === null ? null : String(i))
   return [selected, select] as const
 }
 

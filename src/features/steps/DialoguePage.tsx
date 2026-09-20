@@ -24,7 +24,7 @@ export function DialoguePage() {
   const [preview, setPreview] = React.useState(false)
   const here = step ? `${base}/steps/${step.id}/dialogue` : base
 
-  useShellHeader({ title: t('steps.dialogue'), subtitle: step ? t('steps.stepSubtitle', { n: index + 1, name: stepName(step, index) }) : undefined, back: step ? `${base}/steps/${step.id}` : `${base}/steps` }, [step?.id, step?.name, index])
+  useShellHeader({ title: t('steps.dialogue'), subtitle: step ? t('steps.stepSubtitle', { n: index, name: stepName(step, index) }) : undefined, back: step ? `${base}/steps/${step.id}` : `${base}/steps` }, [step?.id, step?.name, index])
 
   if (!quest || !step) return <EmptyNotFound />
 
@@ -101,7 +101,7 @@ export function LineBubble({ line, steps, contact, showChoices, onClick, label, 
               return (
                 <span key={c.id} className="flex min-h-9 items-center justify-between gap-2 rounded-[2px] border border-cyan/70 bg-cyan/10 px-2.5 text-[13px] text-cyan">
                   <span className="truncate">{c.text || t('steps.untitledChoice')}</span>
-                  <span className="shrink-0 font-mono text-[11px] text-dim">› {ti >= 0 ? t('steps.stepN', { n: ti + 1 }) : t('steps.next')}</span>
+                  <span className="shrink-0 font-mono text-[11px] text-dim">› {ti >= 0 ? t('steps.stepN', { n: ti }) : t('steps.next')}</span>
                 </span>
               )
             })}
@@ -146,7 +146,7 @@ function GamePreview({ lines, steps, contact }: { lines: DialogLine[]; steps: St
             const ti = c.targetStepId ? steps.findIndex((s) => s.id === c.targetStepId) : -1
             return (
               <Button key={c.id} variant="primary" size="sm" className="justify-start"
-                onClick={() => toast(t('steps.choiceGoesTo', { choice: c.text || t('steps.untitledChoice'), target: ti >= 0 ? t('steps.stepLower', { n: ti + 1 }) : t('steps.theNextStep') }))}>
+                onClick={() => toast(t('steps.choiceGoesTo', { choice: c.text || t('steps.untitledChoice'), target: ti >= 0 ? t('steps.stepLower', { n: ti }) : t('steps.theNextStep') }))}>
                 {c.text || t('steps.untitledChoice')}
               </Button>
             )

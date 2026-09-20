@@ -15,6 +15,10 @@ export default {
   orders_one: '{count} order',
   orders_other: '{count} orders',
   none: 'none',
+  noLines: 'no dialogue',
+  noShips: 'no ships',
+  noOrders: 'no orders',
+  noMission: 'no mission',
   noneCap: 'None',
 
   // steps list
@@ -89,6 +93,7 @@ export default {
   suggestDialogue: 'Dialogue closed',
   suggestNoEnemy: 'No enemies left',
   suggestDestroyed: 'Ship destroyed: {pilot}',
+  missionFrom: 'The mission is from step {n}: {mission}.',
   suggestReward: 'Collect a story mission reward',
   searchConditions: 'Search: arrive, station, destroy',
   nothingMatches: 'Nothing matches “{query}”.',

@@ -94,13 +94,13 @@ function partFromToken(mod: Mod, token: string) {
   return Number.isInteger(n) && n >= 1 ? mod.quests[n - 1]?.id : undefined
 }
 
-/** A step id, or a 1-based step number, as the step id. */
+/** A step id, or a 0-based step number, as the step id. */
 function stepFromToken(mod: Mod, partId: string | undefined, token: string) {
   const quest = mod.quests.find((q) => q.id === partId)
   const steps = quest?.versions[quest.primaryLang]?.steps ?? []
   if (steps.some((s) => s.id === token)) return token
   const n = Number(token)
-  return (Number.isInteger(n) && n >= 1 && steps[n - 1]?.id) || token
+  return (Number.isInteger(n) && n >= 0 && steps[n]?.id) || token
 }
 
 /** Splits the tail of a `/community/<entry>/...` or `/built-in/<n>/...` link into the part it opens and the path inside that part. */
@@ -120,7 +120,7 @@ export function communityPath(mod: Mod, partId: string | null, path: string): st
     const [root, step, ...tail] = path.split('/')
     const quest = mod.quests.find((q) => q.id === partId)
     const n = root === 'steps' && step ? (quest?.versions[quest.primaryLang]?.steps.findIndex((x) => x.id === step) ?? -1) : -1
-    return `/built-in/${Number(mod.meta.id.slice(5)) - 100000}${path ? `/${n >= 0 ? ['steps', n + 1, ...tail].join('/') : path}` : ''}`
+    return `/built-in/${Number(mod.meta.id.slice(5)) - 100000}${path ? `/${n >= 0 ? ['steps', n, ...tail].join('/') : path}` : ''}`
   }
   const entry = mod.meta.community?.entryId
   if (!entry || mod.meta.modified) return null

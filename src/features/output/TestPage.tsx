@@ -74,7 +74,7 @@ function StepEvents({ q, visit, current, shown, onChoose }: {
       {visit.reloaded && <Badge icon={<History />} tone="amber" className="self-start">{t('output.teReloaded')}</Badge>}
       {visit.via && <p className="font-mono text-[12px] text-dim">{t('output.teChose', { text: visit.via })}</p>}
       <div className="flex flex-wrap items-center gap-2">
-        <span className="font-mono text-[12px] text-dim">{t('output.stepN', { n: visit.step + 1 })}</span>
+        <span className="font-mono text-[12px] text-dim">{t('output.stepN', { n: visit.step })}</span>
         <span className="text-[15px] font-semibold text-white">{step.name || t('output.untitled')}</span>
         {step.checkpoint && <Badge tone="success" icon={<Flag />}>{t('output.checkpoint')}</Badge>}
       </div>
@@ -204,7 +204,7 @@ export function TestPage() {
             )}
             {sim.checkpoint > 0 && current.step !== sim.checkpoint && (
               <Button variant="secondary" onClick={() => setSim((s) => ({ ...s, visits: [...s.visits, { step: s.checkpoint, reloaded: true }], shown: 0 }))}>
-                <History className="size-4" />{t('output.teReloadCheckpoint', { n: sim.checkpoint + 1 })}
+                <History className="size-4" />{t('output.teReloadCheckpoint', { n: sim.checkpoint })}
               </Button>
             )}
           </motion.div>
@@ -235,7 +235,7 @@ export function TestPage() {
               <p className="text-[17px] font-semibold text-white">{t('output.teComplete', { total: reward.total })}</p>
               <div className="flex flex-col gap-1">
                 <span className="section-label">{t('output.tePath')}</span>
-                <p className="font-mono text-[13px] text-ink">{sim.visits.map((v) => v.step + 1).join(' → ')}</p>
+                <p className="font-mono text-[13px] text-ink">{sim.visits.map((v) => v.step).join(' → ')}</p>
               </div>
               <Button variant="primary" onClick={() => setSim(start())}><RotateCcw className="size-4" />{t('output.teAnother')}</Button>
             </Card>

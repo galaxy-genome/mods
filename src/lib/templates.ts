@@ -25,7 +25,7 @@ export const QUEST_TEMPLATES: QuestTemplate[] = [
     key: 'blank', get name() { return t('lib.template_blank') }, get description() { return t('lib.template_blank_description') }, get diagram(): QuestTemplate['diagram'] { return [dl('Step'), dl('Step')] },
     build: (title, station) => newQuestView(title, {
       settings: { stationName: station, ...contact },
-      steps: [newStep({ name: 'Step 1' }), newStep({ name: 'Step 2' })],
+      steps: [newStep({ name: 'Step 0' }), newStep({ name: 'Step 1' })],
       rumors: [],
     }),
   },

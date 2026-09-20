@@ -8,7 +8,7 @@ import { t, useT } from '@/i18n'
 import { cn } from '@/lib/utils'
 import { questOf, updateQuest, usePart } from '@/store/editor'
 
-export const stepName = (s: Step, i: number) => s.name || t('steps.stepN', { n: i + 1 })
+export const stepName = (s: Step, i: number) => s.name || t('steps.stepN', { n: i })
 
 /** The quest and step named by the route. */
 export function useStepRoute() {
@@ -61,7 +61,7 @@ export function StepPicker({ open, onOpenChange, steps, value, onSelect, onNewSt
         <RowGroup>
           {steps.map((s, i) => (
             <ListRow key={s.id} chevron={false} onClick={() => pick(s.id)} className={cn(value === s.id && 'bg-cyan/10')}
-              icon={<span className="font-mono text-[13px]">{i + 1}</span>} title={stepName(s, i)} />
+              icon={<span className="font-mono text-[13px]">{i}</span>} title={stepName(s, i)} />
           ))}
         </RowGroup>
         <RowGroup>
