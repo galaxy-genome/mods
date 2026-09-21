@@ -1,0 +1,70 @@
+/* The game's panel grammar, as the wiki's overview modals render it.
+   Sizes are px against an 820px-wide screen; .ggscreen scales that box to the viewport. */
+
+.ovpanel{position:relative;width:min(820px,100%);max-height:calc(100vh - 32px);overflow:auto;
+  font:11px/1.35 "DejaVu Sans",Verdana,sans-serif;color:#fff;background:#333d45;
+  border:1px solid #1d2329;box-shadow:0 10px 40px #000a}
+.ovclose{position:absolute;top:4px;right:6px;width:32px;height:32px;border:0;background:none;
+  color:#bff3ff;font-size:24px;line-height:1;cursor:pointer}
+.ovclose:hover,.ovclose:focus-visible{color:#fff;outline:1px solid #3b8fb0}
+@media (max-width:620px){.ovcols{grid-template-columns:1fr}}
+.ovhead{background:#2c3039;color:#bff3ff;font-weight:700;font-size:15px;text-align:center;padding:9px}
+.ovcols{display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:6px 6px 10px}
+.ovbar{text-align:center;color:#bff3ff;font-size:13px;padding:6px 0 5px;margin-top:6px;
+  background:radial-gradient(ellipse 60% 100% at 50% 100%,#3b8fb0aa,transparent 70%)}
+.ovship{text-align:center;padding:4px 0}
+.ovgrades{display:grid;grid-template-columns:repeat(3,1fr);gap:4px;margin-top:8px;max-height:260px;overflow:auto;scrollbar-color:#3b8fb0 #2c3039}
+.ovgrade{display:grid;gap:2px;justify-items:center;padding:6px 2px;border:0;cursor:pointer;font:inherit;
+  background:linear-gradient(#2e434c,#374f57);box-shadow:inset 0 0 6px #0005}
+.ovgrade b{font-weight:400;font-size:17px;color:#d0e8a9}
+.ovgrade span{font-size:11px;color:#9febff}
+.ovgrade:hover,.ovgrade:focus-visible{outline:1px solid #3b8fb0}
+.ovgrade.on{background:linear-gradient(#3d6572,#46727e);outline:1px solid #bff3ff}
+.ovship img{width:110px;height:110px;object-fit:contain}
+.ovrow{display:grid;grid-auto-flow:column;grid-auto-columns:1fr;gap:8px;text-align:center}
+.ovgold,.ovwhite{padding:7px 0 3px;font-size:12px}
+.ovgold{color:#ffd270;border-bottom:3px solid #f3b534;
+  background:radial-gradient(ellipse 50% 90% at 50% 100%,#f3b53433,transparent 70%)}
+.ovwhite{border-bottom:2px solid #c9cdd0;
+  background:radial-gradient(ellipse 50% 90% at 50% 100%,#ffffff1f,transparent 70%)}
+.ovval{padding:5px 0 3px}
+.ovplain{display:grid;grid-template-columns:1fr 1fr;padding:9px 4px;margin-top:6px;color:#bff3ff;
+  background:linear-gradient(#262b33,#2e343c)}
+.ovsmall{font-size:10px;padding:2px 0}
+.ovnohead{padding-top:34px}
+.ovicon{width:64px!important;height:64px!important}
+.ovdesc{font-size:12px;line-height:1.4;color:#cbfafd;padding:12px 14px;background:linear-gradient(#262b33,#2e343c)}
+.ovmid{font-size:11px;padding:4px 0}
+.ovparam{font-size:12px;padding:5px 0;color:#ade1f9}
+
+/* Tailwind's preflight makes images block-level, which would left-align the artwork .ovship centres. */
+.ovship img{display:inline-block}
+
+/* The landscape frame: a 20:9 stage on a dark backdrop, holding an 820px screen scaled to fit. */
+.ggstage{position:fixed;inset:0;background:#05080c;display:grid;place-items:center;overflow:hidden}
+.ggframe{position:relative;width:min(100vw,calc(100vh * 20 / 9));aspect-ratio:20/9;overflow:hidden}
+.ggscreen{position:absolute;top:0;left:0;width:820px;height:369px;transform-origin:0 0;
+  transform:scale(var(--ggscale,1));display:flex;flex-direction:column;
+  font:11px/1.35 "DejaVu Sans",Verdana,sans-serif;color:#fff;background:#333d45}
+.ggbody{flex:1;overflow:auto;scrollbar-width:none}
+.ggbody::-webkit-scrollbar{display:none}
+.gghead{position:relative;flex:0 0 34px;display:grid;place-items:center;
+  background:linear-gradient(#242c37,#1a212a);border-bottom:1px solid #0d1117}
+.ggtitle{font-size:14px;font-weight:700;color:#9fe8ff}
+.ggreturn,.ggclose2{position:absolute;top:3px;height:24px;border:0;cursor:pointer;font:inherit;
+  font-size:11px;color:#e4f7ff;background:linear-gradient(#3c4650,#2b333d);
+  border-bottom:1px solid #35e0f5}
+.ggreturn{left:4px;width:56px;padding-left:8px;
+  clip-path:polygon(0 50%,15% 0,100% 0,100% 100%,15% 100%)}
+.ggclose2{right:6px;width:40px}
+.ggreturn:hover,.ggclose2:hover,.ggreturn:focus-visible,.ggclose2:focus-visible{color:#fff}
+
+/* Portrait shows the rotate prompt instead of the screen. */
+.ggrotate{position:fixed;inset:0;display:grid;place-items:center;gap:10px;align-content:center;
+  background:#05080c;color:#bff3ff;text-align:center;padding:24px;
+  font:14px/1.5 "DejaVu Sans",Verdana,sans-serif}
+.ggstart{display:grid;gap:14px;place-content:center;justify-items:center;height:100%;text-align:center;color:#bff3ff}
+.ggstart p{max-width:420px;color:#cbfafd;font-size:12px;line-height:1.5;margin:0}
+.ggbutton{border:1px solid #3b8fb0;border-bottom-color:#35e0f5;padding:8px 22px;cursor:pointer;
+  font:inherit;font-size:12px;color:#dff6ff;background:linear-gradient(#3a4450,#2b333d)}
+.ggbutton:hover,.ggbutton:focus-visible{color:#fff;outline:1px solid #3b8fb0}
