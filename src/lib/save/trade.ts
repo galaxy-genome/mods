@@ -5,8 +5,7 @@
  * (`system/Goods/MarketGenerator.as:43`), so the editor grants goods directly and the prices
  * here are the generator's own formula shown for reference only.
  */
-import { BALANCE_MAX } from './safety'
-import { CARGO, getCredits, setCredits, type AmfObject, type AmfVector, type Save } from './codec'
+import { CARGO, type AmfObject, type AmfVector, type Save } from './codec'
 
 /** `MarketGenerator.baseCost` (`system/Goods/MarketGenerator.as:11`). */
 export const BASE_COST = 1000
@@ -50,21 +49,12 @@ export function setGood(sv: Save, type: string, count: number) {
   c.items[at] = count
 }
 
-const clamp = (n: number) => Math.max(0, Math.min(BALANCE_MAX, Math.round(n)))
-
-/** Buys or sells `qty` of one good at `price` each: the balance and the goods vectors move together.
- * The balance is a `uint` the loader rejects when negative (`system/Save/Save.as:321-323`). */
-export function trade(sv: Save, type: string, qty: number, price: number, side: 'buy' | 'sell') {
+/** Adds or removes `qty` of one good. The price is what the market prints and nothing is paid
+ * for it, so the balance stays where the credits screen left it. */
+export function trade(sv: Save, type: string, qty: number, side: 'buy' | 'sell') {
   if (qty <= 0) return
   const held = heldGoods(sv).get(type) ?? 0
   const n = side === 'sell' ? Math.min(qty, held) : qty
   if (n <= 0) return
   setGood(sv, type, side === 'buy' ? held + n : held - n)
-  setCredits(sv, clamp(getCredits(sv) + (side === 'buy' ? -1 : 1) * n * price))
-}
-
-/** How many of a good the balance covers, or how many are held to sell. */
-export function maxQty(sv: Save, type: string, price: number, side: 'buy' | 'sell') {
-  if (side === 'sell') return heldGoods(sv).get(type) ?? 0
-  return price > 0 ? Math.floor(getCredits(sv) / price) : 0
 }

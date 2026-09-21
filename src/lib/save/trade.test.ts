@@ -1,4 +1,4 @@
-// node src/lib/save/trade.test.ts — a buy and a sell survive a round trip and agree with gg_save.py.
+// node src/lib/save/trade.test.ts — goods move, the balance does not, and gg_save.py reads the same.
 import { strict as assert } from 'node:assert'
 import { execFileSync } from 'node:child_process'
 import { readFileSync, writeFileSync } from 'node:fs'
@@ -44,14 +44,14 @@ const held = heldGoods(sv)
 const [sellType] = [...held.keys()]
 const sellCount = held.get(sellType)!
 
-// Buy 7 Grain at the first-row price, then sell one of a good the save already carries.
+// Take on 7 Grain, then give up one of a good the save already carries.
 const buyPrice = priceOf(0.1, 0)
 const sellPrice = priceOf(0.15, 1)
-trade(sv, 'Grain', 7, buyPrice, 'buy')
-trade(sv, sellType, 1, sellPrice, 'sell')
+trade(sv, 'Grain', 7, 'buy')
+trade(sv, sellType, 1, 'sell')
 
-const want = before - 7 * buyPrice + sellPrice
-assert.equal(getCredits(sv), want)
+const want = before
+assert.equal(getCredits(sv), want, 'the balance stays where it was')
 assert.equal(heldGoods(sv).get('Grain'), 7)
 assert.equal(heldGoods(sv).get(sellType) ?? 0, sellCount - 1)
 
@@ -60,21 +60,22 @@ const back = vectors(bytes)
 assert.equal(back.balance, want)
 assert.deepEqual(back, oracle(bytes), 'the edited save differs from what gg_save.py reads')
 assert.equal(back.count[back.type.indexOf('Grain')], 7)
-console.log(`buy 7 Grain at ${buyPrice}, sell 1 ${sellType} at ${sellPrice}: ${before} -> ${back.balance} CR`)
+console.log(`7 Grain listed at ${buyPrice}, 1 ${sellType} listed at ${sellPrice}: balance holds at ${back.balance} CR`)
 console.log(`  goods ${JSON.stringify(back.type)} counts ${JSON.stringify(back.count)}  total ${cargoTotal(sv)}`)
 
 // Selling the whole stack drops the good's pair of entries rather than leaving a zero.
-trade(sv, sellType, sellCount, sellPrice, 'sell')
+trade(sv, sellType, sellCount, 'sell')
 assert.equal(heldGoods(sv).has(sellType), false)
 assert.deepEqual(vectors(prepareDownload(sv)).type, [...heldGoods(sv).keys()])
 
-// Selling more than is held sells only what is held, and buying beyond the balance is the
-// caller's business: the balance is clamped into the uint the loader accepts.
+// Giving up more than is held gives up what is held, and nothing is ever refused for its price.
 const poor = decode(new Uint8Array(readFileSync(join(repo, 'saves/Save2.SOL'))))
-trade(poor, 'Grain', 1e6, 100000, 'buy')
-assert.equal(getCredits(poor), 0)
+const pocket = getCredits(poor)
+trade(poor, 'Grain', 1e6, 'buy')
+assert.equal(heldGoods(poor).get('Grain'), 1e6)
+assert.equal(getCredits(poor), pocket)
 assert.doesNotThrow(() => prepareDownload(poor))
-console.log('empty stack removed, balance clamped at 0')
+console.log('empty stack removed, a million Grain granted, balance untouched')
 
 // Encoding twice with no further edits is byte-identical, so nothing here writes on read.
 assert.deepEqual([...encode(sv)], [...encode(sv)])

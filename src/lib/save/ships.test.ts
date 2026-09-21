@@ -1,5 +1,5 @@
-// node src/lib/save/ships.test.ts — buying a ship leaves a loadable save: the new ship in use, the
-// old one in the hangar with its station, the price gone from the balance, and an undamaged hull.
+// node src/lib/save/ships.test.ts — taking a ship leaves a loadable save: the new ship in use, the
+// old one in the hangar with its station, an undamaged hull, and the balance where it was.
 import { strict as assert } from 'node:assert'
 import { execFileSync } from 'node:child_process'
 import { mkdtempSync, readFileSync, writeFileSync } from 'node:fs'
@@ -85,7 +85,7 @@ for (const key of picks) {
   assert.equal(modulesOf(kept).length, oldModules, `${key}: the old ship kept its modules`)
   hangar.forEach((h, i) => assert.ok(shipStation(h as AmfObject), `${key}: hangar entry ${i + 1} has no station`))
 
-  assert.equal(getCredits(back), FUNDS - ship.baseCost, `${key}: the balance fell by baseCost`)
+  assert.equal(getCredits(back), FUNDS, `${key}: the balance is untouched`)
   console.log(`${key}: ${oldType} -> ${key}, hull ${wanted}, ${hangar.length} in the hangar, ${getCredits(back).toLocaleString()} CR`)
 
   if (!written) {
@@ -115,11 +115,11 @@ assert.equal(extUtf((sv.objs[HANGAR] as AmfVector).items[n - 1] as AmfObject, 0)
 
 const value = hangarValue((sv.objs[HANGAR] as AmfVector).items[n - 1] as AmfObject, ships, modules, names)
 const balance = getCredits(sv)
-sellShip(sv, n - 1, value)
-assert.equal((sv.objs[HANGAR] as AmfVector).items.length, n - 1, 'the sold ship left the hangar')
-assert.equal(getCredits(sv), balance + value, 'the sale was credited')
+sellShip(sv, n - 1)
+assert.equal((sv.objs[HANGAR] as AmfVector).items.length, n - 1, 'the discarded ship left the hangar')
+assert.equal(getCredits(sv), balance, 'the balance is untouched')
 prepareDownload(sv)
-console.log(`swap and sell round-trip, ${mine} sold for ${value.toLocaleString()} CR`)
+console.log(`swap and discard round-trip, ${mine} listed at ${value.toLocaleString()} CR`)
 
 // ------------------------------------------------------- the shop
 

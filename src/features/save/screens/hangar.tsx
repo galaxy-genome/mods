@@ -56,34 +56,25 @@ function ShipCard({ ship, cost, children, onOpen }: {
   )
 }
 
-/** The confirm modal (`shipyard-new-subpage-purchase-modal.png`). Its wording is the game's
- * (`lang_en.json`: `BuyShipHeader`, `BuyNewShipQuestion`, `BuyNewShipSellOldQuestion`,
- * `NewShipCostText`, `NewShipCostSellOldText`, `NoMoneyBuyShip`). */
-function Purchase({ ship, balance, value, onBuy, onCancel }: {
-  ship: ShopShip; balance: number; value: number; onBuy: (keep: boolean) => void; onCancel: () => void
+/** The confirm modal (`shipyard-new-subpage-purchase-modal.png`), asking what becomes of the ship
+ * being left behind. The prices are the game's own figures, shown as information
+ * (`lang_en.json`: `BuyShipHeader`, `BuyNewShipSellOldQuestion`, `NewShipCostText`). */
+function Purchase({ ship, value, onBuy, onCancel }: {
+  ship: ShopShip; value: number; onBuy: (keep: boolean) => void; onCancel: () => void
 }) {
   const cost = shipPrice(ship)
-  const afford = balance >= cost
-  const trade = balance + value >= cost
-  const lines = afford
-    ? 'Do you want to sell or keep the current ship? The cost of the current ship: '
-    : 'You should sell your current ship so that you will have enough money to buy the new one. The cost of the current ship: '
   return (
     <div className="hgmodal">
       <div className="hgmodalbox">
-        <div className="ovhead">{afford || trade ? 'Ship purchase' : 'Not enough credits'}</div>
-        {afford || trade
-          ? (
-            <p>
-              {lines}{cr(value)}<br />
-              New ship price: {cr(cost)}<br />
-              Trade-in price: {cr(cost - value)}
-            </p>
-          )
-          : <p>Not enough credits to buy this ship</p>}
+        <div className="ovhead">Ship purchase</div>
+        <p>
+          Do you want to keep the current ship or trade it in? The cost of the current ship: {cr(value)}<br />
+          New ship price: {cr(cost)}<br />
+          Trade-in price: {cr(Math.max(0, cost - value))}
+        </p>
         <div className="hgmodalbtns">
-          {afford && <button type="button" className="ggbutton" onClick={() => onBuy(true)}>Store</button>}
-          {(afford || trade) && <button type="button" className="ggbutton" onClick={() => onBuy(false)}>Sell</button>}
+          <button type="button" className="ggbutton" onClick={() => onBuy(true)}>Keep</button>
+          <button type="button" className="ggbutton" onClick={() => onBuy(false)}>Trade in</button>
           <button type="button" className="ggbutton" onClick={onCancel}>Cancel</button>
         </div>
       </div>
@@ -115,9 +106,9 @@ export default function Screen({ sv, redraw }: ScreenProps) {
   }
 
   const purchase = (ship: ShopShip, keep: boolean) => {
-    buyShip(sv, ship, modules, keep, value)
-    finish(keep ? `${ship.overview.name} bought, ${mine?.overview.name ?? 'the old ship'} is in the hangar`
-      : `${ship.overview.name} bought, ${mine?.overview.name ?? 'the old ship'} traded in`)
+    buyShip(sv, ship, modules, keep)
+    finish(keep ? `${ship.overview.name} in use, ${mine?.overview.name ?? 'the old ship'} is in the hangar`
+      : `${ship.overview.name} in use, ${mine?.overview.name ?? 'the old ship'} traded in`)
   }
 
   if (open) {
@@ -137,7 +128,7 @@ export default function Screen({ sv, redraw }: ScreenProps) {
         </div>
         <OverviewPanel ship={{ ...open.overview, icon: open.overview.icon }} />
         {modal && (
-          <Purchase ship={modal} balance={balance} value={value} onBuy={(keep) => purchase(modal, keep)} onCancel={() => setModal(null)} />
+          <Purchase ship={modal} value={value} onBuy={(keep) => purchase(modal, keep)} onCancel={() => setModal(null)} />
         )}
       </div>
     )
@@ -187,9 +178,9 @@ export default function Screen({ sv, redraw }: ScreenProps) {
                 <button
                   type="button"
                   className="ggbutton"
-                  onClick={() => { sellShip(sv, i, worth); finish(`${rec.overview.name} sold for ${cr(worth)}`) }}
+                  onClick={() => { sellShip(sv, i); finish(`${rec.overview.name} left the hangar`) }}
                 >
-                  Sell
+                  Discard
                 </button>
               </div>
             </ShipCard>

@@ -6,9 +6,9 @@
  * hangar (`Save.as:387-398`), so every hangar entry here carries a station name.
  */
 import {
-  AmfObject, AmfVector, HANGAR, SHIP, STATION, getCredits, setCredits, type AmfValue, type ExtField, type Save,
+  AmfObject, AmfVector, HANGAR, SHIP, STATION, type AmfValue, type ExtField, type Save,
 } from './codec'
-import { BALANCE_MAX, extUtf, shipStation } from './safety'
+import { extUtf, shipStation } from './safety'
 import { buildSlots, byKey, makeModule, moduleVector, shipData, shipKey, type ModuleRec, type ShipRec, type Slot } from './rules'
 
 const utf = (s: string) => {
@@ -148,19 +148,16 @@ export function fakeStation(sv: Save): string {
 const setStation = (s: AmfObject, name: string) => { s.raw[1] = ['U', utf(name)] }
 
 /**
- * Buys `ship`. `keep` pushes the old ship into the hangar and spends the full price
- * (`ui/screens/ShipShopDetailsScreen.as:489-491`); otherwise the old ship is traded in and its
- * value is credited first (`:514-515`).
+ * Takes `ship` into use. `keep` puts the old ship in the hangar
+ * (`ui/screens/ShipShopDetailsScreen.as:489-491`); otherwise the old ship is traded in and gone.
+ * The balance is untouched either way.
  */
-export function buyShip(sv: Save, ship: ShipItem, mods: ModuleRec[], keep: boolean, tradeInValue = 0) {
+export function buyShip(sv: Save, ship: ShipItem, mods: ModuleRec[], keep: boolean) {
   const old = shipData(sv)
-  const station = fakeStation(sv)
   if (keep) {
-    setStation(old, station)
+    setStation(old, fakeStation(sv))
     hangarVector(sv).items.push(old)
   }
-  const balance = getCredits(sv) + (keep ? 0 : tradeInValue) - shipPrice(ship)
-  setCredits(sv, Math.min(Math.max(0, balance), BALANCE_MAX))
   sv.objs[SHIP] = newShipData(sv, ship, mods, '')
 }
 
@@ -177,10 +174,9 @@ export function useShip(sv: Save, index: number) {
   sv.objs[SHIP] = chosen
 }
 
-/** `GarageScreen.as:353-357`: the entry leaves the hangar and its value is credited. */
-export function sellShip(sv: Save, index: number, value: number) {
+/** `GarageScreen.as:353-357`: the entry leaves the hangar. */
+export function sellShip(sv: Save, index: number) {
   hangarVector(sv).items.splice(index, 1)
-  setCredits(sv, Math.min(getCredits(sv) + value, BALANCE_MAX))
 }
 
 /** Adds a ship to the hangar without spending anything, at the station the loader needs. */

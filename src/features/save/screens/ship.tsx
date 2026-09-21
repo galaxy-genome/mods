@@ -5,8 +5,8 @@
  * `lib/save/rules.ts`.
  */
 import * as React from 'react'
-import { AmfObject, getCredits, setCredits, type Save } from '../../../lib/save/codec'
-import { BALANCE_MAX, extUtf } from '../../../lib/save/safety'
+import { AmfObject, type Save } from '../../../lib/save/codec'
+import { extUtf } from '../../../lib/save/safety'
 import {
   SLOT_NAME, buildSlots, byKey, bySaveName, canPlace, fitsHangar, fitsSize, fittedModules, install,
   maxAll, maxCategory, maxZentarks, moduleVector, putInStorage, shipData, shipKey, singletonFree,
@@ -37,9 +37,6 @@ const param = (mod: ModuleRec | null, name: string) => {
   const row = mod?.params.find((p) => p[0] === name)
   return row ? parseFloat(row[1].replace(/,/g, '')) || 0 : 0
 }
-
-/** A module's price, as the table prints it ("8,020 CR"). */
-const price = (mod: ModuleRec) => parseInt(mod.price.replace(/\D/g, ''), 10) || 0
 
 /** The strip the game prints above the sections (`lang_en.json`: `ShipHullLabel`, `MaxJumpRange`,
  * `TotalMass`, `ShipSpeedLabel`).
@@ -164,14 +161,12 @@ export default function Screen({ sv, redraw }: ScreenProps) {
     return apply(maxCategory(category, slots, ship, fitted, data.modules, keys))
   }
 
-  /** Installs `mod` in the open slot; `keep` puts the module it displaces into storage. */
-  const purchase = (mod: ModuleRec, keep: boolean) => {
+  /** Installs `mod` in the open slot; `keep` puts the module it displaces into storage, and
+   * anything else discards it. Neither moves the balance. */
+  const fitModule = (mod: ModuleRec, keep: boolean) => {
     if (!open) return
-    const sold = fitted[open.index]
     const old = install(sv, open, mod)
     if (old && keep) putInStorage(sv, old, extUtf(shipData(sv), 1))
-    // Selling a module at full integrity returns its price (`ui/screens/BuySellModuleScreen.as:492`).
-    if (old && !keep && sold) setCredits(sv, Math.min(getCredits(sv) + price(sold), BALANCE_MAX))
     setModal(null)
     setPick(null)
     setOpen(null)
@@ -191,7 +186,7 @@ export default function Screen({ sv, redraw }: ScreenProps) {
             {SLOT_NAME[open.restriction]} slot {open.index} · class {open.sizeMax} maximum
           </div>
           {chosen && chosen !== current && (canPlace(chosen, open, ship, fitted, keys)
-            ? <button type="button" className="ggbutton" onClick={() => (current ? setModal(chosen) : purchase(chosen, true))}>Purchase</button>
+            ? <button type="button" className="ggbutton" onClick={() => (current ? setModal(chosen) : fitModule(chosen, true))}>Purchase</button>
             // `lang_en.json`: `ModuleSizeTooBig`, `ModuleSingletonExist`, `ModuleNotSupported`.
             : <div className="shrefuse">{refusal(chosen, open, ship, fitted, keys)}</div>)}
         </div>
@@ -218,10 +213,10 @@ export default function Screen({ sv, redraw }: ScreenProps) {
           <div className="shmodal">
             <div className="shmodalbox">
               <div className="ovhead">New module purchase</div>
-              <p>Do you want to sell or keep the current module?</p>
+              <p>Do you want to keep the module now fitted, or discard it?</p>
               <div className="shmodalbtns">
-                <button type="button" className="ggbutton" onClick={() => purchase(modal, true)}>Put in storage</button>
-                <button type="button" className="ggbutton" onClick={() => purchase(modal, false)}>Sell</button>
+                <button type="button" className="ggbutton" onClick={() => fitModule(modal, true)}>Put in storage</button>
+                <button type="button" className="ggbutton" onClick={() => fitModule(modal, false)}>Discard</button>
                 <button type="button" className="ggbutton" onClick={() => setModal(null)}>Cancel</button>
               </div>
             </div>

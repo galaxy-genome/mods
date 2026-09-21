@@ -8,7 +8,7 @@
  */
 import * as React from 'react'
 import { getCredits, type Save } from '../../../lib/save/codec'
-import { cargoTotal, demandAt, heldGoods, maxQty, priceOf, profitOf, trade } from '../../../lib/save/trade'
+import { cargoTotal, demandAt, heldGoods, priceOf, profitOf, trade } from '../../../lib/save/trade'
 import type { ScreenProps } from './types'
 import './cargo.css'
 
@@ -79,12 +79,13 @@ function Market({ rows, onPick }: { rows: (Row | string)[]; onPick: (r: Row) => 
 function Trade({ sv, row, onBack, redraw }: { sv: Save; row: Row; onBack: () => void; redraw: () => void }) {
   const [side, setSide] = React.useState<'buy' | 'sell'>('buy')
   const [qty, setQty] = React.useState(1)
-  const cap = maxQty(sv, row.good.key, row.price, side)
+  // A price is information, so only a sale has a ceiling: what the hold carries.
+  const cap = side === 'sell' ? row.held : Infinity
   const n = Math.min(qty, cap)
   const profit = side === 'buy' ? profitOf(row.index) : -profitOf(row.index)
 
   const apply = () => {
-    trade(sv, row.good.key, n, row.price, side)
+    trade(sv, row.good.key, n, side)
     setQty(1)
     redraw()
   }
