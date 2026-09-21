@@ -17,8 +17,9 @@ import {
   saveSpecs, specCells, type ModuleStats, type ShipSpecs, type Upgrade,
 } from '../../../lib/save/specs'
 import { Engineer } from '../engineer'
+import { engineerLabel, makeUpgrades, moduleBits, type ModuleUpgrade } from '../../../lib/save/engineer'
 import { Wand } from '../wand'
-import { setSlotBest, slotAtBest } from '../../../lib/save/best'
+import { repairHull, setSlotBest, slotAtBest } from '../../../lib/save/best'
 import type { ScreenProps } from './types'
 import './ship.css'
 
@@ -26,7 +27,7 @@ interface Data {
   modules: ModuleStats[]
   ships: ShipSpecs[]
   moduleCards: Record<string, ModuleCard>
-  upgrades: Upgrade[]
+  upgrades: (Upgrade & ModuleUpgrade)[]
 }
 
 function useSaveData() {
@@ -34,7 +35,7 @@ function useSaveData() {
   React.useEffect(() => {
     void fetch(`${import.meta.env.BASE_URL}data/save-data.json`)
       .then((r) => r.json())
-      .then((d: Data) => setData(d))
+      .then((d: Data) => { makeUpgrades(d.upgrades); setData(d) })
       .catch(() => setData(null))
   }, [])
   return data
@@ -59,8 +60,12 @@ function Specs({ sv, ship, fitted, upgrades }: {
   )
 }
 
-function Row({ slot, mod, wand, onOpen }: {
-  slot: Slot; mod: ModuleRec | null; wand: React.ReactNode; onOpen: () => void
+/** One slot's row, as the game draws it: the icon, the module's own class, its name, and the
+ * slot's restriction followed by the engineer state in square brackets, `Main [25 Jump Range]`.
+ * The bracket is the engineer's control, in place on the row. */
+function Row({ slot, mod, label, wand, onOpen, onEngineer }: {
+  slot: Slot; mod: ModuleRec | null; label: string; wand: React.ReactNode
+  onOpen: () => void; onEngineer: () => void
 }) {
   return (
     <div className="shrowbox">
@@ -70,7 +75,23 @@ function Row({ slot, mod, wand, onOpen }: {
         <div className="shclass">{mod ? mod.mClass : slot.sizeMax}</div>
         <div>
           <div className="shname">{mod ? mod.name : 'Empty'}</div>
-          <div className="shslot">{SLOT_NAME[slot.restriction]}</div>
+          <div className="shslot">
+            {SLOT_NAME[slot.restriction]}
+            {/* The bracket is the engineer's own control; a module with no modification shows
+                the restriction alone, as the game does. */}
+            {label && (
+              <span
+                className="shupgrade"
+                role="button"
+                tabIndex={0}
+                aria-label={`Engineer, ${mod?.name ?? ''}`}
+                onClick={(e) => { e.stopPropagation(); onEngineer() }}
+                onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.stopPropagation(); onEngineer() } }}
+              >
+                {label}
+              </span>
+            )}
+          </div>
         </div>
       </button>
       {wand}
@@ -79,10 +100,11 @@ function Row({ slot, mod, wand, onOpen }: {
 }
 
 /** The fitted-module list: the specs strip, then one section per slot class. */
-function Fitted({ sv, ship, slots, fitted, mods, keys, upgrades, onOpen, onMax, onBest }: {
+function Fitted({ sv, ship, slots, fitted, mods, keys, upgrades, onOpen, onMax, onBest, onEngineer }: {
   sv: Save; ship: ShipSpecs; slots: Slot[]; fitted: (ModuleStats | null)[]
   mods: ModuleRec[]; keys: Map<string, ModuleRec>; upgrades: Upgrade[]
   onOpen: (slot: Slot) => void; onMax: (name: string) => void; onBest: (slot: Slot) => void
+  onEngineer: (slot: Slot) => void
 }) {
   const sections: [string, Slot[]][] = (['Main', 'Weapon', 'External', 'Military', 'Optional'] as const)
     .map((t) => [SLOT_NAME[t], slots.filter((s) => s.restriction === t)])
@@ -102,6 +124,8 @@ function Fitted({ sv, ship, slots, fitted, mods, keys, upgrades, onOpen, onMax, 
             {list.map((slot) => (
               <Row
                 key={slot.index} slot={slot} mod={fitted[slot.index]}
+                label={labelOf(sv, slot)}
+                onEngineer={() => onEngineer(slot)}
                 wand={(
                   <Wand
                     atBest={slotAtBest(sv, slot, ship, fitted, mods, keys)}
@@ -117,6 +141,14 @@ function Fitted({ sv, ship, slots, fitted, mods, keys, upgrades, onOpen, onMax, 
       ))}
     </>
   )
+}
+
+/** The engineer state a row prints, read from the module the save holds. */
+function labelOf(sv: Save, slot: Slot): string {
+  const m = moduleVector(sv).items[slot.index]
+  if (!(m instanceof AmfObject)) return ''
+  const bits = moduleBits(m)
+  return engineerLabel(extUtf(m, 0), bits.level, bits.upgradeType)
 }
 
 /** Why the game would refuse this module, in its own words (`lang_en.json`). */
@@ -139,6 +171,7 @@ export default function Screen({ sv, redraw }: ScreenProps) {
   const [open, setOpen] = React.useState<Slot | null>(null)
   const [pick, setPick] = React.useState<ModuleRec | null>(null)
   const [modal, setModal] = React.useState<ModuleRec | null>(null)
+  const [tuning, setTuning] = React.useState<Slot | null>(null)
   const [note, setNote] = React.useState('')
 
   const parts = React.useMemo(() => {
@@ -160,7 +193,11 @@ export default function Screen({ sv, redraw }: ScreenProps) {
   }
 
   const onMax = (name: string) => {
-    if (name === 'Max all') return apply(maxAll(slots, ship, fitted, data.modules, keys))
+    // Max all also takes the damage off the hull: its integrity is the ship's own hull value.
+    if (name === 'Max all') {
+      repairHull(sv, ship, fitted)
+      return apply(maxAll(slots, ship, fitted, data.modules, keys))
+    }
     if (name === 'Zentarks') return apply(maxZentarks(slots, ship, fitted, data.modules, keys))
     const category = name === 'Max storage' ? 'CargoRack' : name === 'Max shield enhancements' ? 'Shields' : 'HullReinforcement'
     return apply(maxCategory(category, slots, ship, fitted, data.modules, keys))
@@ -241,6 +278,9 @@ export default function Screen({ sv, redraw }: ScreenProps) {
     )
   }
 
+  const item = tuning ? moduleVector(sv).items[tuning.index] : null
+  const tuningModule = item instanceof AmfObject ? item : null
+
   return (
     <div className="shbody">
       {note && <div className="shnote">{note}</div>}
@@ -249,7 +289,20 @@ export default function Screen({ sv, redraw }: ScreenProps) {
         upgrades={data.upgrades}
         onOpen={(s) => { setPick(null); setOpen(s) }} onMax={onMax}
         onBest={(slot) => { setSlotBest(sv, slot, ship, fitted, data.modules, keys); redraw() }}
+        onEngineer={setTuning}
       />
+      {tuning && tuningModule && (
+        // The panel's own control, over the list, so a level is set without leaving the rows.
+        <div className="shmodal" onClick={() => setTuning(null)} role="presentation">
+          <div className="shmodalbox shtune" onClick={(e) => e.stopPropagation()} role="presentation">
+            <div className="ovhead">{fitted[tuning.index]?.name ?? ''}</div>
+            <Engineer module={tuningModule} subtype={extUtf(tuningModule, 0)} onChange={redraw} />
+            <div className="shmodalbtns">
+              <button type="button" className="ggbutton" onClick={() => setTuning(null)}>Close</button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   )
 }

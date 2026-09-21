@@ -17,7 +17,7 @@ import {
   setShipBest, setSystemBest, shipAtBest, systemAtBest,
 } from '../../lib/save/best'
 import { byKey, bySaveName, shipKey, type ModuleRec, type ShipRec } from '../../lib/save/rules'
-import { materialCounts } from '../../lib/save/engineer'
+import { makeUpgrades, materialCounts, type ModuleUpgrade } from '../../lib/save/engineer'
 import { getPosition } from '../../lib/save/position'
 import './overview.css'
 
@@ -35,7 +35,12 @@ const SCREENS: Record<string, React.LazyExoticComponent<React.ComponentType<Scre
 }
 
 interface CardMeta { key: string; name: string; sprite: string }
-interface SaveData { homeCards: CardMeta[]; modules: ModuleRec[]; ships: ShipRec[] }
+interface SaveData {
+  homeCards: CardMeta[]
+  modules: ModuleRec[]
+  ships: ShipRec[]
+  upgrades: ModuleUpgrade[]
+}
 
 const sprite = (name: string) => `${import.meta.env.BASE_URL}sprites/${encodeURIComponent(name)}.svg`
 
@@ -44,7 +49,7 @@ function useSaveData() {
   React.useEffect(() => {
     void fetch(`${import.meta.env.BASE_URL}data/save-data.json`)
       .then((r) => r.json())
-      .then((d: SaveData) => setData(d))
+      .then((d: SaveData) => { makeUpgrades(d.upgrades); setData(d) })
       .catch(() => setData(null))
   }, [])
   return data

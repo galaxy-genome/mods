@@ -8,7 +8,8 @@
 import * as React from 'react'
 import type { AmfObject } from '../../lib/save/codec'
 import {
-  ENGINEER_CAP, MAX_LEVEL, UPGRADES, applyBestIfUnmodified, moduleBits, setLevel, setUpgradeType,
+  ENGINEER_CAP, MAX_LEVEL, applyBestIfUnmodified, moduleBits, setLevel, setUpgradeType,
+  upgradesFor,
 } from '../../lib/save/engineer'
 import './engineer.css'
 
@@ -20,8 +21,8 @@ export function Engineer({ module, subtype, onChange }: {
   // made here outlives leaving the screen.
   React.useEffect(() => { if (applyBestIfUnmodified(module)) onChange() }, [module, onChange])
 
-  const options = UPGRADES[subtype]
-  if (!options) return null
+  const options = upgradesFor(subtype)
+  if (!options.length) return null
   const { level, upgradeType } = moduleBits(module)
   const cap = ENGINEER_CAP[subtype]
 

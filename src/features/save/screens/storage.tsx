@@ -10,17 +10,23 @@ import { SLOT_NAME, buildSlots, byKey, bySaveName, fitsHangar, fitsSize, fittedM
 import { installFromStorage, slotsFor, storedList, takeIntoStorage, type Stored } from '../../../lib/save/storage'
 import { ModulePanel, type ModuleCard } from '../panels'
 import { Engineer } from '../engineer'
+import { makeUpgrades, type ModuleUpgrade } from '../../../lib/save/engineer'
 import type { ScreenProps } from './types'
 import './storage.css'
 
-interface Data { modules: ModuleRec[]; ships: ShipRec[]; moduleCards: Record<string, ModuleCard> }
+interface Data {
+  modules: ModuleRec[]
+  ships: ShipRec[]
+  moduleCards: Record<string, ModuleCard>
+  upgrades: ModuleUpgrade[]
+}
 
 function useSaveData() {
   const [data, setData] = React.useState<Data | null>(null)
   React.useEffect(() => {
     void fetch(`${import.meta.env.BASE_URL}data/save-data.json`)
       .then((r) => r.json())
-      .then((d: Data) => setData(d))
+      .then((d: Data) => { makeUpgrades(d.upgrades); setData(d) })
       .catch(() => setData(null))
   }, [])
   return data

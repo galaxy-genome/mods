@@ -31007,6 +31007,7 @@
   {
    "category": "DeepSpaceDrive",
    "type": 1,
+   "name": "Jump Range",
    "boost": {
     "maxFuel": 0.0,
     "mass": 0.3,
@@ -31017,6 +31018,7 @@
   {
    "category": "DeepSpaceDrive",
    "type": 2,
+   "name": "Faster Boot",
    "boost": {
     "bootTime": -0.8,
     "optimalMass": 0.15
@@ -31025,6 +31027,7 @@
   {
    "category": "Sensors",
    "type": 1,
+   "name": "Lightweight",
    "boost": {
     "mass": -0.85
    }
@@ -31032,6 +31035,7 @@
   {
    "category": "Sensors",
    "type": 2,
+   "name": "Long Range",
    "boost": {
     "mass": 1.0,
     "distance": 0.75
@@ -31040,6 +31044,7 @@
   {
    "category": "Thrusters",
    "type": 1,
+   "name": "Clean Modification",
    "boost": {
     "shipMassOptimal": 0.28,
     "power": 0.16
@@ -31048,6 +31053,7 @@
   {
    "category": "Thrusters",
    "type": 2,
+   "name": "Dirty Modification",
    "boost": {
     "shipMassOptimal": 0.4,
     "mass": 0.12
@@ -31056,6 +31062,7 @@
   {
    "category": "PowerPlant",
    "type": 1,
+   "name": "Power Generation",
    "boost": {
     "mass": 0.25,
     "powerGen": 0.4
@@ -31064,6 +31071,7 @@
   {
    "category": "LifeSupport",
    "type": 1,
+   "name": "Lightweight",
    "boost": {
     "mass": -0.85
    }
@@ -31071,6 +31079,7 @@
   {
    "category": "PowerDistributor",
    "type": 1,
+   "name": "Bandwidth to Cannons",
    "boost": {
     "mass": 0.15,
     "powerDistribWep": 0.5,
@@ -31080,6 +31089,7 @@
   {
    "category": "PowerDistributor",
    "type": 2,
+   "name": "Bandwidth to Engines",
    "boost": {
     "mass": -0.15,
     "powerDistribEng": 0.4,
@@ -31089,6 +31099,7 @@
   {
    "category": "PowerDistributor",
    "type": 3,
+   "name": "Bandwidth to System",
    "boost": {
     "mass": 0.25,
     "powerDistribSys": 0.5,
@@ -31098,6 +31109,7 @@
   {
    "category": "Shields",
    "type": 1,
+   "name": "Low Power",
    "boost": {
     "mass": -0.5,
     "power": -0.4,
@@ -31107,6 +31119,7 @@
   {
    "category": "Shields",
    "type": 2,
+   "name": "Rapid Charge",
    "boost": {
     "mass": 0.15,
     "reg": 0.5,
@@ -31117,6 +31130,7 @@
   {
    "category": "CannonWeapon",
    "type": 1,
+   "name": "Charging mechanism",
    "boost": {
     "speedfire": 0.35,
     "mass": 0.15
@@ -31125,6 +31139,7 @@
   {
    "category": "CannonWeapon",
    "type": 2,
+   "name": "Armor-piercing",
    "boost": {
     "damage": 0.5,
     "mass": 0.15,
@@ -31134,6 +31149,7 @@
   {
    "category": "CannonWeapon",
    "type": 3,
+   "name": "Aimed shooting",
    "boost": {
     "weaponrange": 0.3,
     "mass": -0.15,
@@ -31143,6 +31159,7 @@
   {
    "category": "FragmentCannonWeapon",
    "type": 1,
+   "name": "Shutter durability",
    "boost": {
     "durability": 0.6,
     "mass": 0.15
@@ -31151,6 +31168,7 @@
   {
    "category": "MissileWeapon",
    "type": 1,
+   "name": "Explosive power",
    "boost": {
     "damage": 0.5,
     "mass": 0.25
@@ -31159,6 +31177,7 @@
   {
    "category": "MissileWeapon",
    "type": 2,
+   "name": "Charging mechanism",
    "boost": {
     "speedfire": 0.5,
     "powerDraw": 0.2,
@@ -31168,6 +31187,7 @@
   {
    "category": "TorpedoWeapon",
    "type": 1,
+   "name": "Explosive power",
    "boost": {
     "damage": 0.5,
     "mass": 0.3
@@ -31176,6 +31196,7 @@
   {
    "category": "TorpedoWeapon",
    "type": 2,
+   "name": "Charging mechanism",
    "boost": {
     "speedfire": 0.5,
     "powerDraw": 0.3,
@@ -31185,6 +31206,7 @@
   {
    "category": "LaserWeapon",
    "type": 1,
+   "name": "Emitter power",
    "boost": {
     "damage": 0.5,
     "temperatureIncr": 0.3
@@ -31193,6 +31215,7 @@
   {
    "category": "LaserWeapon",
    "type": 2,
+   "name": "Aimed shooting",
    "boost": {
     "weaponrange": 0.3,
     "power": 0.1,
@@ -31202,6 +31225,7 @@
   {
    "category": "PulseLaserWeapon",
    "type": 1,
+   "name": "Emitter power",
    "boost": {
     "damage": 0.5,
     "power": 0.4,
@@ -31211,6 +31235,7 @@
   {
    "category": "PulseLaserWeapon",
    "type": 2,
+   "name": "Capacitor capacitance",
    "boost": {
     "speedfire": 0.4,
     "temperatureIncr": 0.25,
@@ -31220,6 +31245,7 @@
   {
    "category": "RailgunWeapon",
    "type": 1,
+   "name": "Length of rails",
    "boost": {
     "bulletSpeed": 0.8,
     "damage": 0.15,
@@ -31230,6 +31256,7 @@
   {
    "category": "RailgunWeapon",
    "type": 2,
+   "name": "Conductive elements",
    "boost": {
     "durability": 0.9,
     "weaponrange": 0.15,
@@ -31239,6 +31266,7 @@
   {
    "category": "TitanLanceWeapon",
    "type": 1,
+   "name": "Emitter power",
    "boost": {
     "damage": 0.5,
     "power": 0.3,
@@ -31248,6 +31276,7 @@
   {
    "category": "PlasmaGunWeapon",
    "type": 2,
+   "name": "Emitter power",
    "boost": {
     "damage": 0.5,
     "power": 0.9,
@@ -31257,6 +31286,7 @@
   {
    "category": "PlasmaGunWeapon",
    "type": 1,
+   "name": "Peltier elements",
    "boost": {
     "powerDraw": 0.2,
     "power": 0.5,
@@ -31266,6 +31296,7 @@
   {
    "category": "GaussWeapon",
    "type": 1,
+   "name": "Emitter power",
    "boost": {
     "damage": 0.6,
     "power": 0.5,

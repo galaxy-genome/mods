@@ -8,16 +8,23 @@ import { AmfObject, EXTRA, decode, encode } from './codec.ts'
 import { prepareDownload } from './safety.ts'
 import { bySaveName, type ModuleRec } from './rules.ts'
 import {
-  MATERIAL_COUNT, MATERIAL_MAX, MAX_LEVEL, applyBestIfUnmodified, atBest, levelOf,
-  materialCounts, moduleBits, packLevel, priorityOf, setLevel, setMaterial, setUpgradeType,
-  upgradeTypeOf, upgradeables,
+  MATERIAL_COUNT, MATERIAL_MAX, MAX_LEVEL, applyBestIfUnmodified, atBest, engineerLabel, levelOf,
+  makeUpgrades, materialCounts, moduleBits, packLevel, priorityOf, setLevel, setMaterial,
+  setUpgradeType, upgradeName, upgradeTypeOf, upgradeables, type ModuleUpgrade,
 } from './engineer.ts'
 import { changed, leaves } from './leaves.ts'
 
 const repo = resolve(import.meta.dirname, '../../../..')
-const data = JSON.parse(readFileSync(join(repo, 'editor/public/data/save-data.json'), 'utf8')) as
-  { modules: ModuleRec[]; materials: { id: number; key: string; name: string }[]; materialCountMax: number }
+const data = JSON.parse(readFileSync(join(repo, 'editor/public/data/save-data.json'), 'utf8')) as {
+  modules: ModuleRec[]
+  materials: { id: number; key: string; name: string }[]
+  materialCountMax: number
+  upgrades: ModuleUpgrade[]
+}
 const names = bySaveName(data.modules)
+// `ModuleUpgrades.MakeUpgrades` (`system/modules/ModuleUpgrades.as:15-18`): the screens fill the
+// table from `save-data.json` at start-up, and so does every test that reads a module's level.
+makeUpgrades(data.upgrades)
 
 const bytes = new Uint8Array(readFileSync(join(repo, 'saves/Save1.SOL')))
 const load = () => decode(bytes)
@@ -165,4 +172,46 @@ console.log('gg_save.py agrees on the 32 material counts and on priority_and_lev
     assert.equal(moduleBits(one.module).level, level, `level ${level}: what the save holds`)
   }
   console.log(`${fresh.length} untouched modules open at level 25; a chosen level survives the next visit`)
+}
+
+// ------------------------------------------------------- the row label
+
+// `Main [25 Jump Range]`: the level and the game's own name for the modification, in brackets,
+// and nothing where the module carries none.
+{
+  const worked = new Set(data.upgrades.map((u) => u.category))
+  let rows = 0
+  for (const m of data.modules) {
+    if (!worked.has(m.subtype)) {
+      assert.equal(engineerLabel(m.subtype, 0, 0), '', `${m.key}: no engineer works on it`)
+      continue
+    }
+    assert.equal(engineerLabel(m.subtype, 25, 0), '', `${m.key}: no modification, no bracket`)
+    for (const u of data.upgrades.filter((x) => x.category === m.subtype)) {
+      for (const level of [1, 8, 25]) {
+        assert.equal(engineerLabel(m.subtype, level, u.type), ` [${level} ${u.name}]`, m.key)
+        assert.equal(upgradeName(m.subtype, u.type), u.name)
+        rows++
+      }
+    }
+  }
+  assert.ok(rows > 100, `${rows} labelled rows`)
+  assert.equal(engineerLabel('DeepSpaceDrive', 25, 1), ' [25 Jump Range]')
+  assert.equal(engineerLabel('PowerPlant', 25, 1), ' [25 Power Generation]')
+  assert.equal(engineerLabel('PowerDistributor', 25, 1), ' [25 Bandwidth to Cannons]')
+  console.log(`${rows} row labels read as the game's own, ${worked.size} categories an engineer works on`)
+}
+
+// Setting a level from the row writes the level bits and nothing else.
+{
+  const sv3 = decode(bytes)
+  const one = upgradeables(sv3, names).find((u) => u.upgradeType !== 0) ?? upgradeables(sv3, names)[0]
+  applyBestIfUnmodified(one.module)
+  const before = leaves(sv3)
+  setLevel(one.module, 11)
+  const diff = changed(before, leaves(sv3))
+  assert.deepEqual(diff.length, 1, `the row wrote ${diff.length} leaves`)
+  assert.ok(diff[0].endsWith(':u'))
+  assert.equal(moduleBits(one.module).level, 11)
+  console.log(`a level set from the row writes ${diff[0]} alone`)
 }

@@ -32,27 +32,25 @@ export const MATERIAL_COUNT = 32
 
 // ------------------------------------------------------- what each engineer offers
 
-/** The upgrades a module type has, by `ModuleSubType`, with the upgrade type the save stores and
- * the game's name for it (`system/modules/ModuleUpgrades.as:19-335`, names `lang_en.json` `Mod*`). */
-export const UPGRADES: Record<string, { type: number; name: string }[]> = {
-  DeepSpaceDrive: [{ type: 1, name: 'Jump Range' }, { type: 2, name: 'Faster Boot' }],
-  Sensors: [{ type: 1, name: 'Lightweight' }, { type: 2, name: 'Long Range' }],
-  Thrusters: [{ type: 1, name: 'Clean Modification' }, { type: 2, name: 'Dirty Modification' }],
-  PowerPlant: [{ type: 1, name: 'Power Generation' }],
-  LifeSupport: [{ type: 1, name: 'Lightweight' }],
-  PowerDistributor: [{ type: 1, name: 'Bandwidth to Cannons' }, { type: 2, name: 'Bandwidth to Engines' }, { type: 3, name: 'Bandwidth to System' }],
-  Shields: [{ type: 1, name: 'Low Power' }, { type: 2, name: 'Rapid Charge' }],
-  CannonWeapon: [{ type: 1, name: 'Charging mechanism' }, { type: 2, name: 'Armor-piercing' }, { type: 3, name: 'Aimed shooting' }],
-  FragmentCannonWeapon: [{ type: 1, name: 'Shutter durability' }],
-  MissileWeapon: [{ type: 1, name: 'Explosive power' }, { type: 2, name: 'Charging mechanism' }],
-  TorpedoWeapon: [{ type: 1, name: 'Explosive power' }, { type: 2, name: 'Charging mechanism' }],
-  LaserWeapon: [{ type: 1, name: 'Emitter power' }, { type: 2, name: 'Aimed shooting' }],
-  PulseLaserWeapon: [{ type: 1, name: 'Emitter power' }, { type: 2, name: 'Capacitor capacitance' }],
-  RailgunWeapon: [{ type: 1, name: 'Length of rails' }, { type: 2, name: 'Conductive elements' }],
-  TitanLanceWeapon: [{ type: 1, name: 'Emitter power' }],
-  PlasmaGunWeapon: [{ type: 1, name: 'Peltier elements' }, { type: 2, name: 'Emitter power' }],
-  GaussWeapon: [{ type: 1, name: 'Emitter power' }],
-}
+/** `ModuleUpgrades.MakeUpgrades` (`system/modules/ModuleUpgrades.as:19-335`), as
+ * `save-data.json` carries it: what each module category can be modified into, the upgrade type
+ * the save stores, the game's own name for it (`ModuleUpgrade.Name`, `ModuleUpgrade.as:35-41`)
+ * and the boost at level 25.
+ */
+export interface ModuleUpgrade { category: string; type: number; name: string; boost: Record<string, number> }
+
+/** The table the game builds once at start-up (`ModuleUpgrades.as:15-18`); the screens fill it
+ * from `save-data.json` the same way. */
+let TABLE: ModuleUpgrade[] = []
+
+export const makeUpgrades = (list: ModuleUpgrade[]) => { TABLE = list }
+
+/** What some engineer can do to this module category, in the table's order. */
+export const upgradesFor = (category: string) => TABLE.filter((u) => u.category === category)
+
+/** The game's name for one modification, or nothing where the module carries none. */
+export const upgradeName = (category: string, type: number) =>
+  TABLE.find((u) => u.category === category && u.type === type)?.name ?? ''
 
 /** The engineer who takes a module type furthest, `levels_max * 5` (`EngineerScreen.as:116`,
  * tables at `system/modules/Engineer.as:62-96`), and who that engineer is. */
@@ -116,7 +114,7 @@ export function upgradeables(sv: Save, names: Map<string, ModuleRec>): Upgradeab
   const out: Upgradeable[] = []
   const scan = (items: unknown[], where: 'ship' | 'storage') =>
     items.forEach((m, i) => {
-      if (m instanceof AmfObject && UPGRADES[extUtf(m, 0)]) out.push(entry(m, where, i, names))
+      if (m instanceof AmfObject && upgradesFor(extUtf(m, 0)).length) out.push(entry(m, where, i, names))
     })
   scan(moduleVector(sv).items, 'ship')
   scan(storedModules(sv).items, 'storage')
@@ -180,8 +178,8 @@ export function setMaterial(sv: Save, id: number, count: number): boolean {
  * (`EngineerScreen.as:117`). Nothing is spent and no material is consumed. Reports whether the
  * module moved. */
 export function applyBest(m: AmfObject): boolean {
-  const options = UPGRADES[extUtf(m, 0)]
-  if (!options) return false
+  const options = upgradesFor(extUtf(m, 0))
+  if (!options.length) return false
   const v = raw(m)
   const upgradeType = upgradeTypeOf(v) || options[0].type
   if (upgradeTypeOf(v) === upgradeType && levelOf(v) === MAX_LEVEL) return false
@@ -200,7 +198,14 @@ export function applyBestIfUnmodified(m: AmfObject): boolean {
 /** A module the engineer has taken as far as it goes. A type no engineer works on is at its best
  * already. */
 export function atBest(m: AmfObject): boolean {
-  if (!UPGRADES[extUtf(m, 0)]) return true
+  if (!upgradesFor(extUtf(m, 0)).length) return true
   const v = raw(m)
   return levelOf(v) === MAX_LEVEL && upgradeTypeOf(v) > 0
+}
+
+/** A module row's engineer state, in the game's own words: the level and the modification's name
+ * in square brackets, and nothing at all where the module carries no modification. */
+export function engineerLabel(category: string, level: number, upgradeType: number): string {
+  const name = upgradeName(category, upgradeType)
+  return name ? ` [${level} ${name}]` : ''
 }
