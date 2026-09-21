@@ -15,8 +15,7 @@ import {
   type Ladder,
 } from '../../../lib/save/record'
 import {
-  arenaAtBest, karmaAtBest, rankAtBest, reputationAtBest, setArenaBest, setKarmaBest,
-  setRankBest, setReputationBest,
+  arenaAtBest, rankAtBest, reputationAtBest, setArenaBest, setRankBest, setReputationBest,
 } from '../../../lib/save/best'
 import { NumberField } from '../field'
 import { Wand } from '../wand'
@@ -136,7 +135,9 @@ export default function Screen({ sv, redraw }: ScreenProps) {
               'Karma Points',
               <NumberField key="v" label="Karma points" value={karma(sv)} onSet={(v) => { setKarma(sv, v); changed() }} />,
               moralityRank(ranks.morality, karma(sv)),
-              <Wand key="w" atBest={karmaAtBest(sv)} what="Karma" onSet={() => { setKarmaBest(sv); changed() }} />,
+              // No wand: a pirate station wants Average or below and high security wants
+              // Disliked or above (`ui/screens/MissionsScreen.as:899-909`), so karma has no best.
+              '',
             ],
             [
               'Rating battles level',

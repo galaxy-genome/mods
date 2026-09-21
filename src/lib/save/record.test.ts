@@ -69,6 +69,20 @@ typed('station reputation', (sv) => setReputation(stationRows(sv)[0], 61),
 
 // ------------------------------------------------------- the wand takes a rank past Elite
 
+// Karma has no wand: each end of the ladder is better at something.
+{
+  const sv = load()
+  setKarma(sv, 0)
+  setArena(sv, ARENA_LEVELS - 1)
+  stationRows(sv).forEach((r) => setReputation(r, REPUTATION_MAX))
+  RANK_FIELDS.forEach((f) => setRankBest(sv, f))
+  assert.ok(recordAtBest(sv), 'the record is at its best with karma at 0')
+  assert.equal(karma(sv), 0, 'and karma is left where the reader put it')
+  setKarma(sv, -100)
+  assert.ok(recordAtBest(sv), 'and at -100')
+  console.log('karma carries no wand and no card claims it should')
+}
+
 {
   const sv = load()
   RANK_FIELDS.forEach((f) => {
@@ -101,7 +115,7 @@ o = load(sys.argv[1]).objs
 f64 = lambda x, i: struct.unpack('>d', x.raw[i][1])[0]
 print(f64(o[5], 6), f64(o[5], 7), f64(o[5], 8), struct.unpack('>b', o[6].raw[32][1])[0], struct.unpack('>b', o[6].raw[35][1])[0])
 `, oracle], { encoding: 'utf8' }).trim().split(' ').map(Number)
-  assert.deepEqual(dump, [eliteBest(TRADE), eliteBest(BATTLE), eliteBest(DISCOVERY), KARMA_MAX, ARENA_LEVELS - 1],
+  assert.deepEqual(dump, [eliteBest(TRADE), eliteBest(BATTLE), eliteBest(DISCOVERY), karma(all), ARENA_LEVELS - 1],
     `gg_save.py reads ${dump}`)
   console.log(`gg_save.py agrees: ${dump.join(', ')}`)
 }

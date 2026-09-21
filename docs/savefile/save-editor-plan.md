@@ -341,7 +341,7 @@ wherever a value is below that best, and disappears once the value is there.
   upgraded.
 * Beside a weapon slot holding anything other than a Zentark cannon.
 * Beside a system that is not yet explored.
-* Beside a reputation, karma or arena level below its maximum.
+* Beside a reputation or arena level below its maximum.
 * On credits, where best is 2,000,000,000. That is below the `uint` ceiling on
   purpose: a balance near 2^31 goes negative as soon as the player earns more.
 
@@ -360,6 +360,21 @@ Ship level reassigns and upgrades the categories the ship already carries. It
 does not fill an empty slot with a category the ship does not have, because
 cargo, shields and hull reinforcement are each better at something and that
 choice is the reader's.
+
+**A module never lands in a slot smaller than the one it came from**, so the
+ship-level wand only ever improves and never trades one figure for another. The
+exception is filler: cargo racks, hull reinforcement and shields boosters exist
+to occupy whatever room is left rather than to hold a particular slot, so they
+yield to a module that can use their slot and may end up smaller. A ship whose
+class 6 slot held hull reinforcement therefore comes out carrying 6A shields,
+with fewer hull points and the reinforcement further down.
+
+**Karma has no wand.** A pirate station refuses an Idolized or Liked pilot and
+an anarchy system refuses an Idolized one, while a high security system refuses
+a Despised one (`ui/screens/MissionsScreen.as:899-909`, bands at
+`system/Ranks/MoralityRanks.as:8-16`). Each end of that ladder is better at
+something, which is this section's own test for when there is no wand. Karma is
+typed like every other figure the save holds.
 
 ### The engineer, on the module panel
 

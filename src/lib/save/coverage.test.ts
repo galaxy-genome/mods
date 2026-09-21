@@ -16,7 +16,9 @@ import { extUtf } from './safety.ts'
 import { setPosition, markExplored } from './position.ts'
 import { setQuestCompleted } from './quests.ts'
 import { setMaterial, addLevel, setUpgradeType, MATERIAL_COUNT } from './engineer.ts'
-import { setArenaBest, setKarmaBest, setReputationBest } from './best.ts'
+import { setArenaBest, setReputationBest } from './best.ts'
+// Karma is typed, not wanded: each end of its ladder is better at something.
+import { KARMA_MAX, setKarma } from './record.ts'
 import { AmfObject, AmfVector, PROGRESS } from './codec.ts'
 
 /** A leaf path with its vector positions collapsed, so one entry covers a whole vector.
@@ -210,7 +212,7 @@ const ACTIONS: [screen: string, run: (sv: Save) => void, setup?: (sv: Save) => v
   ['cargo, buy', (sv) => trade(sv, 'Grain', 7, 'buy')],
   ['cargo, sell', (sv) => { trade(sv, 'Grain', 7, 'buy'); trade(sv, 'Grain', 3, 'sell') }],
   ['materials, grant', (sv) => { for (let i = 0; i < MATERIAL_COUNT; i++) setMaterial(sv, i, 50) }],
-  ['record, karma', setKarmaBest],
+  ['record, karma', (sv) => setKarma(sv, KARMA_MAX)],
   ['record, rating battles', setArenaBest],
   ['record, reputation', (sv) => {
     const rows = ((sv.objs[PROGRESS] as AmfObject).raw[0][1] as AmfVector).items
