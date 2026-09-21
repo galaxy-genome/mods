@@ -5,13 +5,15 @@ import { join, resolve } from 'node:path'
 import { AmfObject, decode, getCredits } from './codec.ts'
 import { prepareDownload } from './safety.ts'
 import {
-  buildSlots, byKey, bySaveName, fittedModules, install, moduleVector, shipKey,
+  buildSlots, byKey, bySaveName, canPlace, fittedModules, install, moduleVector, shipKey,
   type ModuleRec, type ShipRec,
 } from './rules.ts'
 import {
   MATERIAL_MAX, applyBest, atBest, makeUpgrades, materialCounts, moduleBits, type ModuleUpgrade,
 } from './engineer.ts'
 import { hullMax } from './specs.ts'
+import { addToHangar, useShip } from './ships.ts'
+import { AmfVector } from './codec.ts'
 import { extUtf } from './safety.ts'
 import { getPosition } from './position.ts'
 import {
@@ -118,16 +120,98 @@ for (const file of ['Save1.SOL', 'Save2.SOL', 'Save3.SOL']) {
   const full = readDouble(hull, 2)
 
   hull.raw[2] = ['D', f64(full * 0.35)]
+  void full
   assert.equal(hullAtBest(sv, ship, fittedModules(sv, names)), false, 'a damaged hull is not at its best')
 
   setShipBest(sv, ship, modules, keys, names)
   const after = moduleVector(sv).items[0] as AmfObject
+  // The hull points a ship carries follow the reinforcement it ends up with, so the figure to
+  // meet is this loadout's `HullMax`, not the one the save arrived with.
   assert.equal(readDouble(after, 2), hullMax(ship, fittedModules(sv, names)), 'the hull is whole again')
-  assert.equal(readDouble(after, 2), full, 'which is the value the save already carried')
   assert.equal(extUtf(after, 1), was, 'and the same hull module is still fitted')
   assert.ok(hullAtBest(sv, ship, fittedModules(sv, names)))
   prepareDownload(sv)
-  console.log(`a hull at 35% comes back to ${full} with ${extUtf(after, 0)}.${was} still in the slot`)
+  console.log(`a hull at 35% comes back to ${readDouble(after, 2)} with ${extUtf(after, 0)}.${was} still in the slot`)
+}
+
+
+// ------------------------------------------------------- the ship's best may move a module
+
+// The wand's reach is the thing it sits beside: a slot's wand improves that slot, the ship's
+// wand may move a module to a slot that takes more of it.
+{
+  const ceiling = (category: string) =>
+    modules.reduce((n, m) => (m.category === category ? Math.max(n, m.mClass) : n), 0)
+  const count = (fit: (ModuleRec | null)[]) => {
+    const out = new Map<string, number>()
+    for (const m of fit) if (m) out.set(m.category, (out.get(m.category) ?? 0) + 1)
+    return out
+  }
+
+  let moved = 0
+  for (const ship of ships) {
+    const sv = decode(new Uint8Array(readFileSync(join(repo, 'saves/Save1.SOL'))))
+    const item = ships.find((s) => s.key === 'Ion')!
+    addToHangar(sv, ship as never, modules)
+    useShip(sv, (sv.objs[3] as AmfVector).items.length - 1)
+    assert.equal(shipKey(sv), ship.key, `${ship.key}: in use`)
+    void item
+
+    const slots = buildSlots(ship, keys)
+    const before = fittedModules(sv, names)
+    setShipBest(sv, ship, modules, keys, names)
+    const after = fittedModules(sv, names)
+
+    // The slots a ship-level best reassigns: a main slot takes one category and a weapon slot
+    // has its own settled best, so neither is part of the shuffle.
+    const shuffled = slots.filter((s) => s.restriction !== 'Main' && s.restriction !== 'Weapon')
+
+    // Every module is still there, category for category.
+    const was = count(shuffled.map((s) => before[s.index]))
+    const now = count(shuffled.map((s) => after[s.index]))
+    assert.deepEqual([...now].sort(), [...was].sort(), `${ship.key}: the categories changed`)
+
+    // No empty slot gained a module, and every placed module is one the game would install.
+    const emptied = shuffled.filter((s) => !before[s.index]).length
+    assert.equal(shuffled.filter((s) => !after[s.index]).length, emptied, `${ship.key}: a slot filled or emptied`)
+    for (const s of shuffled) {
+      const m = after[s.index]
+      if (!m) continue
+      assert.ok(canPlace(m, s, ship, after, keys), `${ship.key}: ${m.name} cannot sit in slot ${s.index}`)
+      assert.ok(m.mClass <= s.sizeMax, `${ship.key}: ${m.name} is too big for slot ${s.index}`)
+    }
+
+    // Nothing is left in a smaller slot while a bigger one holds a category that can use it less.
+    for (const a of shuffled) {
+      const mine = after[a.index]
+      if (!mine || mine.mClass >= ceiling(mine.category)) continue
+      for (const b of shuffled) {
+        const theirs = after[b.index]
+        if (!theirs || b.sizeMax <= a.sizeMax) continue
+        assert.ok(ceiling(theirs.category) >= ceiling(mine.category),
+          `${ship.key}: ${mine.name} sits in slot ${a.index} (max ${a.sizeMax}) while `
+          + `${theirs.name} holds slot ${b.index} (max ${b.sizeMax})`)
+      }
+    }
+
+    if (shuffled.some((s) => before[s.index]?.key !== after[s.index]?.key)) moved++
+  }
+  console.log(`${ships.length} ships take a ship-level best; ${moved} of them move a module`)
+}
+
+// The case that showed it: a Nemesis whose shields were stuck at 4A in its class 4 slot.
+{
+  const sv = decode(new Uint8Array(readFileSync(join(repo, 'saves/fixtures/nemesis-maxed.SOL'))))
+  const ship = ships.find((s) => s.key === shipKey(sv))!
+  const before = fittedModules(sv, names).find((m) => m?.category === 'Shields')
+  assert.equal(before?.className, '4A', `the fixture carries ${before?.name}`)
+
+  setShipBest(sv, ship, modules, keys, names)
+  const after = fittedModules(sv, names).find((m) => m?.category === 'Shields')
+  assert.equal(after?.className, '6A', `the ship's best left ${after?.name} on the Nemesis`)
+  assert.equal(fittedModules(sv, names).filter((m) => m?.category === 'Shields').length, 1, 'shields are a singleton')
+  prepareDownload(sv)
+  console.log(`the Nemesis carries ${after?.name} where its old slot allowed ${before?.name}`)
 }
 
 console.log('best ok')

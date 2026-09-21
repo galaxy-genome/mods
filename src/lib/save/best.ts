@@ -121,17 +121,82 @@ export function shipAtBest(sv: Save, ship: ShipRec, mods: ModuleRec[], keys: Map
     && buildSlots(ship, keys).every((slot) => slotAtBest(sv, slot, ship, fitted, mods, keys))
 }
 
+/** The largest class this category reaches anywhere in the table, which is how much room a
+ * module of it can use. */
+const ceiling = (mods: ModuleRec[], category: string) =>
+  mods.reduce((n, m) => (m.category === category ? Math.max(n, m.mClass) : n), 0)
+
+/** The slots a ship-level best reassigns: everything a category can move between. A main slot
+ * takes one category and a weapon slot has its own settled best, the Zentarks cannon, so neither
+ * is part of the shuffle. */
+const movableSlots = (slots: Slot[]) =>
+  slots.filter((s) => s.restriction !== 'Main' && s.restriction !== 'Weapon')
+
+/**
+ * The whole ship at its best. Unlike a slot's own wand this may move a module: a singleton like
+ * shields sits in one slot only, so the ship carries the best shields its biggest slot takes
+ * rather than the best the slot it happened to be in allowed.
+ *
+ * Only the categories the ship already carries are placed, each in the smallest slot that lets
+ * it reach as far as it can, singletons first and the categories with the most room to grow
+ * after them, so a category that cannot grow leaves the big slots to one that can. An empty slot
+ * stays empty, because cargo, shields and hull reinforcement are each better at something and
+ * that choice is the reader's.
+ *
+ * The slots being reassigned are cleared first: `canPlace` refuses a second singleton
+ * (`ui/screens/BuySellModuleScreen.as:510-520`), which is what stops a module moving while its
+ * own copy still stands in the old slot.
+ */
 export function setShipBest(sv: Save, ship: ShipRec, mods: ModuleRec[], keys: Map<string, ModuleRec>,
   names: Map<string, ModuleRec>) {
-  for (const slot of buildSlots(ship, keys)) {
-    setSlotBest(sv, slot, ship, fittedModules(sv, names), mods, keys)
+  const slots = buildSlots(ship, keys)
+  for (const slot of slots) {
+    if (slot.restriction === 'Main' || slot.restriction === 'Weapon') {
+      setSlotBest(sv, slot, ship, fittedModules(sv, names), mods, keys)
+    }
   }
+
+  // The slots a category can move between only reach the slots of their own kind: an external
+  // module has nowhere else to go, and a military slot takes less than an optional one.
+  for (const group of [['External'], ['Optional', 'Military']] as const) {
+    const fitted = fittedModules(sv, names)
+    const here = movableSlots(slots).filter((s) => group.includes(s.restriction as never) && fitted[s.index])
+    const held = here.map((s) => fitted[s.index]!)
+    const vector = moduleVector(sv)
+    for (const slot of here) vector.items[slot.index] = null
+
+    // The category with the most room to grow takes the biggest slot, so nothing sits below its
+    // ceiling while a category that can use less holds a larger slot. A singleton goes first
+    // among equals, because it sits in one slot only and has one chance at that slot.
+    const order = [...held].sort((a, b) =>
+      ceiling(mods, b.category) - ceiling(mods, a.category)
+      || Number(b.singleton) - Number(a.singleton)
+      || b.mClass - a.mClass)
+    const free = [...here].sort((a, b) => b.sizeMax - a.sizeMax)
+    const after: (ModuleRec | null)[] = fittedModules(sv, names)
+
+    for (const mod of order) {
+      // The biggest slot left that this category can use, which is the slot it gains most from.
+      const at = free.findIndex((slot) => {
+        const best = bestModule(mods, mod.category, slot.sizeMax)
+        return !!best && canPlace(best, slot, ship, after, keys)
+      })
+      if (at < 0) continue
+      const [slot] = free.splice(at, 1)
+      const best = bestModule(mods, mod.category, slot.sizeMax)!
+      install(sv, slot, best)
+      after[slot.index] = best
+      const m = vector.items[slot.index]
+      if (m instanceof AmfObject) applyBest(m)
+    }
+  }
+
   repairHull(sv, ship, fittedModules(sv, names))
 }
 
-/** The hull module's integrity is the ship's own hull value (`system/modules/Modules.as:118`), so
- * a damaged ship reads as damaged however good its other modules are. Which hull is fitted is a
- * choice of armour and is left alone; only the damage goes. */
+/** The hull module's integrity is the ship's hull points (`objects/Ships/ShipInfo.as:306`,
+ * `:449`), so a damaged ship reads as damaged however good its other modules are. Which hull is
+ * fitted is a choice of armour and is left alone; only the damage goes. */
 export function repairHull(sv: Save, ship: ShipRec, fitted: (ModuleRec | null)[]): boolean {
   const m = moduleVector(sv).items[0]
   if (!(m instanceof AmfObject) || hullAtBest(sv, ship, fitted)) return false
