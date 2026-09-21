@@ -53,8 +53,10 @@ export interface Fit {
   ship: ShipSpecs
   mods: (ModuleStats | null)[]
   boosts: (Record<string, number> | null)[]
+  /** The goods the hold carries, `cargo.cargoTotal` (`system/Save/CargoData.as:33-44`). */
   cargo: number
-  /** Null takes the tank as full, which is what a ship leaves the yard with (`BaseShip.as:37`). */
+  /** The fuel aboard. Null takes the tank as full, which is what a ship carries when it is
+   * built (`objects/Ships/BaseShip.as:34-37`). */
   fuel: number | null
 }
 
@@ -78,7 +80,10 @@ export function computeSpecs({ ship, mods, boosts, cargo, fuel }: Fit): Specs {
   const massTotal = mods.reduce((n, m, i) => n + (m ? m.mass * (1 + at(boosts[i], 'mass')) : 0), hullMass)
 
   const fuelMax = stat(tank, 'tank')
-  const held = fuel === null || fuel < 0 ? fuelMax : Math.min(fuel, fuelMax)
+  // The two fuel terms part company here: the jump is asked for the range on a full tank, so
+  // `CalcJump` is called with `FuelMax` (`ShipInfo.as:860`, `ModulesShopScreen.as:198`), while
+  // the loaded mass and the speed use `Fuel`, the fuel actually aboard (`ShipInfo.as:604-606`).
+  const held = fuel === null || fuel < 0 ? fuelMax : fuel
   const fullCargo = of(mods, 'CargoRack').reduce((n, m) => n + m.stats.capacity, 0)
 
   // `CalcJump(FuelMax, -1)`, the range on a full tank. No drive, no jump.
@@ -117,15 +122,6 @@ export function computeSpecs({ ship, mods, boosts, cargo, fuel }: Fit): Specs {
 const cargoTotal = (sv: Save) =>
   ((sv.objs[CARGO] as AmfObject).raw[2][1] as AmfVector).items.reduce((n: number, c) => n + Number(c), 0)
 
-/** The fuel the tank module carries (`Module.as:30`, `ShipInfo.as:604-606`); a tank the game has
- * never filled reads -1 and the ship leaves the yard full. */
-function tankFuel(sv: Save): number | null {
-  const m = moduleVector(sv).items[MAIN_CATEGORIES.indexOf('FuelTank')]
-  if (!(m instanceof AmfObject)) return null
-  const b = m.raw[7][1] as Uint8Array
-  return new DataView(b.buffer, b.byteOffset, b.byteLength).getFloat64(0)
-}
-
 /** The specs of the ship the save is flying, with each module's engineer level applied. */
 export function saveSpecs(sv: Save, ship: ShipSpecs, fitted: (ModuleStats | null)[], upgrades: Upgrade[]): Specs {
   const items = moduleVector(sv).items
@@ -136,7 +132,10 @@ export function saveSpecs(sv: Save, ship: ShipSpecs, fitted: (ModuleStats | null
     const v = new DataView(b.buffer, b.byteOffset, b.byteLength).getUint32(0)
     return boostOf(mod, levelOf(v), upgradeTypeOf(v), upgrades)
   })
-  return computeSpecs({ ship, mods: fitted, boosts, cargo: cargoTotal(sv), fuel: tankFuel(sv) })
+  // A full tank: the editor's ship sits at a station, and a ship carries a full tank from the
+  // moment it is built (`BaseShip.as:34-37`). The tank module's own `fuel` field is a figure of
+  // the flight the save was written in, and the game prints the mass of a fuelled ship.
+  return computeSpecs({ ship, mods: fitted, boosts, cargo: cargoTotal(sv), fuel: null })
 }
 
 /** The strip's own wording and rounding (`ModulesShopScreen.as:198`; the units are

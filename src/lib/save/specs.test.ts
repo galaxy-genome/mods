@@ -65,6 +65,37 @@ console.log(`${cases.length} oracle cases agree on hull, shields, jump range and
   console.log(`Ion jump by drive level 0/5/13/25: ${levels.map((n) => n.toFixed(2)).join(' / ')} ly`)
 }
 
+// ------------------------------------------------------- the game's own figures, on a fixture
+
+// `saves/fixtures/nemesis-maxed.SOL` was written by the editor and read back in the game; these
+// five figures are what its module screen printed (`ui/screens/ModulesShopScreen.as:198`).
+{
+  const sv = decode(new Uint8Array(readFileSync(join(repo, 'saves/fixtures/nemesis-maxed.SOL'))))
+  const ship = ships.find((s) => s.key === shipKey(sv))!
+  const fitted = fittedModules(sv, names) as (ModuleStats | null)[]
+  const cells = specCells(saveSpecs(sv, ship, fitted, upgrades))
+  assert.deepEqual(cells, [
+    ['Hull', '4000'],
+    ['Shields', '1219 MW'],
+    ['Jump range', '42.8 ly'],
+    ['Total mass', '2324/2317 T'],
+    ['Speed', '8.5 ls/s'],
+  ], 'the game printed something else for this file')
+  console.log(`nemesis-maxed.SOL  ${cells.map(([l, v]) => `${l} ${v}`).join('   ')}  (the game's own figures)`)
+}
+
+// A jump whose raw value passes 150 is 30, whatever it was (`ShipInfo.as:870-873`).
+{
+  const ion = ships.find((s) => s.var === 'ION')!
+  const fit = cases.find((c) => c.ship === 'ShipType.ION')!
+  const mods = fit.fit.map((k) => (k ? byKey.get(k) ?? null : null))
+  const huge = { ...byKey.get('DeepSpaceDrive.EightA')!, stats: { ...byKey.get('DeepSpaceDrive.EightA')!.stats } }
+  const swapped = mods.map((m, i) => (i === 4 ? huge : m))
+  const raw = computeSpecs({ ship: ion, mods: swapped, boosts: swapped.map(() => null), cargo: 0, fuel: null })
+  assert.equal(raw.jump, 30, `a raw jump past 150 is 30, not ${raw.jump}`)
+  console.log(`an ${huge.name} on an Ion clamps to ${raw.jump} ly`)
+}
+
 // ------------------------------------------------------- the ship each save is flying
 
 for (const file of ['Save1.SOL', 'Save2.SOL', 'Save3.SOL']) {
