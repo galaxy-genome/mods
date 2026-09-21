@@ -48,7 +48,7 @@ export const SECURITY_NAMES: Record<string, string> = {
  */
 export const GAME_QUESTS: GameQuest[] = []
 /** Name, character and station of every game side quest; published, so it works without game-quests.json. */
-export const GAME_QUEST_NAMES = data.gameQuests as Pick<GameQuest, 'id' | 'name' | 'charName' | 'station' | 'randomSpace'>[]
+export const GAME_QUEST_NAMES = data.gameQuests as Pick<GameQuest, 'id' | 'name' | 'charName' | 'station' | 'randomSpace' | 'requires'>[]
 export const gameQuest = (id: number) => GAME_QUEST_NAMES.find((g) => g.id === id)
 
 export async function loadGameQuests() {

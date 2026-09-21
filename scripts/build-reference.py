@@ -47,7 +47,7 @@ for fid, qid, name, desc, char, char_name, station, requires, space in q(
                        steps=[dict(name=a, todo=b, completeAction=c) for a, b, c in steps]))
 
 (ROOT / "src/data/reference.json").write_text(json.dumps(dict(systems=systems, stations=stations, bodies=bodies, starTypes=star_types,
-    gameQuests=[{k: g[k] for k in ("id", "name", "charName", "station", "randomSpace")} for g in quests]), ensure_ascii=False))
+    gameQuests=[{k: g[k] for k in ("id", "name", "charName", "station", "randomSpace", "requires")} for g in quests]), ensure_ascii=False))
 (ROOT / "public/data").mkdir(parents=True, exist_ok=True)
 (ROOT / "public/data/game-quests.json").write_text(json.dumps(quests, ensure_ascii=False))
 full = {qid: (DB.parent.parent.parent / path).read_text(encoding="utf-8-sig") for qid, path in q(
