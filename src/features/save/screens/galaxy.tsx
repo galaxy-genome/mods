@@ -74,22 +74,23 @@ export default function Screen({ sv, redraw }: ScreenProps) {
           {rows.map((s) => {
             const where = { x: s[1], z: s[2] }
             return (
-              <button
-                key={s[0]}
-                type="button"
-                className={`gggalrow${here && s[0] === here[0] ? ' on' : ''}`}
-                onClick={() => pick(s[0])}
-              >
-                <span className="gggalname">{s[0]}</span>
-                <span className="gggalmeta">
-                  {s[4] ?? '-'} · {distance(s, at).toFixed(1)} ly · {visited.has(cellOf(where)) ? 'Discovered' : 'Undiscovered'}
-                </span>
+              <div key={s[0]} className="gggalitem">
+                <button
+                  type="button"
+                  className={`gggalrow${here && s[0] === here[0] ? ' on' : ''}`}
+                  onClick={() => pick(s[0])}
+                >
+                  <span className="gggalname">{s[0]}</span>
+                  <span className="gggalmeta">
+                    {s[4] ?? '-'} · {distance(s, at).toFixed(1)} ly · {visited.has(cellOf(where)) ? 'Discovered' : 'Undiscovered'}
+                  </span>
+                </button>
                 <Wand
                   atBest={visited.has(cellOf(where))}
                   what={s[0]}
                   onSet={() => { setSystemBest(sv, where); redraw() }}
                 />
-              </button>
+              </div>
             )
           })}
           {!rows.length && <p className="gggalempty">{galaxy ? 'No system' : 'Loading'}</p>}

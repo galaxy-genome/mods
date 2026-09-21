@@ -80,15 +80,17 @@ function Row({ slot, mod, wand, onOpen }: {
   slot: Slot; mod: ModuleRec | null; wand: React.ReactNode; onOpen: () => void
 }) {
   return (
-    <button type="button" className={`shrow${mod ? '' : ' shempty'}`} onClick={onOpen}>
-      <img src={sprite(mod?.icon || mod?.line || '')} alt="" onError={hide} />
-      <div className="shclass">{slot.sizeMax}</div>
-      <div>
-        <div className="shname">{mod ? mod.name : 'Empty'}</div>
-        <div className="shslot">{SLOT_NAME[slot.restriction]}</div>
-      </div>
+    <div className="shrowbox">
+      <button type="button" className={`shrow${mod ? '' : ' shempty'}`} onClick={onOpen}>
+        <img src={sprite(mod?.icon || mod?.line || '')} alt="" onError={hide} />
+        <div className="shclass">{slot.sizeMax}</div>
+        <div>
+          <div className="shname">{mod ? mod.name : 'Empty'}</div>
+          <div className="shslot">{SLOT_NAME[slot.restriction]}</div>
+        </div>
+      </button>
       {wand}
-    </button>
+    </div>
   )
 }
 
