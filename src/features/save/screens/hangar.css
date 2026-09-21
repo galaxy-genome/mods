@@ -1,0 +1,31 @@
+/* The hangar and the ship shop. Sizes are px against the 820px screen .ggscreen scales. */
+
+.hgbody{padding:0 6px 10px}
+.hgtop{display:flex;align-items:center;gap:8px;padding:6px 0 4px}
+.hgcredits{flex:1;font-size:11px;text-align:right;border:0;background:none;color:#e0a44a}
+.hgnote{padding:2px 0 4px;text-align:center;font-size:11px;color:#d0e8a9}
+
+.hggrid{display:grid;grid-template-columns:1fr 1fr;gap:2px}
+.hgcard{display:grid;grid-template-columns:76px 1fr;align-items:center;gap:6px;
+  padding:6px;background:#2e444d;cursor:default}
+.hgcard[role=button]{cursor:pointer}
+.hgcard:nth-child(4n-1),.hgcard:nth-child(4n){background:#334b55}
+.hgcard[role=button]:hover,.hgcard[role=button]:focus-visible{outline:1px solid #3b8fb0}
+.hgart{width:72px;height:56px;object-fit:contain;justify-self:center}
+.hgcardtext{text-align:center}
+.hgname{font-size:12px;color:#7fd8f2}
+.hgcost{font-size:11px;color:#e0a44a;padding:2px 0}
+.hglabel{font-size:10px;border:0;padding:0;background:none;color:#e0c07a}
+.hgval{font-size:11px;border:0;padding:0;background:none;color:#e8d7a4}
+.hgstation{font-size:10px;color:#9db4bd;padding-top:2px}
+.hgactions{display:flex;gap:4px;justify-content:center;padding-top:4px}
+.hgactions .ggbutton{padding:3px 10px;font-size:10px}
+.hgempty{grid-column:1/-1;padding:24px 0;text-align:center;font-size:12px;color:#9db4bd}
+
+.hgdetail{position:relative;padding:0 6px 10px}
+.hgdetailhead{display:flex;align-items:center;gap:6px;padding:6px 0 2px}
+
+.hgmodal{position:absolute;inset:0;display:grid;place-items:center;background:#05080c99}
+.hgmodalbox{width:340px;background:#3a555f;border:1px solid #1d2329;box-shadow:0 10px 40px #000a}
+.hgmodalbox p{margin:0;padding:12px 14px;font-size:12px;line-height:1.5;color:#e4f7ff}
+.hgmodalbtns{display:flex;gap:8px;justify-content:center;padding:0 10px 14px}
