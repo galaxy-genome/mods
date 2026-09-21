@@ -66,7 +66,8 @@ function Row({ slot, mod, wand, onOpen }: {
     <div className="shrowbox">
       <button type="button" className={`shrow${mod ? '' : ' shempty'}`} onClick={onOpen}>
         <img src={sprite(mod?.icon || mod?.line || '')} alt="" onError={hide} />
-        <div className="shclass">{slot.sizeMax}</div>
+        {/* The game prints the module's own class, and the slot's maximum where it is empty. */}
+        <div className="shclass">{mod ? mod.mClass : slot.sizeMax}</div>
         <div>
           <div className="shname">{mod ? mod.name : 'Empty'}</div>
           <div className="shslot">{SLOT_NAME[slot.restriction]}</div>
