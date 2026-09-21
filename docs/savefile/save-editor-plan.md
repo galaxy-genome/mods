@@ -533,6 +533,11 @@ downloaded from `mods/`. The owner id is never rewritten.
 
 ## Punchlist
 
+- A wand on the hangar itself adds every ship the hangar does not hold, each
+  fitted the way the ship wand fits one. 45 ships carry their own modules, so
+  the save grows; measure it before offering it, since a save that grows past
+  what the game reads back is worse than no button.
+
 - The ship level wand offers the loadout tool's goal presets, so a reader picks
   the goal and the fit follows: `loadouts/` already scores a fit against one.
 
