@@ -1,0 +1,12 @@
+/* The quest list. Column widths are px against the 820px screen the frame scales. */
+.qwrap{padding:6px 10px 12px}
+.qrow{display:grid;grid-template-columns:46px 220px 160px 160px 56px;gap:8px;align-items:center;
+  padding:3px 0;font-size:11px;text-align:center}
+.qhead{padding:0}
+.qhead .ovwhite{font-size:11px}
+.qname{color:#d0e8a9;text-align:left}
+.qrow span:not(.qname){color:#bff3ff}
+.qrow:not(.qhead):hover{background:#3b8fb033}
+.qactive .qname{color:#ffd270}
+.qbox{width:14px;height:14px;accent-color:#35e0f5;cursor:pointer;justify-self:center}
+.qstep{color:#9febff}
