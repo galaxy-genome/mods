@@ -15,6 +15,8 @@ import {
   type ModuleRec, type ShipRec, type Slot,
 } from './rules'
 import { markExplored, visitedCells, cellOf, type Position } from './position'
+import { setHullFull } from './ships'
+import { hullMax } from './specs'
 
 /** Below the `uint` ceiling on purpose: a balance near 2^31 goes negative as soon as the player
  * earns more. */
@@ -115,7 +117,8 @@ export function setSlotBest(sv: Save, slot: Slot, ship: ShipRec, fitted: (Module
 export function shipAtBest(sv: Save, ship: ShipRec, mods: ModuleRec[], keys: Map<string, ModuleRec>,
   names: Map<string, ModuleRec>): boolean {
   const fitted = fittedModules(sv, names)
-  return buildSlots(ship, keys).every((slot) => slotAtBest(sv, slot, ship, fitted, mods, keys))
+  return hullAtBest(sv, ship, fitted)
+    && buildSlots(ship, keys).every((slot) => slotAtBest(sv, slot, ship, fitted, mods, keys))
 }
 
 export function setShipBest(sv: Save, ship: ShipRec, mods: ModuleRec[], keys: Map<string, ModuleRec>,
@@ -123,6 +126,25 @@ export function setShipBest(sv: Save, ship: ShipRec, mods: ModuleRec[], keys: Ma
   for (const slot of buildSlots(ship, keys)) {
     setSlotBest(sv, slot, ship, fittedModules(sv, names), mods, keys)
   }
+  repairHull(sv, ship, fittedModules(sv, names))
+}
+
+/** The hull module's integrity is the ship's own hull value (`system/modules/Modules.as:118`), so
+ * a damaged ship reads as damaged however good its other modules are. Which hull is fitted is a
+ * choice of armour and is left alone; only the damage goes. */
+export function repairHull(sv: Save, ship: ShipRec, fitted: (ModuleRec | null)[]): boolean {
+  const m = moduleVector(sv).items[0]
+  if (!(m instanceof AmfObject) || hullAtBest(sv, ship, fitted)) return false
+  setHullFull(m, ship, fitted)
+  return true
+}
+
+/** A hull carrying fewer points than the ship's own `HullMax` (`ShipInfo.as:306`). */
+export function hullAtBest(sv: Save, ship: ShipRec, fitted: (ModuleRec | null)[]): boolean {
+  const m = moduleVector(sv).items[0]
+  if (!(m instanceof AmfObject)) return true
+  const b = m.raw[2][1] as Uint8Array
+  return new DataView(b.buffer, b.byteOffset, b.byteLength).getFloat64(0) >= hullMax(ship, fitted)
 }
 
 // ------------------------------------------------------- the galaxy

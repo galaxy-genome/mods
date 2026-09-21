@@ -10,6 +10,7 @@ import {
 } from './codec'
 import { extUtf, shipStation } from './safety'
 import { buildSlots, byKey, makeModule, moduleVector, shipData, shipKey, type ModuleRec, type ShipRec, type Slot } from './rules'
+import { hullMax } from './specs'
 
 const utf = (s: string) => {
   const b = new TextEncoder().encode(s)
@@ -35,9 +36,6 @@ export type ShipItem = ShipRec & {
 
 /** A price as the tables print it ("8,020 CR"). */
 export const priceOf = (m: ModuleRec) => parseInt(m.price.replace(/\D/g, ''), 10) || 0
-
-const spec = (ship: ShipItem, name: string) =>
-  Number(ship.overview.specs.find((s) => s[0] === name)?.[1] ?? 0)
 
 // ------------------------------------------------------- the shop
 
@@ -76,26 +74,16 @@ export function defaultLoadout(ship: ShipItem, slots: Slot[], mods: ModuleRec[])
   })
 }
 
-/** `Modules.as:118`: the hull module's integrity is the ship's hull rating times the hull type's
- * own percentage, and `MakePlayerShip` leaves a new ship at full hull
- * (`universe/Managers/ShipsManager.as:351`). A module whose integrity disagrees loads the ship
- * damaged (`tools/bin/gg_save.py:695`). */
-export function hullIntegrity(ship: ShipItem, hull: ModuleRec | null): number {
-  const pct = parseFloat(hull?.params.find((p) => p[0] === 'Hull')?.[1] ?? '100') || 100
-  return spec(ship, 'Hull') * (pct / 100)
-}
-
 // ------------------------------------------------------- writing a ShipData
 
-/** One `Module`, with the hull slot's integrity forced to the ship's own hull value. */
-const moduleFor = (ship: ShipItem, mod: ModuleRec, slot: Slot): AmfObject => {
-  const o = makeModule(mod, null)
-  if (slot.index === 0) o.raw[2] = ['D', (() => {
-    const b = new DataView(new ArrayBuffer(8))
-    b.setFloat64(0, hullIntegrity(ship, mod))
-    return new Uint8Array(b.buffer)
-  })()]
-  return o
+/** The hull module's integrity is the ship's hull points, `HullMax` (`ShipInfo.as:306`, `:449`),
+ * and `MakePlayerShip` leaves a new ship at full hull
+ * (`universe/Managers/ShipsManager.as:351`). A module whose integrity disagrees loads the ship
+ * damaged (`tools/bin/gg_save.py:695`). */
+export function setHullFull(hullModule: AmfObject, ship: ShipRec, fitted: (ModuleRec | null)[]) {
+  const b = new DataView(new ArrayBuffer(8))
+  b.setFloat64(0, hullMax(ship, fitted))
+  hullModule.raw[2] = ['D', new Uint8Array(b.buffer)]
 }
 
 /** A fresh `ShipData` for `ship`, carrying its default loadout (`MakePlayerShip`,
@@ -107,8 +95,10 @@ export function newShipData(sv: Save, ship: ShipItem, mods: ModuleRec[], station
   const old = moduleVector(sv)
   const items = slots.map((slot) => {
     const mod = loadout[slot.index]
-    return mod ? (moduleFor(ship, mod, slot) as AmfValue) : null
+    return mod ? (makeModule(mod) as AmfValue) : null
   })
+  // A new ship leaves the yard whole, and its hull points live in the hull module.
+  if (items[0] instanceof AmfObject) setHullFull(items[0], ship, loadout)
 
   const o = new AmfObject('ShipData', false, true)
   o.raw = [

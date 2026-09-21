@@ -29,6 +29,10 @@ export interface ModuleRec {
   params: [string, string][]
   /** `BaseModule.integrity`, when the export carries it. */
   integrity?: number
+  /** `BaseModule.mass`, the term `MassCalc` sums (`objects/Ships/ShipInfo.as:425`). */
+  mass: number
+  /** The per-category figures `ShipInfo`'s formulas read (`lib/save/specs.ts`). */
+  stats: Record<string, number>
 }
 
 export interface ShipRec {
@@ -46,6 +50,11 @@ export interface ShipRec {
   defaultSensors: string | null
   defaultHull: string | null
   maxFighterHangar: string | null
+  /** The hull's own physical figures (`objects/Ships/ShipType.as`). */
+  mass: number
+  hull: number
+  shields: number
+  speedMax: number
   overview: { name: string; specs: [string, string | number][] }
 }
 
@@ -200,7 +209,6 @@ const u32 = (n: number) => { const b = new DataView(new ArrayBuffer(4)); b.setUi
 const i32 = (n: number) => { const b = new DataView(new ArrayBuffer(4)); b.setInt32(0, n); return new Uint8Array(b.buffer) }
 const f64 = (n: number) => { const b = new DataView(new ArrayBuffer(8)); b.setFloat64(0, n); return new Uint8Array(b.buffer) }
 const utf = (s: string) => { const b = new TextEncoder().encode(s); const o = new Uint8Array(b.length + 2); o.set(u16(b.length)); o.set(b, 2); return o }
-const num = (o: AmfObject, i: number) => { const b = o.raw[i][1] as Uint8Array; return new DataView(b.buffer, b.byteOffset, b.byteLength).getFloat64(0) }
 
 export const shipData = (sv: Save) => sv.objs[SHIP] as AmfObject
 /** `ShipData.Modules` (`system/Save/ShipData.as:16`), one entry per slot, null where empty. */
@@ -220,34 +228,31 @@ export function fittedModules(sv: Save, names: Map<string, ModuleRec>): (ModuleR
   })
 }
 
-/** One `Module`, written in `writeExternal` order (`system/modules/Module.as:307-321`). A new
- * module keeps the runtime fields of the one it replaces, which is what the game does when it
- * swaps a module in a slot without touching the ship's state.
+/** One `Module`, written in `writeExternal` order (`system/modules/Module.as:307-321`), fresh: a
+ * module just installed is the module the purchase screen described, at full integrity with its
+ * shields charged and no engineer level, whatever stood in the slot before it.
  *
- * ponytail: `integrity` comes from `BaseModule.integrity`, which `save-data.json` does not yet
- * carry; an empty slot therefore gets `FRESH_INTEGRITY`, and the figure becomes exact as soon as
- * the export includes the field.
+ * ponytail: a module whose table row carries no `integrity` gets `FRESH_INTEGRITY`, which is
+ * larger than any hull's, so the game reads it as undamaged.
  */
 export const FRESH_INTEGRITY = 1e6
 
-export function makeModule(mod: ModuleRec, old: AmfValue | null): AmfObject {
+export function makeModule(mod: ModuleRec): AmfObject {
   const o = new AmfObject('Module', false, true)
-  const prev = old instanceof AmfObject ? old : null
-  const integrity = mod.integrity ?? (prev ? num(prev, 2) : FRESH_INTEGRITY)
   o.raw = [
     ['U', utf(mod.subtype)],
     ['U', utf(mod.className)],
-    ['D', f64(integrity)],
-    prev ? prev.raw[3] : ['I', i32(1)],          // ammo
-    prev ? prev.raw[4] : ['s', u16(9)],          // weaponGroups, `Module.as:42`
-    prev ? prev.raw[5] : ['s', u16(0)],          // totalAmmo
+    ['D', f64(mod.integrity ?? FRESH_INTEGRITY)],
+    ['I', i32(1)],                               // ammo
+    ['s', u16(9)],                               // weaponGroups, `Module.as:42`
+    ['s', u16(0)],                               // totalAmmo
     ['B', new Uint8Array([0])],                  // needReset
-    prev ? prev.raw[7] : ['D', f64(-1)],         // fuel, `Module.as:30`
-    prev ? prev.raw[8] : ['D', f64(1)],          // shields, `Module.as:32`
+    ['D', f64(-1)],                              // fuel, `Module.as:30`
+    ['D', f64(1)],                               // shields, `Module.as:32`
     ['B', new Uint8Array([0])],                  // shieldsIsBroken
     ['B', new Uint8Array([1])],                  // IsOnManual
     ['B', new Uint8Array([1])],                  // IsOnAuto
-    prev ? prev.raw[12] : ['u', u32(1)],         // priority_and_level, `Module.as:44`
+    ['u', u32(1)],                               // priority_and_level, `Module.as:44`
   ] as ExtField[]
   return o
 }
@@ -256,7 +261,7 @@ export function makeModule(mod: ModuleRec, old: AmfValue | null): AmfObject {
 export function install(sv: Save, slot: Slot, mod: ModuleRec): AmfValue | null {
   const v = moduleVector(sv)
   const old = v.items[slot.index] ?? null
-  v.items[slot.index] = makeModule(mod, old)
+  v.items[slot.index] = makeModule(mod)
   return old instanceof AmfObject ? old : null
 }
 

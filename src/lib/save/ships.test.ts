@@ -8,7 +8,8 @@ import { join, resolve } from 'node:path'
 import { AmfObject, AmfVector, HANGAR, SHIP, decode, getCredits, setCredits } from './codec.ts'
 import { prepareDownload, extUtf, shipStation } from './safety.ts'
 import { buildSlots, byKey, bySaveName, type ModuleRec } from './rules.ts'
-import { addToHangar, buyShip, defaultLoadout, hangarValue, hullIntegrity, sellShip, shopShips, useShip, type ShipItem } from './ships.ts'
+import { addToHangar, buyShip, defaultLoadout, hangarValue, sellShip, shopShips, useShip, type ShipItem } from './ships.ts'
+import { hullMax } from './specs.ts'
 
 const repo = resolve(import.meta.dirname, '../../../..')
 const { modules, ships } = JSON.parse(readFileSync(join(repo, 'editor/public/data/save-data.json'), 'utf8')) as
@@ -36,7 +37,7 @@ for (const ship of ships) {
     assert.ok(loadout[i], `${ship.key}: main slot ${i} (${slots[i].category}) has no default module`)
     assert.ok(loadout[i]!.mClass <= slots[i].sizeMax, `${ship.key}: slot ${i} default is too large`)
   }
-  assert.ok(hullIntegrity(ship, loadout[0]) > 0, `${ship.key}: hull integrity`)
+  assert.ok(hullMax(ship, loadout) > 0, `${ship.key}: hull points`)
 }
 console.log(`${ships.length} ships have a full main-module loadout`)
 
@@ -75,7 +76,8 @@ for (const key of picks) {
   }
 
   // A hull whose integrity disagrees with the ship's hull value loads the ship damaged.
-  const wanted = hullIntegrity(ship, defaultLoadout(ship, slots, modules)[0])
+  // A new ship leaves the yard at full hull, which is `HullMax` (`ShipInfo.as:306`, `:449`).
+  const wanted = hullMax(ship, defaultLoadout(ship, slots, modules))
   assert.equal(integrityOf(fitted[0] as AmfObject), wanted, `${key}: hull integrity`)
 
   const hangar = (back.objs[HANGAR] as AmfVector).items

@@ -15,10 +15,9 @@ import { MAIN_CATEGORIES, moduleVector, type ModuleRec, type ShipRec } from './r
  * carries it: the boost a module of this category and upgrade type reaches at level 25. */
 export interface Upgrade { category: string; type: number; boost: Record<string, number> }
 
-/** The physical figures a hull carries (`objects/Ships/ShipType.as`). */
-export type ShipSpecs = ShipRec & { mass: number; hull: number; shields: number; speedMax: number }
-/** A module, with the stats the formulas read (`save-data.json`). */
-export type ModuleStats = ModuleRec & { mass: number; stats: Record<string, number> }
+/** The table records these formulas read; both carry their figures already. */
+export type ShipSpecs = ShipRec
+export type ModuleStats = ModuleRec
 
 export interface Specs { hull: number; shields: number; jump: number; mass: number; massMax: number; speed: number }
 
@@ -61,6 +60,13 @@ export interface Fit {
 
 const of = (mods: (ModuleStats | null)[], category: string) => mods.filter((m) => m?.category === category) as ModuleStats[]
 
+/** `HullMax_calc` (`objects/Ships/ShipInfo.as:444-460`): the ship's hull rating raised by the
+ * hull type, plus every reinforcement's points. It is also the hull module's `integrityMax`
+ * (`ShipInfo.as:306`), so a ship at full hull carries exactly this in slot 0. */
+export const hullMax = (ship: ShipSpecs, mods: (ModuleStats | null)[]) =>
+  ship.hull * (1 + stat(mods[MAIN_CATEGORIES.indexOf('Hull')], 'hull'))
+  + of(mods, 'HullReinforcement').reduce((n, m) => n + m.stats.hullPoints, 0)
+
 export function computeSpecs({ ship, mods, boosts, cargo, fuel }: Fit): Specs {
   const hullMod = mods[MAIN_CATEGORIES.indexOf('Hull')]
   const thrusters = mods[MAIN_CATEGORIES.indexOf('Thrusters')]
@@ -102,9 +108,7 @@ export function computeSpecs({ ship, mods, boosts, cargo, fuel }: Fit): Specs {
     shields = base + base * of(mods, 'ShieldsBooster').reduce((n, m) => n + m.stats.boostPercent, 0) / 100
   }
 
-  // `HullMax_calc`: the hull module's percentage, plus every reinforcement's points.
-  const hull = ship.hull * (1 + stat(hullMod, 'hull'))
-    + of(mods, 'HullReinforcement').reduce((n, m) => n + m.stats.hullPoints, 0)
+  const hull = hullMax(ship, mods)
 
   return { hull, shields, jump, mass: massTotal + cargo + held, massMax: massTotal + fullCargo + fuelMax, speed }
 }
