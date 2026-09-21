@@ -6,9 +6,23 @@
 import * as React from 'react'
 import { decode, getCredits, setCredits, type Save } from '../../lib/save/codec'
 import { cardFigures } from '../../lib/save/home'
+import type { ScreenProps } from './screens/types'
 import { SaveUnsafe, prepareDownload } from '../../lib/save/safety'
-import { SaveFrame, StartScreen } from './shell'
+import { SaveFrame, ScreenHeader, StartScreen } from './shell'
 import './overview.css'
+
+/** One sub-screen per card, keyed by the card key in `homeCards`. Each is its own chunk. */
+const SCREENS: Record<string, React.LazyExoticComponent<React.ComponentType<ScreenProps>>> = {
+  ship: React.lazy(() => import('./screens/ship')),
+  hangar: React.lazy(() => import('./screens/hangar')),
+  storage: React.lazy(() => import('./screens/storage')),
+  cargo: React.lazy(() => import('./screens/cargo')),
+  materials: React.lazy(() => import('./screens/materials')),
+  galaxy: React.lazy(() => import('./screens/galaxy')),
+  quests: React.lazy(() => import('./screens/quests')),
+  station: React.lazy(() => import('./screens/station')),
+  record: React.lazy(() => import('./screens/record')),
+}
 
 interface CardMeta { key: string; name: string; sprite: string }
 
@@ -25,9 +39,9 @@ function useCardMeta() {
   return meta
 }
 
-function Card({ meta, stats, credits }: { meta: CardMeta; stats: [string, string][]; credits?: React.ReactNode }) {
+function Card({ meta, stats, credits, onOpen }: { meta: CardMeta; stats: [string, string][]; credits?: React.ReactNode; onOpen?: () => void }) {
   return (
-    <div className="ggcard">
+    <div className="ggcard" role={onOpen ? 'button' : undefined} tabIndex={onOpen ? 0 : undefined} onClick={onOpen}>
       <img className="ggcardart" src={sprite(meta.sprite)} alt="" onError={(e) => { e.currentTarget.style.visibility = 'hidden' }} />
       <div className="ggcardtext">
         <div className="ovbar ggcardtitle">{meta.name.toUpperCase()}</div>
@@ -47,6 +61,7 @@ function Home({ sv, file, onClose }: { sv: Save; file: string; onClose: () => vo
   const meta = useCardMeta()
   const [, redraw] = React.useReducer((n: number) => n + 1, 0)
   const [error, setError] = React.useState('')
+  const [open, setOpen] = React.useState('')
   const cards = cardFigures(sv)
 
   const edit = (text: string) => {
@@ -76,9 +91,25 @@ function Home({ sv, file, onClose }: { sv: Save; file: string; onClose: () => vo
       inputMode="numeric"
       value={getCredits(sv).toLocaleString('en-US')}
       onChange={(e) => edit(e.target.value)}
+      onClick={(e) => e.stopPropagation()}
       aria-label="Credits"
     />
   )
+
+  if (open) {
+    const Screen = SCREENS[open]
+    const card = meta.find((m) => m.key === open)
+    return (
+      <>
+        <ScreenHeader title={card?.name ?? ''} onReturn={() => setOpen('')} />
+        <div className="ggbody">
+          <React.Suspense fallback={null}>
+            <Screen sv={sv} onReturn={() => setOpen('')} redraw={redraw} />
+          </React.Suspense>
+        </div>
+      </>
+    )
+  }
 
   return (
     <>
@@ -90,7 +121,7 @@ function Home({ sv, file, onClose }: { sv: Save; file: string; onClose: () => vo
       <div className="ggbody ggcards">
         {cards.map((c) => {
           const m = meta.find((x) => x.key === c.key)
-          return m ? <Card key={c.key} meta={m} stats={c.stats} credits={c.key === 'cargo' ? credits : undefined} /> : null
+          return m ? <Card key={c.key} meta={m} stats={c.stats} credits={c.key === 'cargo' ? credits : undefined} onOpen={() => setOpen(c.key)} /> : null
         })}
       </div>
     </>
