@@ -34,6 +34,8 @@ export default {
   chanceZero: 'Chance is 0%, so it never starts.',
   portraitUnknown: 'The game doesn’t know “{name}”; it will show Tourist1.',
   requirementUnknown: 'No quest with ID {id} here. If it isn’t installed, this quest never appears.',
+  requirementMainStoryOnly: 'The game stops at the main story requirement, so the quests listed beside it are never checked. Remove them, or remove the main story.',
+  gameQuestN: 'Game side quest {id}',
   neverFinishes: 'Step {n} never finishes. The quest gets stuck here.',
   buttonPrefix: 'The game adds BUTTON_ itself. Remove it?',
   buttonPrefixFix: 'Remove BUTTON_',

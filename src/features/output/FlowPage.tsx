@@ -17,6 +17,7 @@ import { cn } from '@/lib/utils'
 import { questOf, updateQuest, useEditor, usePart } from '@/store/editor'
 import { t, useT } from '@/i18n'
 import { type Cubic, placeLabels } from './flowLabels'
+import { usePanZoom } from './panZoom'
 
 const NODE_W = 190
 const NODE_H = 64
@@ -62,51 +63,7 @@ function Graph({ q, selected, onSelect, onOpen }: { q: QuestContent; selected: n
   const width = LEFT + LANE_X * 2 + NODE_W + 90
   const height = TOP * 2 + (q.steps.length - 1) * ROW + NODE_H
 
-  const [view, setView] = React.useState({ k: 1, x: 0, y: 0 })
-  const box = React.useRef<HTMLDivElement>(null)
-  const pointers = React.useRef(new Map<number, { x: number; y: number }>())
-  const moved = React.useRef(0)
-  const pinch = React.useRef<number | null>(null)
-
-  const zoom = (factor: number) => setView((v) => ({ ...v, k: Math.min(2.5, Math.max(0.4, v.k * factor)) }))
-  React.useEffect(() => {
-    const el = box.current
-    if (!el) return
-    const onWheel = (e: WheelEvent) => { e.preventDefault(); zoom(e.deltaY < 0 ? 1.1 : 1 / 1.1) }
-    el.addEventListener('wheel', onWheel, { passive: false })
-    return () => el.removeEventListener('wheel', onWheel)
-  }, [])
-
-  const onDown = (e: React.PointerEvent) => {
-    pointers.current.set(e.pointerId, { x: e.clientX, y: e.clientY })
-    moved.current = 0
-    pinch.current = null
-  }
-  const onMove = (e: React.PointerEvent) => {
-    const prev = pointers.current.get(e.pointerId)
-    if (!prev) return
-    const next = { x: e.clientX, y: e.clientY }
-    pointers.current.set(e.pointerId, next)
-    const pts = [...pointers.current.values()]
-    if (pts.length === 2) {
-      const d = Math.hypot(pts[0].x - pts[1].x, pts[0].y - pts[1].y)
-      if (pinch.current) zoom(d / pinch.current)
-      pinch.current = d
-      moved.current += 10
-      return
-    }
-    const dx = next.x - prev.x
-    const dy = next.y - prev.y
-    moved.current += Math.abs(dx) + Math.abs(dy)
-    if (moved.current > 6) {
-      if (!box.current?.hasPointerCapture(e.pointerId)) box.current?.setPointerCapture(e.pointerId)
-      setView((v) => ({ ...v, x: v.x + dx, y: v.y + dy }))
-    }
-  }
-  const onUp = (e: React.PointerEvent) => {
-    pointers.current.delete(e.pointerId)
-    if (pointers.current.size < 2) pinch.current = null
-  }
+  const { box, view, setView, zoom, reset, handlers, tapped } = usePanZoom()
 
   const nx = (i: number) => LEFT + lane[i] * LANE_X
   const ny = (i: number) => TOP + i * ROW
@@ -140,10 +97,7 @@ function Graph({ q, selected, onSelect, onOpen }: { q: QuestContent; selected: n
     <div className="relative">
       <div
         ref={box}
-        onPointerDown={onDown}
-        onPointerMove={onMove}
-        onPointerUp={onUp}
-        onPointerCancel={onUp}
+        {...handlers}
         className="grid-texture relative h-[62dvh] min-h-[360px] touch-none overflow-hidden rounded-[4px] border border-edge bg-deep"
       >
         <svg
@@ -196,7 +150,7 @@ function Graph({ q, selected, onSelect, onOpen }: { q: QuestContent; selected: n
                 aria-label={t(unreachable ? 'output.flNodeUnreachable' : 'output.flNodeLabel', { n: i, name: s.name || t('output.untitled') })}
                 transform={`translate(${nx(i)},${ny(i)})`}
                 aria-current={selected === i || undefined}
-                onClick={() => { if (moved.current <= 6) (selected === i ? onOpen : onSelect)(i) }}
+                onClick={() => { if (tapped()) (selected === i ? onOpen : onSelect)(i) }}
                 className="cursor-pointer outline-none [&:focus-visible>rect]:stroke-white"
                 opacity={unreachable ? 0.45 : 1}
               >
@@ -226,7 +180,7 @@ function Graph({ q, selected, onSelect, onOpen }: { q: QuestContent; selected: n
       <div className="absolute bottom-2 right-2 flex flex-col gap-1">
         <Button variant="secondary" size="icon-sm" aria-label={t('output.flZoomIn')} onClick={() => zoom(1.2)}><Plus className="size-4" /></Button>
         <Button variant="secondary" size="icon-sm" aria-label={t('output.flZoomOut')} onClick={() => zoom(1 / 1.2)}><Minus className="size-4" /></Button>
-        <Button variant="secondary" size="icon-sm" aria-label={t('output.flReset')} onClick={() => setView({ k: 1, x: 0, y: 0 })}><Maximize2 className="size-4" /></Button>
+        <Button variant="secondary" size="icon-sm" aria-label={t('output.flReset')} onClick={reset}><Maximize2 className="size-4" /></Button>
       </div>
     </div>
   )
@@ -262,6 +216,7 @@ function StepList({ q, modId }: { q: QuestContent; modId: string }) {
 }
 
 function DependsOn({ mod }: { mod: QuestView }) {
+  const navigate = useNavigate()
   const parts = useEditor((s) => s.parts)
   const q = questOf(mod)!
   const nameOf = (id: number) => {
@@ -282,6 +237,7 @@ function DependsOn({ mod }: { mod: QuestView }) {
       <ArrowDown className="mx-auto size-4 text-grid-strong" />
       <Node tone="cyan">{q.settings.questName || mod.meta.title} <span className="font-mono text-[12px] text-dim">{q.settings.questId}</span></Node>
       <ArrowDown className="mx-auto size-4 text-grid-strong" />
+      <Button variant="secondary" size="sm" className="self-start" onClick={() => navigate(`/library/${mod.meta.id}/graph`)}><Network className="size-4" />{t('output.qgGraph')}</Button>
       <SectionLabel>{t('output.flRequiredBy')}</SectionLabel>
       {dependents.length === 0 ? <p className="text-[13px] text-dim">{t('output.flNoDependents')}</p> : (
         <div className="flex flex-col gap-2">{dependents.map((m) => <Node key={m.meta.id}>{m.meta.title}</Node>)}</div>

@@ -26,6 +26,7 @@ import { ImportReviewPage } from '@/features/start/ImportReviewPage'
 import { InstallGuidePage } from '@/features/start/InstallGuidePage'
 import { LibraryPage } from '@/features/start/LibraryPage'
 import { LibraryQuestPage } from '@/features/start/LibraryQuestPage'
+import { QuestGraphPage } from '@/features/output/QuestGraphPage'
 import { NewPage, NewQuestPage, NewStarsPage, QuickSetupPage } from '@/features/start/QuickSetupPage'
 import { SettingsPage } from '@/features/start/SettingsPage'
 import { PlanetsPage } from '@/features/stars/PlanetsPage'
@@ -105,6 +106,7 @@ function AppRoutes() {
         <Route path="/import" element={<ImportReviewPage />} />
         <Route path="/library" element={<LibraryPage />} />
         <Route path="/library/:questId" element={<LibraryQuestPage />} />
+        <Route path="/library/:questId/graph" element={<QuestGraphPage />} />
         <Route path="/community/:entryId" element={<CommunityEntryPage />} />
         <Route path="/community/:entryId/*" element={<CommunityEntryPage />} />
         <Route path="/built-in/:questId/*" element={<GameEntryPage />} />

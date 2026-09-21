@@ -5,6 +5,7 @@ import { type PlaceSource, gameSystemTest, modDependencies, questPlaceUses, sati
 import { modDeps } from './modDeps'
 import { newStep } from './factory'
 import { splitViewId } from './mods'
+import { MAIN_STORY, type QuestSource, mixesMainStory } from './questDag'
 import { mapChecks } from '@/features/map/checks'
 import { type Galaxy, getGalaxy } from '@/features/map/galaxy'
 import { makeResolver } from '@/features/map/places'
@@ -35,6 +36,21 @@ export function rewardEstimate(q: QuestContent) {
   })
   const total = Math.min(250, lines.reduce((a, l) => a + l.amount, 0))
   return { total, lines, capped: lines.reduce((a, l) => a + l.amount, 0) > 250 }
+}
+
+/**
+ * A requirement id in the player's words: the main story, one of the game's own side quests, a quest in a mod
+ * loaded here, or nothing at all. `source` says which list it came from, and the favorite flag rides along
+ * because the requirement graph draws favorited mods apart from the one being edited.
+ */
+export function resolveQuest(id: number, all: ModPart[]): { label: string; source: QuestSource } {
+  if (id === MAIN_STORY) return { label: t('output.flMainStory'), source: 'story' }
+  const g = gameQuest(id)
+  if (g) return { label: g.name, source: 'game' }
+  const mod = all.find((m) => m.meta.type === 'quest' && (m as QuestView).versions[(m as QuestView).primaryLang]?.settings.questId === id)
+  if (mod) return { label: mod.meta.title, source: mod.meta.favorite ? 'favorite' : 'mine' }
+  if (id >= GAME_QUEST_ID_MIN && id <= GAME_QUEST_ID_MAX) return { label: t('rules.gameQuestN', { id }), source: 'game' }
+  return { label: t('output.flUnknownQuest', { id }), source: 'unknown' }
 }
 
 const stationExists = (name: string, stars?: StarsView[]) =>
@@ -205,10 +221,11 @@ export function questProblems(mod: QuestView, all: ModPart[], galaxy = getGalaxy
   }
   // BarScreen checks OwnStationRequired only for quests offered at a named station.
   if (s.startMode === 'nearPoint' && s.ownStationRequired) add('warning', 'near-own', t('rules.nearOwnStation'), 'overview', t('rules.labelRequirements'), 'ownStationRequired')
+  // QuestSettings.isReqQuestsCompleted breaks out of its loop on requirement 0, so the rest is never checked.
+  if (mixesMainStory(s.requiredQuestIds)) add('warning', 'req-main-story', t('rules.requirementMainStoryOnly'), 'overview', t('rules.labelRequirements'), 'requiredQuestIds')
   s.requiredQuestIds.forEach((id) => {
-    if (id === 0) return
-    const known = (id >= GAME_QUEST_ID_MIN && id <= GAME_QUEST_ID_MAX) || !!gameQuest(id) || all.some((m) => m.meta.type === 'quest' && (m as QuestView).versions[(m as QuestView).primaryLang]?.settings.questId === id)
-    if (!known) add('warning', `req-${id}`, t('rules.requirementUnknown', { id }), 'overview', t('rules.labelRequirements'), 'requiredQuestIds', choosePlace(mod.meta.id, 'overview', 'requiredQuestIds', 'quest'))
+    if (id === MAIN_STORY) return
+    if (resolveQuest(id, all).source === 'unknown') add('warning', `req-${id}`, t('rules.requirementUnknown', { id }), 'overview', t('rules.labelRequirements'), 'requiredQuestIds', choosePlace(mod.meta.id, 'overview', 'requiredQuestIds', 'quest'))
   })
 
   const systems = questSystems(q, stars)

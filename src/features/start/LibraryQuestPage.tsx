@@ -1,4 +1,4 @@
-import { Copy, Eye, Flag, Lock } from 'lucide-react'
+import { Copy, Eye, Flag, Lock, Network } from 'lucide-react'
 import { Navigate, useNavigate, useParams } from 'react-router-dom'
 import { toast } from 'sonner'
 import { AppBar } from '@/components/layout/shell'
@@ -57,6 +57,7 @@ export function LibraryQuestPage() {
             <dt className="text-dim">{t('startLib.contact')}</dt><dd className="font-mono text-ink">{g.charName} · {g.charImage}</dd>
             <dt className="text-dim">{t('startLib.offered')}</dt><dd className="font-mono text-ink">{g.randomSpace ? t('startLib.startsInSpace') : g.station}</dd>
             <dt className="text-dim">{t('startLib.requires')}</dt><dd className="font-mono text-ink">{req || t('startLib.nothing')}</dd>
+            {!!req && <><dt className="text-dim" /><dd><Button variant="ghost" size="sm" className="-ml-2" onClick={() => navigate(`/library/${g.id}/graph`)}><Network className="size-4" />{t('startLib.showGraph')}</Button></dd></>}
             <dt className="text-dim">{t('startLib.steps')}</dt><dd className="font-mono text-ink">{g.steps.length}</dd>
           </dl>
         </Card>

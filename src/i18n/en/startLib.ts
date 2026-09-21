@@ -1,4 +1,5 @@
 export default {
+  showGraph: 'Show the requirement graph',
   requiredAdded: '{mod} added as a required mod',
   requiresList: 'Requires {mods}',
   addWithRequired: 'Add with required mods',
