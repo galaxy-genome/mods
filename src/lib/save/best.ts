@@ -4,7 +4,11 @@
  * there. Nothing here trades one advantage against another, which is why the hull, the cargo and
  * shield choices and the ship itself have no entry.
  */
-import { AmfObject, AmfVector, EXTRA, PROGRESS, getCredits, setCredits, type Save } from './codec'
+import { AmfObject, getCredits, setCredits, type Save } from './codec'
+import {
+  ARENA_LEVELS, BATTLE, DISCOVERY, ELITE, KARMA_MAX, REPUTATION_MAX, TRADE, arena, karma,
+  progressOf, reputationOf, setKarma, setArena, setProgress, setReputation, stationRows,
+} from './record'
 import { MATERIAL_COUNT, MATERIAL_MAX, applyBest, atBest, setMaterial } from './engineer'
 import {
   bestModule, buildSlots, canPlace, fittedModules, install, moduleVector,
@@ -15,29 +19,6 @@ import { markExplored, visitedCells, cellOf, type Position } from './position'
 /** Below the `uint` ceiling on purpose: a balance near 2^31 goes negative as soon as the player
  * earns more. */
 export const CREDITS_BEST = 2_000_000_000
-
-/** `ProgressData.AddStationReputation` clamps at 100 (`system/Save/ProgressData.as:292-294`). */
-export const REPUTATION_MAX = 100
-/** `ExtraData.AddKarma` clamps at 100 (`system/Save/ExtraData.as:83-85`). */
-export const KARMA_MAX = 100
-/** `arenaLVL` indexes `ArenaLevel.Levels`, 83 of them (`ui/screens/ShipInfoScreen.as:230`). */
-export const ARENA_MAX = 82
-
-/** `ExtraData` writes 32 material counts, then karma, drunk, fleetMode, arenaLVL
- * (`system/Save/ExtraData.as:194-204`). */
-const KARMA = 32, ARENA = 35
-const REPUTATION = 0
-
-const extra = (sv: Save) => sv.objs[EXTRA] as AmfObject
-const byteOf = (o: AmfObject, i: number) => {
-  const b = o.raw[i][1] as Uint8Array
-  return new DataView(b.buffer, b.byteOffset, b.byteLength).getInt8(0)
-}
-const f64 = (n: number) => {
-  const v = new DataView(new ArrayBuffer(8))
-  v.setFloat64(0, n)
-  return new Uint8Array(v.buffer)
-}
 
 // ------------------------------------------------------- credits
 
@@ -54,31 +35,36 @@ export const setMaterialsBest = (sv: Save) => {
 
 // ------------------------------------------------------- the record
 
-export const karma = (sv: Save) => byteOf(extra(sv), KARMA)
-export const arena = (sv: Save) => new DataView(
-  (extra(sv).raw[ARENA][1] as Uint8Array).buffer,
-  (extra(sv).raw[ARENA][1] as Uint8Array).byteOffset, 1).getUint8(0)
+/** The three rank ladders' Elite band is a strict greater-than
+ * (`ui/screens/MissionsShipScreen.as:601`), so the best there is sits one point past it. */
+export const eliteBest = (field: number) =>
+  (field === TRADE ? ELITE.trade : field === BATTLE ? ELITE.combat : ELITE.exploration) + 1
 
-const reputations = (sv: Save) => ((sv.objs[PROGRESS] as AmfObject).raw[REPUTATION][1] as AmfVector).items
-  .filter((r): r is AmfObject => r instanceof AmfObject)
+export const RANK_FIELDS = [TRADE, BATTLE, DISCOVERY]
 
-export const reputationOf = (row: AmfObject) => {
-  const b = row.raw[1][1] as Uint8Array
-  return new DataView(b.buffer, b.byteOffset, b.byteLength).getFloat64(0)
-}
+export const rankAtBest = (sv: Save, field: number) => progressOf(sv, field) >= eliteBest(field)
+export const setRankBest = (sv: Save, field: number) => setProgress(sv, field, eliteBest(field))
 
+export const karmaAtBest = (sv: Save) => karma(sv) >= KARMA_MAX
+export const arenaAtBest = (sv: Save) => arena(sv) >= ARENA_MAX
 export const reputationAtBest = (row: AmfObject) => reputationOf(row) >= REPUTATION_MAX
-export const setReputationBest = (row: AmfObject) => { row.raw[1] = ['D', f64(REPUTATION_MAX)] }
-export const setKarmaBest = (sv: Save) => { extra(sv).raw[KARMA] = ['b', new Uint8Array([KARMA_MAX]) ] }
-export const setArenaBest = (sv: Save) => { extra(sv).raw[ARENA] = ['b', new Uint8Array([ARENA_MAX]) ] }
+
+export const setKarmaBest = (sv: Save) => setKarma(sv, KARMA_MAX)
+export const setArenaBest = (sv: Save) => setArena(sv, ARENA_MAX)
+export const setReputationBest = (row: AmfObject) => setReputation(row, REPUTATION_MAX)
+
+/** `arenaLVL` indexes `ArenaLevel.Levels`, 83 of them (`ui/screens/ShipInfoScreen.as:230`). */
+export const ARENA_MAX = ARENA_LEVELS - 1
 
 export const recordAtBest = (sv: Save) =>
-  karma(sv) >= KARMA_MAX && arena(sv) >= ARENA_MAX && reputations(sv).every(reputationAtBest)
+  karmaAtBest(sv) && arenaAtBest(sv) && stationRows(sv).every(reputationAtBest)
+  && RANK_FIELDS.every((f) => rankAtBest(sv, f))
 
 export function setRecordBest(sv: Save) {
   setKarmaBest(sv)
   setArenaBest(sv)
-  reputations(sv).forEach(setReputationBest)
+  stationRows(sv).forEach(setReputationBest)
+  RANK_FIELDS.forEach((f) => setRankBest(sv, f))
 }
 
 // ------------------------------------------------------- modules

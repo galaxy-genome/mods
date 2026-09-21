@@ -88,3 +88,8 @@
   background:none;color:#d0e8a9;cursor:pointer;flex:none}
 .ggwand:hover,.ggwand:focus-visible{color:#9febff;outline:none}
 .ggwand svg{width:100%;height:100%}
+
+/* A save figure the reader types over. */
+.ggnum{width:100%;min-width:40px;background:#0c1014;border:1px solid #2a3b44;color:#dff6ff;
+  font:inherit;font-size:11px;text-align:center;padding:1px 2px}
+.ggnum:focus{outline:0;border-color:#35e0f5;color:#fff}

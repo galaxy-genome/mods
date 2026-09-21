@@ -8,10 +8,11 @@ import { buildSlots, byKey, bySaveName, fittedModules, moduleVector, shipKey, ty
 import { MATERIAL_MAX, atBest, materialCounts } from './engineer.ts'
 import { getPosition } from './position.ts'
 import {
-  ARENA_MAX, CREDITS_BEST, KARMA_MAX, REPUTATION_MAX, ZENTARK, arena, creditsAtBest, karma,
-  materialsAtBest, recordAtBest, setCreditsBest, setMaterialsBest, setRecordBest, setShipBest,
-  setSystemBest, shipAtBest, slotAtBest, systemAtBest,
+  ARENA_MAX, CREDITS_BEST, RANK_FIELDS, ZENTARK, creditsAtBest, materialsAtBest, rankAtBest,
+  recordAtBest, setCreditsBest, setMaterialsBest, setRecordBest, setShipBest, setSystemBest,
+  shipAtBest, slotAtBest, systemAtBest,
 } from './best.ts'
+import { KARMA_MAX, REPUTATION_MAX, arena, karma } from './record.ts'
 
 const repo = resolve(import.meta.dirname, '../../../..')
 const { modules, ships } = JSON.parse(readFileSync(join(repo, 'editor/public/data/save-data.json'), 'utf8')) as
@@ -37,7 +38,8 @@ for (const file of ['Save1.SOL', 'Save2.SOL', 'Save3.SOL']) {
   assert.equal(getCredits(sv), CREDITS_BEST)
   assert.ok(materialsAtBest(materialCounts(sv)), `${file}: craft materials`)
   assert.ok(materialCounts(sv).every((c) => c === MATERIAL_MAX))
-  assert.ok(recordAtBest(sv), `${file}: reputation, karma and the arena`)
+  assert.ok(recordAtBest(sv), `${file}: reputation, karma, the arena and the three ranks`)
+  for (const f of RANK_FIELDS) assert.ok(rankAtBest(sv, f), `${file}: rank field ${f}`)
   assert.equal(karma(sv), KARMA_MAX)
   assert.equal(arena(sv), ARENA_MAX)
   assert.ok(systemAtBest(sv, at), `${file}: the system the save sits in`)
