@@ -1,0 +1,24 @@
+/* Module storage. Sizes are px against the 820px screen .ggscreen scales. */
+
+.stbody{padding:0 6px 10px}
+
+.stbar{margin-top:8px;font-size:12px;font-weight:700;color:#e8f6fb;
+  background:linear-gradient(#2c3a42,#3a4a54);border-bottom:2px solid #c9cdd0}
+.stgrid{display:grid;grid-template-columns:1fr 1fr;gap:2px;margin-top:2px}
+.strow{display:grid;grid-template-columns:34px 22px 1fr;align-items:center;gap:6px;
+  padding:5px 6px;border:0;cursor:pointer;font:inherit;text-align:left;
+  background:linear-gradient(#37505a,#2f454e)}
+.strow:hover,.strow:focus-visible{outline:1px solid #3b8fb0}
+.strow img{width:30px;height:30px;object-fit:contain}
+.stunknown{background:linear-gradient(#2b3940,#26333a)}
+.stclass{font-size:16px;color:#d0e8a9;text-align:center}
+.stname{font-size:12px;color:#bff3ff}
+.stsub{font-size:10px;color:#9db4bd}
+
+.stdetail{padding:0 6px 10px}
+.stdetailhead{display:grid;grid-template-columns:70px 1fr 110px;align-items:center;gap:6px;padding:6px 0 0}
+.stline{font-size:11px;padding:4px 0 2px;text-align:center}
+.stslots{display:grid;grid-template-columns:1fr 1fr;gap:4px;margin-top:6px}
+.stslot{padding:5px 6px;font-size:10px;text-align:left}
+.strefuse{font-size:11px;color:#ffb0a0;text-align:center;padding:6px 0}
+.stnote{padding:4px 0 0;text-align:center;font-size:11px;color:#d0e8a9}
