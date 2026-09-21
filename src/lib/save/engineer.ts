@@ -189,6 +189,14 @@ export function applyBest(m: AmfObject): boolean {
   return true
 }
 
+/** The engineer's ladder applied to a module that carries no modification yet
+ * (`Module.as:297-303`: upgrade type 0). A module that carries one keeps whatever level the save
+ * holds, including a level the reader lowered or cleared. Reports whether the module moved. */
+export function applyBestIfUnmodified(m: AmfObject): boolean {
+  if (upgradeTypeOf(raw(m)) !== 0) return false
+  return applyBest(m)
+}
+
 /** A module the engineer has taken as far as it goes. A type no engineer works on is at its best
  * already. */
 export function atBest(m: AmfObject): boolean {

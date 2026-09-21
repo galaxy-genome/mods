@@ -8,8 +8,9 @@ import { AmfObject, EXTRA, decode, encode } from './codec.ts'
 import { prepareDownload } from './safety.ts'
 import { bySaveName, type ModuleRec } from './rules.ts'
 import {
-  MATERIAL_COUNT, MATERIAL_MAX, MAX_LEVEL, applyBest, atBest, levelOf, materialCounts, moduleBits,
-  packLevel, priorityOf, setLevel, setMaterial, setUpgradeType, upgradeTypeOf, upgradeables,
+  MATERIAL_COUNT, MATERIAL_MAX, MAX_LEVEL, applyBestIfUnmodified, atBest, levelOf,
+  materialCounts, moduleBits, packLevel, priorityOf, setLevel, setMaterial, setUpgradeType,
+  upgradeTypeOf, upgradeables,
 } from './engineer.ts'
 import { changed, leaves } from './leaves.ts'
 
@@ -128,18 +129,22 @@ console.log('gg_save.py agrees on the 32 material counts and on priority_and_lev
 
 // ------------------------------------------------------- the module panel's engineer
 
-// Opening a module applies the whole ladder, and stepping back down writes the level bits alone.
+// A module with no modification opens at its best; one that carries a level keeps it, and the
+// second visit writes nothing at all.
 {
   const sv2 = decode(bytes)
   const all = upgradeables(sv2, names)
   assert.ok(all.length, 'the save carries a module some engineer works on')
-  for (const u of all) {
-    applyBest(u.module)
+  const fresh = all.filter((u) => u.upgradeType === 0)
+  assert.ok(fresh.length, 'and one the engineer has never touched')
+
+  for (const u of fresh) {
+    assert.ok(applyBestIfUnmodified(u.module), `${u.subtype}: the first visit applies the ladder`)
     assert.equal(moduleBits(u.module).level, MAX_LEVEL, `${u.subtype}: opening it yields level 25`)
     assert.ok(atBest(u.module), `${u.subtype}: at its best`)
   }
 
-  const one = all[0]
+  const one = fresh[0]
   const before = leaves(sv2)
   const bits = moduleBits(one.module)
   setLevel(one.module, 7)
@@ -150,5 +155,14 @@ console.log('gg_save.py agrees on the 32 material counts and on priority_and_lev
   assert.equal(now.level, 7)
   assert.equal(now.priority, bits.priority, 'priority is untouched')
   assert.equal(now.upgradeType, bits.upgradeType, 'the modification is untouched')
-  console.log(`opening ${all.length} modules yields level 25; a lower level writes ${diff[0]} alone`)
+
+  // Coming back to a module the reader has set writes nothing and shows what the save holds.
+  for (const level of [7, 0]) {
+    setLevel(one.module, level)
+    const seen = leaves(sv2)
+    assert.equal(applyBestIfUnmodified(one.module), false, `level ${level}: the second visit stands back`)
+    assert.deepEqual(changed(seen, leaves(sv2)), [], `level ${level}: the second visit wrote something`)
+    assert.equal(moduleBits(one.module).level, level, `level ${level}: what the save holds`)
+  }
+  console.log(`${fresh.length} untouched modules open at level 25; a chosen level survives the next visit`)
 }

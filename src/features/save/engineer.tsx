@@ -1,21 +1,24 @@
 /** The engineer, on the module panel.
  *
- * Opening a module shows it with every engineer improvement already applied; the control here
- * sets a lower level, or none, and picks the modification. Nothing is spent and no material is
- * consumed: only `Module.priority_and_level` moves (`system/modules/Module.as:320`).
+ * A module with no modification yet opens with every engineer improvement applied; the control
+ * here sets a lower level, or none, and picks the modification, and what the reader chooses is
+ * what the next visit shows. Nothing is spent and no material is consumed: only
+ * `Module.priority_and_level` moves (`system/modules/Module.as:320`).
  */
 import * as React from 'react'
 import type { AmfObject } from '../../lib/save/codec'
 import {
-  ENGINEER_CAP, MAX_LEVEL, UPGRADES, applyBest, moduleBits, setLevel, setUpgradeType,
+  ENGINEER_CAP, MAX_LEVEL, UPGRADES, applyBestIfUnmodified, moduleBits, setLevel, setUpgradeType,
 } from '../../lib/save/engineer'
 import './engineer.css'
 
 export function Engineer({ module, subtype, onChange }: {
   module: AmfObject; subtype: string; onChange: () => void
 }) {
-  // The module arrives at its best; the reader steps back from there.
-  React.useEffect(() => { if (applyBest(module)) onChange() }, [module, onChange])
+  // A module the engineer has never touched arrives at its best, and the reader steps back from
+  // there. A module that already carries a modification keeps the level the save holds: a choice
+  // made here outlives leaving the screen.
+  React.useEffect(() => { if (applyBestIfUnmodified(module)) onChange() }, [module, onChange])
 
   const options = UPGRADES[subtype]
   if (!options) return null
