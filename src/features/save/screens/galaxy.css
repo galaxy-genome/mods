@@ -1,0 +1,17 @@
+/* Sizes are px against the 820x369 screen, which .ggscreen scales; the body below the header is 335px. */
+.gggal{display:grid;grid-template-columns:300px 1fr;height:335px;background:#2c3a42}
+.gggalside{display:flex;flex-direction:column;padding:0 6px 6px;min-height:0}
+.gggalhint{color:#cbfafd;font-size:10px;padding:6px 0 4px}
+.gggalhint span{color:#9fb6bf}
+.gggalsearch{width:100%;border:1px solid #3b8fb0;border-bottom-color:#35e0f5;padding:4px 6px;
+  font:inherit;font-size:11px;color:#dff6ff;background:#26313a}
+.gggalsearch:focus{outline:0;color:#fff;border-color:#35e0f5}
+.gggallist{flex:1;overflow:auto;margin-top:5px;scrollbar-width:thin;scrollbar-color:#3b8fb0 #2c3039}
+.gggalrow{display:block;width:100%;border:0;border-bottom:1px solid #26313a;padding:3px 6px;cursor:pointer;
+  text-align:left;font:inherit;background:linear-gradient(#38515a,#30464f)}
+.gggalrow:hover,.gggalrow:focus-visible{outline:1px solid #3b8fb0}
+.gggalrow.on{background:linear-gradient(#3d6572,#46727e);outline:1px solid #bff3ff}
+.gggalname{display:block;font-size:12px;color:#bff3ff}
+.gggalmeta{display:block;font-size:10px;color:#d0e8a9}
+.gggalempty{text-align:center;color:#cbfafd;font-size:11px;padding:12px 0}
+.gggalmap{height:335px}
