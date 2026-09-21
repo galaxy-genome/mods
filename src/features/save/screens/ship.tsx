@@ -13,13 +13,21 @@ import {
   type Fill, type ModuleRec, type ShipRec, type Slot,
 } from '../../../lib/save/rules'
 import { ModulePanel, type ModuleCard } from '../panels'
+import {
+  saveSpecs, specCells, type ModuleStats, type ShipSpecs, type Upgrade,
+} from '../../../lib/save/specs'
 import { Engineer } from '../engineer'
 import { Wand } from '../wand'
 import { setSlotBest, slotAtBest } from '../../../lib/save/best'
 import type { ScreenProps } from './types'
 import './ship.css'
 
-interface Data { modules: ModuleRec[]; ships: ShipRec[]; moduleCards: Record<string, ModuleCard> }
+interface Data {
+  modules: ModuleStats[]
+  ships: ShipSpecs[]
+  moduleCards: Record<string, ModuleCard>
+  upgrades: Upgrade[]
+}
 
 function useSaveData() {
   const [data, setData] = React.useState<Data | null>(null)
@@ -35,45 +43,20 @@ function useSaveData() {
 const sprite = (icon: string) => `${import.meta.env.BASE_URL}sprites/${encodeURIComponent(icon)}.svg`
 const hide = (e: { currentTarget: HTMLImageElement }) => { e.currentTarget.style.visibility = 'hidden' }
 
-/** A parameter of a module, as a number ("2.5 T" is 2.5). */
-const param = (mod: ModuleRec | null, name: string) => {
-  const row = mod?.params.find((p) => p[0] === name)
-  return row ? parseFloat(row[1].replace(/,/g, '')) || 0 : 0
-}
-
-/** The strip the game prints above the sections (`lang_en.json`: `ShipHullLabel`, `MaxJumpRange`,
- * `TotalMass`, `ShipSpeedLabel`).
- *
- * Hull is the hull module's integrity, which is what the save carries (`Modules.as:118`), and
- * total mass is the fitted mass against the thrusters' optimal mass. Shields and speed are the
- * hull's own specs, and jump range needs the drive constants `save-data.json` does not carry.
- */
-function Specs({ sv, ship, fitted }: { sv: Save; ship: ShipRec; fitted: (ModuleRec | null)[] }) {
-  const hull = Math.round(hullIntegrity(sv))
-  const mass = fitted.reduce((n, m) => n + param(m, 'Mass'), 0)
-  const optimal = param(fitted.find((m) => m?.category === 'Thrusters') ?? null, 'Ship mass optimal')
-  const spec = (name: string) => ship.overview.specs.find((s) => s[0] === name)?.[1] ?? ''
-  const cells: [string, string][] = [
-    ['Hull', String(hull || spec('Hull'))],
-    ['Shields', `${spec('Shields')} MW`],
-    ['Jump range', '—'],
-    ['Total mass', `${Math.round(mass * 10) / 10}${optimal ? `/${optimal}` : ''} T`],
-    ['Speed', String(spec('Speed'))],
-  ]
+/** The strip the game prints above the sections (`ui/screens/ModulesShopScreen.as:198`): the
+ * hull, the shields, the jump range on a full tank, the mass loaded against the mass it can
+ * carry, and the speed. Every figure is `ShipInfo`'s own arithmetic, in `lib/save/specs.ts`, so
+ * an engineer level shows up here as it does in the game. */
+function Specs({ sv, ship, fitted, upgrades }: {
+  sv: Save; ship: ShipSpecs; fitted: (ModuleStats | null)[]; upgrades: Upgrade[]
+}) {
+  const cells = specCells(saveSpecs(sv, ship, fitted, upgrades))
   return (
     <div className="shspecs">
       <div className="ovrow">{cells.map(([l]) => <div key={l} className="ovgold shspeclabel">{l.toUpperCase()}</div>)}</div>
       <div className="ovrow">{cells.map(([l, v]) => <div key={l} className="ovval">{v.toUpperCase()}</div>)}</div>
     </div>
   )
-}
-
-/** The hull module's integrity, which is the ship's hull value (`Modules.as:118`). */
-const hullIntegrity = (sv: Save) => {
-  const m = moduleVector(sv).items[0]
-  if (!(m instanceof AmfObject)) return 0
-  const b = m.raw[2][1] as Uint8Array
-  return new DataView(b.buffer, b.byteOffset, b.byteLength).getFloat64(0)
 }
 
 function Row({ slot, mod, wand, onOpen }: {
@@ -95,9 +78,9 @@ function Row({ slot, mod, wand, onOpen }: {
 }
 
 /** The fitted-module list: the specs strip, then one section per slot class. */
-function Fitted({ sv, ship, slots, fitted, mods, keys, onOpen, onMax, onBest }: {
-  sv: Save; ship: ShipRec; slots: Slot[]; fitted: (ModuleRec | null)[]
-  mods: ModuleRec[]; keys: Map<string, ModuleRec>
+function Fitted({ sv, ship, slots, fitted, mods, keys, upgrades, onOpen, onMax, onBest }: {
+  sv: Save; ship: ShipSpecs; slots: Slot[]; fitted: (ModuleStats | null)[]
+  mods: ModuleRec[]; keys: Map<string, ModuleRec>; upgrades: Upgrade[]
   onOpen: (slot: Slot) => void; onMax: (name: string) => void; onBest: (slot: Slot) => void
 }) {
   const sections: [string, Slot[]][] = (['Main', 'Weapon', 'External', 'Military', 'Optional'] as const)
@@ -105,7 +88,7 @@ function Fitted({ sv, ship, slots, fitted, mods, keys, onOpen, onMax, onBest }: 
     .filter(([, list]) => list.length > 0) as [string, Slot[]][]
   return (
     <>
-      <Specs sv={sv} ship={ship} fitted={fitted} />
+      <Specs sv={sv} ship={ship} fitted={fitted} upgrades={upgrades} />
       <div className="shmax">
         {['Max all', 'Max storage', 'Max shield enhancements', 'Max hull enhancements', 'Zentarks'].map((name) => (
           <button key={name} type="button" className="ggbutton shmaxbtn" onClick={() => onMax(name)}>{name}</button>
@@ -167,7 +150,7 @@ export default function Screen({ sv, redraw }: ScreenProps) {
 
   if (!data || !parts) return null
   const { keys, names, ship, slots } = parts
-  const fitted = fittedModules(sv, names)
+  const fitted = fittedModules(sv, names) as (ModuleStats | null)[]
 
   const apply = (fills: Fill[]) => {
     fills.forEach((f) => install(sv, f.slot, f.mod))
@@ -262,6 +245,7 @@ export default function Screen({ sv, redraw }: ScreenProps) {
       {note && <div className="shnote">{note}</div>}
       <Fitted
         sv={sv} ship={ship} slots={slots} fitted={fitted} mods={data.modules} keys={keys}
+        upgrades={data.upgrades}
         onOpen={(s) => { setPick(null); setOpen(s) }} onMax={onMax}
         onBest={(slot) => { setSlotBest(sv, slot, ship, fitted, data.modules, keys); redraw() }}
       />
