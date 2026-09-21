@@ -39,18 +39,34 @@ export const MATERIAL_COUNT = 32
  */
 export interface ModuleUpgrade { category: string; type: number; name: string; boost: Record<string, number> }
 
-/** The table the game builds once at start-up (`ModuleUpgrades.as:15-18`); the screens fill it
- * from `save-data.json` the same way. */
-let TABLE: ModuleUpgrade[] = []
+/** A table the game builds once at start-up and every caller then reads. Reading one before it
+ * is filled is a caller that forgot, not an empty answer: a save written from an empty table
+ * looks right and carries modules no engineer ever touched, so the read throws instead. */
+function table<T>(name: string) {
+  let held: T | null = null
+  return {
+    set: (value: T) => { held = value },
+    get: (): T => {
+      if (held === null) throw new Error(`${name} was read before it was filled`)
+      return held
+    },
+    get filled() { return held !== null },
+  }
+}
 
-export const makeUpgrades = (list: ModuleUpgrade[]) => { TABLE = list }
+/** The upgrades the game builds once at start-up (`ModuleUpgrades.as:15-18`); the screens fill
+ * this from `save-data.json` the same way. */
+const TABLE = table<ModuleUpgrade[]>('The engineer table (makeUpgrades)')
+
+export const makeUpgrades = (list: ModuleUpgrade[]) => TABLE.set(list)
+export const upgradesReady = () => TABLE.filled
 
 /** What some engineer can do to this module category, in the table's order. */
-export const upgradesFor = (category: string) => TABLE.filter((u) => u.category === category)
+export const upgradesFor = (category: string) => TABLE.get().filter((u) => u.category === category)
 
 /** The game's name for one modification, or nothing where the module carries none. */
 export const upgradeName = (category: string, type: number) =>
-  TABLE.find((u) => u.category === category && u.type === type)?.name ?? ''
+  TABLE.get().find((u) => u.category === category && u.type === type)?.name ?? ''
 
 /** The engineer who takes a module type furthest, `levels_max * 5` (`EngineerScreen.as:116`,
  * tables at `system/modules/Engineer.as:62-96`), and who that engineer is. */
@@ -207,12 +223,13 @@ export function atBest(m: AmfObject): boolean {
  * each category the priority the game sheds it at when the draw passes what the plant makes: 3
  * goes first, then 2, then 1 (`system/modules/Modules.as:327-346`). A category the game does not
  * name keeps the `Module` default (`system/modules/Module.as:44`). */
-let PRIORITIES: Record<string, number> = {}
+const PRIORITIES = table<Record<string, number>>('The priority table (makePriorities)')
 export const DEFAULT_PRIORITY = 1
 
-export const makePriorities = (table: Record<string, number>) => { PRIORITIES = table }
+export const makePriorities = (table: Record<string, number>) => PRIORITIES.set(table)
+export const prioritiesReady = () => PRIORITIES.filled
 
-export const priorityFor = (category: string) => PRIORITIES[category] ?? DEFAULT_PRIORITY
+export const priorityFor = (category: string) => PRIORITIES.get()[category] ?? DEFAULT_PRIORITY
 
 /** Writes the priority the game would give this module, keeping its level and modification. */
 export function setPriority(m: AmfObject, priority: number): boolean {

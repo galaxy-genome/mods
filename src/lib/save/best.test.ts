@@ -9,7 +9,8 @@ import {
   type ModuleRec, type ShipRec,
 } from './rules.ts'
 import {
-  MATERIAL_MAX, applyBest, atBest, makeUpgrades, materialCounts, moduleBits, type ModuleUpgrade,
+  MATERIAL_MAX, applyBest, atBest, makePriorities, makeUpgrades, materialCounts, moduleBits,
+  type ModuleUpgrade,
 } from './engineer.ts'
 import { hullMax } from './specs.ts'
 import { addToHangar, useShip } from './ships.ts'
@@ -24,9 +25,10 @@ import {
 import { REPUTATION_MAX, arena, karma } from './record.ts'
 
 const repo = resolve(import.meta.dirname, '../../../..')
-const { modules, ships, upgrades } = JSON.parse(readFileSync(join(repo, 'editor/public/data/save-data.json'), 'utf8')) as
-  { modules: ModuleRec[]; ships: ShipRec[]; upgrades: ModuleUpgrade[] }
+const { modules, ships, upgrades, priorities } = JSON.parse(readFileSync(join(repo, 'editor/public/data/save-data.json'), 'utf8')) as
+  { modules: ModuleRec[]; ships: ShipRec[]; upgrades: ModuleUpgrade[]; priorities: Record<string, number> }
 makeUpgrades(upgrades)
+makePriorities(priorities)
 const keys = byKey(modules)
 
 const f64 = (n: number) => {

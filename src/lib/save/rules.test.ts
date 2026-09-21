@@ -4,6 +4,7 @@ import { readFileSync } from 'node:fs'
 import { join, resolve } from 'node:path'
 import { AmfObject, decode, encode, type AmfVector } from './codec.ts'
 import { prepareDownload, extUtf } from './safety.ts'
+import { makePriorities } from './engineer.ts'
 import {
   MAIN_CATEGORIES, buildSlots, byKey, bySaveName, canPlace, fitsHangar, fitsSize, fitsType,
   fittedModules, install, maxAll, maxCategory, maxZentarks, moduleVector, shipKey,
@@ -13,6 +14,8 @@ import {
 const repo = resolve(import.meta.dirname, '../../../..')
 const data = JSON.parse(readFileSync(join(repo, 'editor/public/data/save-data.json'), 'utf8')) as
   { modules: ModuleRec[]; ships: ShipRec[] }
+// The tables the game builds at start-up; a module written without them is quietly wrong.
+makePriorities(JSON.parse(readFileSync(join(repo, 'editor/public/data/save-data.json'), 'utf8')).priorities)
 const { modules, ships } = data
 const keys = byKey(modules)
 const names = bySaveName(modules)

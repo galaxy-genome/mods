@@ -15,7 +15,7 @@ import { trade } from './trade.ts'
 import { extUtf } from './safety.ts'
 import { setPosition, markExplored } from './position.ts'
 import { setQuestCompleted } from './quests.ts'
-import { setMaterial, addLevel, setUpgradeType, MATERIAL_COUNT } from './engineer.ts'
+import { setMaterial, addLevel, setUpgradeType, MATERIAL_COUNT, makePriorities } from './engineer.ts'
 import { setArenaBest, setReputationBest } from './best.ts'
 // Karma is typed, not wanded: each end of its ladder is better at something.
 import { KARMA_MAX, setKarma } from './record.ts'
@@ -187,6 +187,8 @@ const FIELDS: Record<string, Status> = {
 const repo = resolve(import.meta.dirname, '../../../..')
 const { modules, ships } = JSON.parse(readFileSync(join(repo, 'editor/public/data/save-data.json'), 'utf8')) as
   { modules: ModuleRec[]; ships: ShipItem[] }
+// The tables the game builds at start-up; a module written without them is quietly wrong.
+makePriorities(JSON.parse(readFileSync(join(repo, 'editor/public/data/save-data.json'), 'utf8')).priorities)
 const keys = byKey(modules)
 const names = bySaveName(modules)
 const SAVES = ['Save1.SOL', 'Save2.SOL', 'Save3.SOL']

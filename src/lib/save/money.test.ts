@@ -8,10 +8,13 @@ import { addToHangar, buyShip, sellShip, type ShipItem } from './ships.ts'
 import { trade } from './trade.ts'
 import { extUtf } from './safety.ts'
 import { changed, leaves } from './leaves.ts'
+import { makePriorities } from './engineer.ts'
 
 const repo = resolve(import.meta.dirname, '../../../..')
 const { modules, ships } = JSON.parse(readFileSync(join(repo, 'editor/public/data/save-data.json'), 'utf8')) as
   { modules: ModuleRec[]; ships: ShipItem[] }
+// The tables the game builds at start-up; a module written without them is quietly wrong.
+makePriorities(JSON.parse(readFileSync(join(repo, 'editor/public/data/save-data.json'), 'utf8')).priorities)
 const keys = byKey(modules)
 const names = bySaveName(modules)
 const bytes = new Uint8Array(readFileSync(join(repo, 'saves/Save2.SOL')))
