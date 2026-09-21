@@ -45,6 +45,7 @@ import { local, usePart } from '@/store/editor'
 
 /** The save editor is its own chunk: the codec and the game data tables load only on this route. */
 const PanelDemoPage = React.lazy(() => import('@/features/save/PanelDemoPage'))
+const SaveHomePage = React.lazy(() => import('@/features/save/HomePage'))
 
 function ModOverview() {
   const { modId } = useParams()
@@ -143,6 +144,7 @@ function AppRoutes() {
         <Route path="/map/:mode" element={<MapRoute />} />
         <Route path="/series/:modId?" element={<SeriesMapPage />} />
         <Route path="/mods/savefile/panels" element={<React.Suspense fallback={null}><PanelDemoPage /></React.Suspense>} />
+        <Route path="/mods/savefile" element={<React.Suspense fallback={null}><SaveHomePage /></React.Suspense>} />
         <Route path="/share" element={<SharedFile />} />
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
