@@ -20907,6 +20907,7 @@
    "hull": 220.0,
    "shields": 0.0,
    "speedMax": 370.0,
+   "mnvr": 8.0,
    "optional": [
     0,
     2,
@@ -21035,6 +21036,7 @@
    "hull": 162.0,
    "shields": 78.0,
    "speedMax": 220.0,
+   "mnvr": 4.0,
    "optional": [
     4,
     1,
@@ -21208,6 +21210,7 @@
    "hull": 1400.0,
    "shields": 1500.0,
    "speedMax": 350.0,
+   "mnvr": 8.0,
    "optional": [
     1,
     0,
@@ -21431,6 +21434,7 @@
    "hull": 396.0,
    "shields": 262.0,
    "speedMax": 245.0,
+   "mnvr": 3.0,
    "optional": [
     1,
     1,
@@ -21646,6 +21650,7 @@
    "hull": 486.0,
    "shields": 99.0,
    "speedMax": 202.0,
+   "mnvr": 2.0,
    "optional": [
     2,
     2,
@@ -21834,6 +21839,7 @@
    "hull": 945.0,
    "shields": 362.0,
    "speedMax": 183.0,
+   "mnvr": 1.0,
    "optional": [
     2,
     1,
@@ -22107,6 +22113,7 @@
    "hull": 72.0,
    "shields": 104.0,
    "speedMax": 398.0,
+   "mnvr": 8.0,
    "optional": [
     4,
     2,
@@ -22275,6 +22282,7 @@
    "hull": 750.0,
    "shields": 110.0,
    "speedMax": 210.0,
+   "mnvr": 1.0,
    "optional": [
     1,
     1,
@@ -22501,6 +22509,7 @@
    "hull": 5200.0,
    "shields": 4250.0,
    "speedMax": 135.0,
+   "mnvr": 0.0,
    "optional": [
     1,
     0,
@@ -22779,6 +22788,7 @@
    "hull": 378.0,
    "shields": 152.0,
    "speedMax": 254.0,
+   "mnvr": 4.0,
    "optional": [
     2,
     2,
@@ -22987,6 +22997,7 @@
    "hull": 540.0,
    "shields": 208.0,
    "speedMax": 204.0,
+   "mnvr": 4.0,
    "optional": [
     1,
     2,
@@ -23227,6 +23238,7 @@
    "hull": 720.0,
    "shields": 703.0,
    "speedMax": 202.0,
+   "mnvr": 1.0,
    "optional": [
     1,
     0,
@@ -23485,6 +23497,7 @@
    "hull": 1500.0,
    "shields": 300.0,
    "speedMax": 200.0,
+   "mnvr": 1.0,
    "optional": [
     1,
     1,
@@ -23733,6 +23746,7 @@
    "hull": 270.0,
    "shields": 131.0,
    "speedMax": 251.0,
+   "mnvr": 4.0,
    "optional": [
     3,
     2,
@@ -23926,6 +23940,7 @@
    "hull": 6800.0,
    "shields": 3700.0,
    "speedMax": 130.0,
+   "mnvr": 0.0,
    "optional": [
     1,
     0,
@@ -24229,6 +24244,7 @@
    "hull": 110.0,
    "shields": 53.0,
    "speedMax": 220.0,
+   "mnvr": 5.0,
    "optional": [
     5,
     2,
@@ -24397,6 +24413,7 @@
    "hull": 216.0,
    "shields": 92.0,
    "speedMax": 286.0,
+   "mnvr": 5.0,
    "optional": [
     3,
     3,
@@ -24585,6 +24602,7 @@
    "hull": 468.0,
    "shields": 294.0,
    "speedMax": 234.0,
+   "mnvr": 2.0,
    "optional": [
     2,
     1,
@@ -24798,6 +24816,7 @@
    "hull": 864.0,
    "shields": 110.0,
    "speedMax": 131.0,
+   "mnvr": 0.0,
    "optional": [
     2,
     1,
@@ -25018,6 +25037,7 @@
    "hull": 792.0,
    "shields": 122.0,
    "speedMax": 238.0,
+   "mnvr": 2.0,
    "optional": [
     1,
     1,
@@ -25228,6 +25248,7 @@
    "hull": 1044.0,
    "shields": 99.0,
    "speedMax": 179.0,
+   "mnvr": 1.0,
    "optional": [
     1,
     1,
@@ -25488,6 +25509,7 @@
    "hull": 650.0,
    "shields": 162.0,
    "speedMax": 245.0,
+   "mnvr": 4.0,
    "optional": [
     1,
     2,
@@ -25693,6 +25715,7 @@
    "hull": 666.0,
    "shields": 516.0,
    "speedMax": 198.0,
+   "mnvr": 2.0,
    "optional": [
     2,
     0,
@@ -25956,6 +25979,7 @@
    "hull": 3266.0,
    "shields": 0.0,
    "speedMax": 290.0,
+   "mnvr": 3.0,
    "optional": [
     1,
     2,
@@ -26149,6 +26173,7 @@
    "hull": 1400.0,
    "shields": 700.0,
    "speedMax": 250.0,
+   "mnvr": 2.0,
    "optional": [
     1,
     0,
@@ -26367,6 +26392,7 @@
    "hull": 486.0,
    "shields": 186.0,
    "speedMax": 308.0,
+   "mnvr": 5.0,
    "optional": [
     1,
     2,
@@ -26573,6 +26599,7 @@
    "hull": 216.0,
    "shields": 125.0,
    "speedMax": 200.0,
+   "mnvr": 3.0,
    "optional": [
     2,
     2,
@@ -26771,6 +26798,7 @@
    "hull": 320.0,
    "shields": 260.0,
    "speedMax": 210.0,
+   "mnvr": 2.0,
    "optional": [
     1,
     1,
@@ -26961,6 +26989,7 @@
    "hull": 216.0,
    "shields": 93.0,
    "speedMax": 283.0,
+   "mnvr": 5.0,
    "optional": [
     2,
     1,
@@ -27144,6 +27173,7 @@
    "hull": 400.0,
    "shields": 233.0,
    "speedMax": 308.0,
+   "mnvr": 2.0,
    "optional": [
     1,
     2,
@@ -27352,6 +27382,7 @@
    "hull": 612.0,
    "shields": 99.0,
    "speedMax": 182.0,
+   "mnvr": 2.0,
    "optional": [
     1,
     1,
@@ -27563,6 +27594,7 @@
    "hull": 110.0,
    "shields": 60.0,
    "speedMax": 370.0,
+   "mnvr": 8.0,
    "optional": [
     0,
     2,
@@ -27696,6 +27728,7 @@
    "hull": 6400.0,
    "shields": 8850.0,
    "speedMax": 370.0,
+   "mnvr": 9.0,
    "optional": [
     0,
     0,
@@ -27885,6 +27918,7 @@
    "hull": 405.0,
    "shields": 271.0,
    "speedMax": 265.0,
+   "mnvr": 4.0,
    "optional": [
     3,
     1,
@@ -28098,6 +28132,7 @@
    "hull": 360.0,
    "shields": 260.0,
    "speedMax": 260.0,
+   "mnvr": 3.0,
    "optional": [
     1,
     1,
@@ -28303,6 +28338,7 @@
    "hull": 630.0,
    "shields": 186.0,
    "speedMax": 171.0,
+   "mnvr": 2.0,
    "optional": [
     1,
     2,
@@ -28523,6 +28559,7 @@
    "hull": 150.0,
    "shields": 65.0,
    "speedMax": 320.0,
+   "mnvr": 5.0,
    "optional": [
     0,
     2,
@@ -28656,6 +28693,7 @@
    "hull": 5400.0,
    "shields": 3850.0,
    "speedMax": 145.0,
+   "mnvr": 1.0,
    "optional": [
     1,
     0,
@@ -28940,6 +28978,7 @@
    "hull": 504.0,
    "shields": 162.0,
    "speedMax": 235.0,
+   "mnvr": 4.0,
    "optional": [
     1,
     2,
@@ -29155,6 +29194,7 @@
    "hull": 126.0,
    "shields": 137.0,
    "speedMax": 315.0,
+   "mnvr": 4.0,
    "optional": [
     4,
     1,
@@ -29345,6 +29385,7 @@
    "hull": 126.0,
    "shields": 137.0,
    "speedMax": 315.0,
+   "mnvr": 4.0,
    "optional": [
     4,
     1,
@@ -29535,6 +29576,7 @@
    "hull": 540.0,
    "shields": 133.0,
    "speedMax": 214.0,
+   "mnvr": 4.0,
    "optional": [
     1,
     2,
@@ -29740,6 +29782,7 @@
    "hull": 288.0,
    "shields": 293.0,
    "speedMax": 215.0,
+   "mnvr": 5.0,
    "optional": [
     5,
     1,
@@ -29937,6 +29980,7 @@
    "hull": 414.0,
    "shields": 244.0,
    "speedMax": 316.0,
+   "mnvr": 3.0,
    "optional": [
     1,
     2,
@@ -30136,6 +30180,7 @@
    "hull": 420.0,
    "shields": 450.0,
    "speedMax": 402.0,
+   "mnvr": 9.0,
    "optional": [
     5,
     1,

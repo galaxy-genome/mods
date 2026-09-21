@@ -19,7 +19,29 @@ export interface Upgrade { category: string; type: number; boost: Record<string,
 export type ShipSpecs = ShipRec
 export type ModuleStats = ModuleRec
 
-export interface Specs { hull: number; shields: number; jump: number; mass: number; massMax: number; speed: number }
+export interface Specs {
+  hull: number
+  shields: number
+  jump: number
+  mass: number
+  massMax: number
+  speed: number
+  /** `Acceleration_calc` (`objects/Ships/ShipInfo.as:678-681`). */
+  acceleration: number
+  /** `Rotation_calc` (`ShipInfo.as:683-685`), in radians; the SPECS screen prints it in degrees
+   * (`ui/screens/ShipInfoScreen.as:152`). */
+  rotation: number
+  /** `Ship.rotationInertMax` (`objects/Ships/Ship.as:277`), in radians, which the SPECS screen
+   * prints in degrees as the rotation speed (`ShipInfoScreen.as:150`). */
+  rotationSpeed: number
+  /** The hold, as the SPECS screen prints it (`ShipInfoScreen.as:144`). */
+  cargo: number
+  cargoMax: number
+}
+
+/** `SettingsData2.game_dynamic` (`system/Save/SettingsData2.as:26`, `:117`), which lives in the
+ * settings the editor does not touch and reads 1 unless the player moves it. */
+export const GAME_DYNAMIC = 1
 
 /** `MathE.erf`, with the game's own constants (0.25482952, not the textbook 0.254829592). */
 function erf(x: number): number {
@@ -83,7 +105,9 @@ export function computeSpecs({ ship, mods, boosts, cargo, fuel }: Fit): Specs {
   // The two fuel terms part company here: the jump is asked for the range on a full tank, so
   // `CalcJump` is called with `FuelMax` (`ShipInfo.as:860`, `ModulesShopScreen.as:198`), while
   // the loaded mass and the speed use `Fuel`, the fuel actually aboard (`ShipInfo.as:604-606`).
-  const held = fuel === null || fuel < 0 ? fuelMax : fuel
+  // A fit with no save behind it is taken as full, which is the tank a new ship carries
+  // (`objects/Ships/BaseShip.as:34-37`).
+  const held = fuel === null ? fuelMax : fuel
   const fullCargo = of(mods, 'CargoRack').reduce((n, m) => n + m.stats.capacity, 0)
 
   // `CalcJump(FuelMax, -1)`, the range on a full tank. No drive, no jump.
@@ -115,7 +139,29 @@ export function computeSpecs({ ship, mods, boosts, cargo, fuel }: Fit): Specs {
 
   const hull = hullMax(ship, mods)
 
-  return { hull, shields, jump, mass: massTotal + cargo + held, massMax: massTotal + fullCargo + fuelMax, speed }
+  return {
+    hull,
+    shields,
+    jump,
+    mass: massTotal + cargo + held,
+    massMax: massTotal + fullCargo + fuelMax,
+    speed,
+    acceleration: speed / 4.5 * Math.sqrt(GAME_DYNAMIC),
+    rotation: speed / 600 * 60 * GAME_DYNAMIC,
+    rotationSpeed: 0.005 * 60 + 0.015 * 60 * (ship.mnvr / 5),
+    cargo,
+    cargoMax: fullCargo,
+  }
+}
+
+/** The fuel the tank module holds (`ShipInfo.as:604-606`), as the save wrote it. The game sums
+ * this figure into the loaded mass whatever it is, including the -1 a tank carries until the
+ * game first fills it (`system/modules/Module.as:30`). */
+function tankFuel(sv: Save): number | null {
+  const m = moduleVector(sv).items[MAIN_CATEGORIES.indexOf('FuelTank')]
+  if (!(m instanceof AmfObject)) return null
+  const b = m.raw[7][1] as Uint8Array
+  return new DataView(b.buffer, b.byteOffset, b.byteLength).getFloat64(0)
 }
 
 /** The goods the hold carries (`system/Save/CargoData.as:33-44`). */
@@ -132,10 +178,7 @@ export function saveSpecs(sv: Save, ship: ShipSpecs, fitted: (ModuleStats | null
     const v = new DataView(b.buffer, b.byteOffset, b.byteLength).getUint32(0)
     return boostOf(mod, levelOf(v), upgradeTypeOf(v), upgrades)
   })
-  // A full tank: the editor's ship sits at a station, and a ship carries a full tank from the
-  // moment it is built (`BaseShip.as:34-37`). The tank module's own `fuel` field is a figure of
-  // the flight the save was written in, and the game prints the mass of a fuelled ship.
-  return computeSpecs({ ship, mods: fitted, boosts, cargo: cargoTotal(sv), fuel: null })
+  return computeSpecs({ ship, mods: fitted, boosts, cargo: cargoTotal(sv), fuel: tankFuel(sv) })
 }
 
 /** The strip's own wording and rounding (`ModulesShopScreen.as:198`; the units are

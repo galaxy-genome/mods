@@ -55,6 +55,8 @@ export interface ShipRec {
   hull: number
   shields: number
   speedMax: number
+  /** `mnvr`, which sets how fast the hull turns (`objects/Ships/Ship.as:277`). */
+  mnvr: number
   overview: { name: string; specs: [string, string | number][] }
 }
 

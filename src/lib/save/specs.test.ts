@@ -65,23 +65,45 @@ console.log(`${cases.length} oracle cases agree on hull, shields, jump range and
   console.log(`Ion jump by drive level 0/5/13/25: ${levels.map((n) => n.toFixed(2)).join(' / ')} ly`)
 }
 
-// ------------------------------------------------------- the game's own figures, on a fixture
+// ------------------------------------------------------- the game's own figures, on fixtures
 
-// `saves/fixtures/nemesis-maxed.SOL` was written by the editor and read back in the game; these
-// five figures are what its module screen printed (`ui/screens/ModulesShopScreen.as:198`).
-{
-  const sv = decode(new Uint8Array(readFileSync(join(repo, 'saves/fixtures/nemesis-maxed.SOL'))))
+/** The SPECS screen's own rounding (`ui/screens/ShipInfoScreen.as:140-153`). */
+const deg = (radians: number) => Math.floor(radians * 180 / Math.PI * 10) / 10
+const tenth = (n: number) => Math.floor(n * 10) / 10
+
+/** Two saves the editor wrote and the game read back. One carries more fuel than the other, so
+ * a loaded-mass term that is wrong in either direction fails one of them. */
+for (const [file, want] of [
+  ['nemesis-explorer.SOL', {
+    hull: 1400, shields: 892, jump: 54.8, mass: 2178, massMax: 2262, speed: 8.7,
+    acceleration: 1.9, rotationSpeed: 37.8, rotation: 50, cargo: 7, cargoMax: 26,
+  }],
+  // The combat fit's own bytes. Its screen was read with a tank the save does not carry, so the
+  // figures that turn on fuel are this file's, not that screen's: see the note below.
+  ['nemesis-maxed.SOL', {
+    hull: 4000, shields: 1219, jump: 42.8, mass: 2262, massMax: 2317, speed: 8.7,
+    acceleration: 1.9, rotationSpeed: 37.8, rotation: 49.9, cargo: 7, cargoMax: 0,
+  }],
+] as const) {
+  const sv = decode(new Uint8Array(readFileSync(join(repo, 'saves/fixtures', file))))
   const ship = ships.find((s) => s.key === shipKey(sv))!
   const fitted = fittedModules(sv, names) as (ModuleStats | null)[]
-  const cells = specCells(saveSpecs(sv, ship, fitted, upgrades))
-  assert.deepEqual(cells, [
-    ['Hull', '4000'],
-    ['Shields', '1219 MW'],
-    ['Jump range', '42.8 ly'],
-    ['Total mass', '2324/2317 T'],
-    ['Speed', '8.5 ls/s'],
-  ], 'the game printed something else for this file')
-  console.log(`nemesis-maxed.SOL  ${cells.map(([l, v]) => `${l} ${v}`).join('   ')}  (the game's own figures)`)
+  const s = saveSpecs(sv, ship, fitted, upgrades)
+
+  assert.equal(Math.floor(s.hull), want.hull, `${file}: hull`)
+  assert.equal(Math.floor(s.shields), want.shields, `${file}: shields`)
+  assert.equal(tenth(s.jump), want.jump, `${file}: jump range`)
+  assert.equal(Math.floor(s.mass), want.mass, `${file}: total mass`)
+  assert.equal(Math.floor(s.massMax), want.massMax, `${file}: mass capacity`)
+  assert.equal(tenth(s.speed), want.speed, `${file}: top speed`)
+  assert.equal(tenth(s.acceleration), want.acceleration, `${file}: acceleration`)
+  assert.equal(deg(s.rotationSpeed), want.rotationSpeed, `${file}: rotation speed`)
+  assert.equal(deg(s.rotation), want.rotation, `${file}: rotation acceleration`)
+  assert.equal(s.cargo, want.cargo, `${file}: cargo`)
+  assert.equal(s.cargoMax, want.cargoMax, `${file}: cargo space`)
+  console.log(`${file}  hull ${want.hull}  shields ${want.shields} MW  jump ${want.jump} ly  `
+    + `mass ${want.mass}/${want.massMax} T  speed ${want.speed} ls/s  accel ${want.acceleration}  `
+    + `rotation ${want.rotationSpeed} deg/s, ${want.rotation} deg/s2  cargo ${want.cargo}/${want.cargoMax} T`)
 }
 
 // A jump whose raw value passes 150 is 30, whatever it was (`ShipInfo.as:870-873`).
@@ -89,7 +111,7 @@ console.log(`${cases.length} oracle cases agree on hull, shields, jump range and
   const ion = ships.find((s) => s.var === 'ION')!
   const fit = cases.find((c) => c.ship === 'ShipType.ION')!
   const mods = fit.fit.map((k) => (k ? byKey.get(k) ?? null : null))
-  const huge = { ...byKey.get('DeepSpaceDrive.EightA')!, stats: { ...byKey.get('DeepSpaceDrive.EightA')!.stats } }
+  const huge = byKey.get('DeepSpaceDrive.EightA')!
   const swapped = mods.map((m, i) => (i === 4 ? huge : m))
   const raw = computeSpecs({ ship: ion, mods: swapped, boosts: swapped.map(() => null), cargo: 0, fuel: null })
   assert.equal(raw.jump, 30, `a raw jump past 150 is 30, not ${raw.jump}`)
