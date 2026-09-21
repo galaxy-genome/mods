@@ -518,6 +518,9 @@ downloaded from `mods/`. The owner id is never rewritten.
 
 ## Punchlist
 
+- The ship level wand offers the loadout tool's goal presets, so a reader picks
+  the goal and the fit follows: `loadouts/` already scores a fit against one.
+
 - Does `ExtraData.lastVisitedSystem` need to agree with `PlayerInfo.secXf`/`secYf`?
 - The map, wiki, mods, loader and save editor become one app. The quest editor
   needs a landscape layout before the manifest can carry `orientation:
