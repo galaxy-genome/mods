@@ -25,7 +25,9 @@
 .hgdetail{position:relative;padding:0 6px 10px}
 .hgdetailhead{display:flex;align-items:center;gap:6px;padding:6px 0 2px}
 
-.hgmodal{position:absolute;inset:0;display:grid;place-items:center;background:#05080c99}
+/* Fixed, not absolute: the containing block is the transformed screen, so the
+   modal centres on what the reader can see instead of on the scroll height. */
+.hgmodal{position:fixed;inset:0;display:grid;place-items:center;background:#05080c99}
 .hgmodalbox{width:340px;background:#3a555f;border:1px solid #1d2329;box-shadow:0 10px 40px #000a}
 .hgmodalbox p{margin:0;padding:12px 14px;font-size:12px;line-height:1.5;color:#e4f7ff}
 .hgmodalbtns{display:flex;gap:8px;justify-content:center;padding:0 10px 14px}
