@@ -5,9 +5,11 @@
  * game reads. Every install passes the game's own tests in `lib/save/rules.ts`.
  */
 import * as React from 'react'
-import { SLOT_NAME, buildSlots, byKey, bySaveName, fitsHangar, fitsSize, fittedModules, shipKey, singletonFree, type ModuleRec, type ShipRec, type Slot } from '../../../lib/save/rules'
+import { AmfObject } from '../../../lib/save/codec'
+import { SLOT_NAME, buildSlots, byKey, bySaveName, fitsHangar, fitsSize, fittedModules, moduleVector, shipKey, singletonFree, type ModuleRec, type ShipRec, type Slot } from '../../../lib/save/rules'
 import { installFromStorage, slotsFor, storedList, takeIntoStorage, type Stored } from '../../../lib/save/storage'
 import { ModulePanel, type ModuleCard } from '../panels'
+import { Engineer } from '../engineer'
 import type { ScreenProps } from './types'
 import './storage.css'
 
@@ -116,6 +118,7 @@ export default function Screen({ sv, redraw }: ScreenProps) {
           <ModulePanel
             card={{ ...card, icon: card.icon && `${card.icon}.svg` }}
             grade={open.mod.className}
+            engineer={<Engineer module={open.module} subtype={open.mod.subtype} onChange={redraw} />}
           />
         )}
       </div>
@@ -126,6 +129,8 @@ export default function Screen({ sv, redraw }: ScreenProps) {
   if (fit) {
     const mod = fitted[fit.index]
     const card = mod && data.moduleCards[mod.line]
+    const item = moduleVector(sv).items[fit.index]
+    const fitObject = item instanceof AmfObject ? item : null
     return (
       <div className="stdetail">
         <div className="stdetailhead">
@@ -135,8 +140,12 @@ export default function Screen({ sv, redraw }: ScreenProps) {
           </div>
           <button type="button" className="ggbutton" onClick={() => store(fit)}>Put in storage</button>
         </div>
-        {card && mod && (
-          <ModulePanel card={{ ...card, icon: card.icon && `${card.icon}.svg` }} grade={mod.className} />
+        {card && mod && fitObject && (
+          <ModulePanel
+            card={{ ...card, icon: card.icon && `${card.icon}.svg` }}
+            grade={mod.className}
+            engineer={<Engineer module={fitObject} subtype={mod.subtype} onChange={redraw} />}
+          />
         )}
       </div>
     )

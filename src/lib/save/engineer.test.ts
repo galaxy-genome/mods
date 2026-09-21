@@ -8,9 +8,10 @@ import { AmfObject, EXTRA, decode, encode } from './codec.ts'
 import { prepareDownload } from './safety.ts'
 import { bySaveName, type ModuleRec } from './rules.ts'
 import {
-  MATERIAL_COUNT, MATERIAL_MAX, MAX_LEVEL, levelOf, materialCounts, packLevel, priorityOf,
-  setLevel, setMaterial, setUpgradeType, upgradeTypeOf, upgradeables,
+  MATERIAL_COUNT, MATERIAL_MAX, MAX_LEVEL, applyBest, atBest, levelOf, materialCounts, moduleBits,
+  packLevel, priorityOf, setLevel, setMaterial, setUpgradeType, upgradeTypeOf, upgradeables,
 } from './engineer.ts'
+import { changed, leaves } from './leaves.ts'
 
 const repo = resolve(import.meta.dirname, '../../../..')
 const data = JSON.parse(readFileSync(join(repo, 'editor/public/data/save-data.json'), 'utf8')) as
@@ -124,3 +125,30 @@ for (const u of mine) {
 }
 assert.ok(oracleLevels.includes(packLevel(priority, MAX_LEVEL, other)), 'gg_save.py reads the level 25 module')
 console.log('gg_save.py agrees on the 32 material counts and on priority_and_level')
+
+// ------------------------------------------------------- the module panel's engineer
+
+// Opening a module applies the whole ladder, and stepping back down writes the level bits alone.
+{
+  const sv2 = decode(bytes)
+  const all = upgradeables(sv2, names)
+  assert.ok(all.length, 'the save carries a module some engineer works on')
+  for (const u of all) {
+    applyBest(u.module)
+    assert.equal(moduleBits(u.module).level, MAX_LEVEL, `${u.subtype}: opening it yields level 25`)
+    assert.ok(atBest(u.module), `${u.subtype}: at its best`)
+  }
+
+  const one = all[0]
+  const before = leaves(sv2)
+  const bits = moduleBits(one.module)
+  setLevel(one.module, 7)
+  const diff = changed(before, leaves(sv2))
+  assert.equal(diff.length, 1, `a lower level writes one leaf, not ${diff.length}`)
+  assert.ok(diff[0].endsWith(':u'), 'the leaf is the packed priority_and_level field')
+  const now = moduleBits(one.module)
+  assert.equal(now.level, 7)
+  assert.equal(now.priority, bits.priority, 'priority is untouched')
+  assert.equal(now.upgradeType, bits.upgradeType, 'the modification is untouched')
+  console.log(`opening ${all.length} modules yields level 25; a lower level writes ${diff[0]} alone`)
+}

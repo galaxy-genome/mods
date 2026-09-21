@@ -1,0 +1,14 @@
+/* The engineer's control on the module panel. Sizes are px against the 820px screen. */
+
+.engbox{padding:4px 0 2px}
+.engbar{font-size:11px}
+.engopts{gap:4px;padding:6px 0 2px}
+.engopt{padding:5px 6px;font-size:10px}
+.englevels{display:grid;grid-template-columns:1fr 70px;align-items:center;gap:8px;padding:6px 0 2px}
+.englevel{font-size:12px;color:#d0e8a9;text-align:right}
+.engnote{text-align:center;font-size:10px;color:#d0e8a9}
+
+.engbar2{-webkit-appearance:none;appearance:none;width:100%;height:6px;background:#1d2a30;
+  border:1px solid #24343b;cursor:pointer}
+.engbar2::-webkit-slider-thumb{-webkit-appearance:none;width:10px;height:14px;background:#9febff;border:0}
+.engbar2::-moz-range-thumb{width:10px;height:14px;background:#9febff;border:0}

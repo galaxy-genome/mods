@@ -13,6 +13,7 @@ import {
   type Fill, type ModuleRec, type ShipRec, type Slot,
 } from '../../../lib/save/rules'
 import { ModulePanel, type ModuleCard } from '../panels'
+import { Engineer } from '../engineer'
 import type { ScreenProps } from './types'
 import './ship.css'
 
@@ -175,6 +176,8 @@ export default function Screen({ sv, redraw }: ScreenProps) {
 
   if (open) {
     const current = fitted[open.index]
+    const item = moduleVector(sv).items[open.index]
+    const fittedObject = item instanceof AmfObject ? item : null
     const chosen = pick ?? current
     const card = chosen && data.moduleCards[chosen.line]
     const options = lines(data.modules, open, ship, fitted, keys)
@@ -196,6 +199,9 @@ export default function Screen({ sv, redraw }: ScreenProps) {
               card={{ ...card, icon: card.icon && `${card.icon}.svg` }}
               grade={chosen.className}
               onGrade={(g) => setPick(data.modules.find((m) => m.line === chosen.line && m.className === g) ?? null)}
+              engineer={fittedObject && chosen === current
+                ? <Engineer module={fittedObject} subtype={chosen.subtype} onChange={redraw} />
+                : null}
             />
           )
           : (

@@ -2,11 +2,12 @@
 import { strict as assert } from 'node:assert'
 import { readFileSync } from 'node:fs'
 import { join, resolve } from 'node:path'
-import { AmfObject, AmfVector, decode, getCredits, setCredits, type AmfValue, type Save } from './codec.ts'
+import { decode, getCredits, setCredits, type Save } from './codec.ts'
 import { buildSlots, byKey, bySaveName, fittedModules, install, putInStorage, shipData, type ModuleRec } from './rules.ts'
 import { addToHangar, buyShip, sellShip, type ShipItem } from './ships.ts'
 import { trade } from './trade.ts'
 import { extUtf } from './safety.ts'
+import { changed, leaves } from './leaves.ts'
 
 const repo = resolve(import.meta.dirname, '../../../..')
 const { modules, ships } = JSON.parse(readFileSync(join(repo, 'editor/public/data/save-data.json'), 'utf8')) as
@@ -18,28 +19,6 @@ const bytes = new Uint8Array(readFileSync(join(repo, 'saves/Save2.SOL')))
 /** `CargoData.balance` is the first field of object 2 (`system/Save/CargoData.as:153`). */
 const BALANCE = '2/0:u'
 
-const hex = (b: Uint8Array) => [...b].map((n) => n.toString(16).padStart(2, '0')).join('')
-
-/** Every leaf of a decoded save, by the path the encoder walks to reach it. */
-function leaves(sv: Save): Map<string, string> {
-  const out = new Map<string, string>()
-  const walk = (v: AmfValue, path: string) => {
-    if (v instanceof AmfObject) v.raw.forEach(([tag, x], i) => walk(x as AmfValue, `${path}/${i}:${tag}`))
-    else if (v instanceof AmfVector) v.items.forEach((x, i) => walk(x, `${path}/${i}`))
-    else if (v instanceof Uint8Array) out.set(path, hex(v))
-    else out.set(path, String(v))
-  }
-  sv.objs.forEach((o, i) => walk(o, String(i)))
-  return out
-}
-
-/** The leaf paths an action added, removed or rewrote. */
-function changed(before: Map<string, string>, after: Map<string, string>): string[] {
-  const out = new Set<string>()
-  for (const [k, v] of before) if (after.get(k) !== v) out.add(k)
-  for (const [k, v] of after) if (before.get(k) !== v) out.add(k)
-  return [...out].sort()
-}
 
 /** Runs `act` on a fresh save, after `setup`, and reports which leaves moved. */
 function act(name: string, allowed: RegExp, run: (sv: Save) => void, setup?: (sv: Save) => void) {

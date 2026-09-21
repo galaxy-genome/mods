@@ -95,6 +95,12 @@ const raw = (m: AmfObject) => {
   return new DataView(b.buffer, b.byteOffset, b.byteLength).getUint32(0)
 }
 
+/** The three packed fields of one module. */
+export const moduleBits = (m: AmfObject) => {
+  const v = raw(m)
+  return { priority: priorityOf(v), level: levelOf(v), upgradeType: upgradeTypeOf(v) }
+}
+
 const entry = (m: AmfObject, where: 'ship' | 'storage', index: number, names: Map<string, ModuleRec>): Upgradeable => {
   const v = raw(m)
   const subtype = extUtf(m, 0)
@@ -168,4 +174,25 @@ export function setMaterial(sv: Save, id: number, count: number): boolean {
   const n = Math.max(0, Math.min(MATERIAL_MAX, Math.round(count)))
   ;(sv.objs[EXTRA] as AmfObject).raw[id] = ['b', new Uint8Array([n])]
   return true
+}
+
+/** The whole ladder applied: the module's first modification where it carries none, and level 25
+ * (`EngineerScreen.as:117`). Nothing is spent and no material is consumed. Reports whether the
+ * module moved. */
+export function applyBest(m: AmfObject): boolean {
+  const options = UPGRADES[extUtf(m, 0)]
+  if (!options) return false
+  const v = raw(m)
+  const upgradeType = upgradeTypeOf(v) || options[0].type
+  if (upgradeTypeOf(v) === upgradeType && levelOf(v) === MAX_LEVEL) return false
+  write(m, packLevel(priorityOf(v), MAX_LEVEL, upgradeType))
+  return true
+}
+
+/** A module the engineer has taken as far as it goes. A type no engineer works on is at its best
+ * already. */
+export function atBest(m: AmfObject): boolean {
+  if (!UPGRADES[extUtf(m, 0)]) return true
+  const v = raw(m)
+  return levelOf(v) === MAX_LEVEL && upgradeTypeOf(v) > 0
 }

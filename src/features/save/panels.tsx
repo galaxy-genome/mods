@@ -1,3 +1,4 @@
+import type * as React from 'react'
 import './overview.css'
 
 export type Cell = string | number
@@ -89,7 +90,9 @@ export function OverviewPanel({ ship }: { ship: ShipOverview }) {
 
 /** The module purchase screen with nothing fitted to compare (BuySellModuleScreen.as).
     The grade tiles are the Available Modules screen's class and grade picker. */
-export function ModulePanel({ card, grade, onGrade }: { card: ModuleCard; grade: string; onGrade?: (grade: string) => void }) {
+export function ModulePanel({ card, grade, onGrade, engineer }: {
+  card: ModuleCard; grade: string; onGrade?: (grade: string) => void; engineer?: React.ReactNode
+}) {
   const v = card.variants[grade]
   return (
     <div className="ovcols ovnohead">
@@ -110,6 +113,7 @@ export function ModulePanel({ card, grade, onGrade }: { card: ModuleCard; grade:
             </button>
           ))}
         </div>
+        {engineer}
       </div>
       <div>
         <div className="ovrow"><div /><div className="ovgold">NEW MODULE</div></div>
