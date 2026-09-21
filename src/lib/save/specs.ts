@@ -21,6 +21,9 @@ export type ModuleStats = ModuleRec
 
 export interface Specs {
   hull: number
+  /** The power the plant makes and the power the fitted modules draw (`Modules.as:249-272`). */
+  power: number
+  powerMax: number
   shields: number
   jump: number
   mass: number
@@ -42,6 +45,21 @@ export interface Specs {
 /** `SettingsData2.game_dynamic` (`system/Save/SettingsData2.as:26`, `:117`), which lives in the
  * settings the editor does not touch and reads 1 unless the player moves it. */
 export const GAME_DYNAMIC = 1
+
+/** `Modules.AvailablePower` (`system/modules/Modules.as:249-258`): what the power plant makes,
+ * scaled by its integrity and its engineer boost. A ship with no plant makes nothing. */
+export function availablePower(mods: (ModuleStats | null)[], boosts: (Record<string, number> | null)[]): number {
+  const i = MAIN_CATEGORIES.indexOf('PowerPlant')
+  const plant = mods[i]
+  if (!plant) return 0
+  return plant.stats.powerGen * (1 + at(boosts[i], 'powerGen'))
+}
+
+/** `Modules.UsingPower` (`Modules.as:260-272`): every switchable module that is on draws its own
+ * power, raised by whatever the engineer did to it. */
+export function usingPower(mods: (ModuleStats | null)[], boosts: (Record<string, number> | null)[]): number {
+  return mods.reduce((n, m, i) => n + (m?.switchable ? m.power * (1 + at(boosts[i], 'power')) : 0), 0)
+}
 
 /** `MathE.erf`, with the game's own constants (0.25482952, not the textbook 0.254829592). */
 function erf(x: number): number {
@@ -141,6 +159,8 @@ export function computeSpecs({ ship, mods, boosts, cargo, fuel }: Fit): Specs {
 
   return {
     hull,
+    power: usingPower(mods, boosts),
+    powerMax: availablePower(mods, boosts),
     shields,
     jump,
     mass: massTotal + cargo + held,

@@ -17,7 +17,7 @@ import {
   setShipBest, setSystemBest, shipAtBest, systemAtBest,
 } from '../../lib/save/best'
 import { byKey, bySaveName, shipKey, type ModuleRec, type ShipRec } from '../../lib/save/rules'
-import { makeUpgrades, materialCounts, type ModuleUpgrade } from '../../lib/save/engineer'
+import { makePriorities, makeUpgrades, materialCounts, type ModuleUpgrade } from '../../lib/save/engineer'
 import { getPosition } from '../../lib/save/position'
 import './overview.css'
 
@@ -40,6 +40,7 @@ interface SaveData {
   modules: ModuleRec[]
   ships: ShipRec[]
   upgrades: ModuleUpgrade[]
+  priorities: Record<string, number>
 }
 
 const sprite = (name: string) => `${import.meta.env.BASE_URL}sprites/${encodeURIComponent(name)}.svg`
@@ -49,7 +50,7 @@ function useSaveData() {
   React.useEffect(() => {
     void fetch(`${import.meta.env.BASE_URL}data/save-data.json`)
       .then((r) => r.json())
-      .then((d: SaveData) => { makeUpgrades(d.upgrades); setData(d) })
+      .then((d: SaveData) => { makeUpgrades(d.upgrades); makePriorities(d.priorities); setData(d) })
       .catch(() => setData(null))
   }, [])
   return data

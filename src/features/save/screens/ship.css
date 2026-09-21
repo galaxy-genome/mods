@@ -42,3 +42,7 @@
 .shupgrade{color:#d0e8a9;cursor:pointer}
 .shupgrade:hover,.shupgrade:focus-visible{color:#9febff;outline:none}
 .shtune{width:360px;padding:0 10px 4px}
+
+/* The power budget the game enforces without printing it. */
+.shpower{padding:2px 0 0;text-align:center;font-size:10px;color:#9db4bd}
+.shover{color:#ffb4a2}

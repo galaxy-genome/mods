@@ -6,11 +6,13 @@ import { tmpdir } from 'node:os'
 import { join, resolve } from 'node:path'
 import { AmfObject, EXTRA, decode, encode } from './codec.ts'
 import { prepareDownload } from './safety.ts'
-import { bySaveName, type ModuleRec } from './rules.ts'
+import { bySaveName, moduleVector, type ModuleRec } from './rules.ts'
+import { extUtf } from './safety.ts'
 import {
-  MATERIAL_COUNT, MATERIAL_MAX, MAX_LEVEL, applyBestIfUnmodified, atBest, engineerLabel, levelOf,
-  makeUpgrades, materialCounts, moduleBits, packLevel, priorityOf, setLevel, setMaterial,
-  setUpgradeType, upgradeName, upgradeTypeOf, upgradeables, type ModuleUpgrade,
+  DEFAULT_PRIORITY, MATERIAL_COUNT, MATERIAL_MAX, MAX_LEVEL, applyBestIfUnmodified, atBest,
+  engineerLabel, levelOf, makePriorities, makeUpgrades, materialCounts, moduleBits, packLevel,
+  priorityFor, priorityOf, setLevel, setMaterial, setPriorities, setPriority, setUpgradeType,
+  upgradeName, upgradeTypeOf, upgradeables, type ModuleUpgrade,
 } from './engineer.ts'
 import { changed, leaves } from './leaves.ts'
 
@@ -20,6 +22,7 @@ const data = JSON.parse(readFileSync(join(repo, 'editor/public/data/save-data.js
   materials: { id: number; key: string; name: string }[]
   materialCountMax: number
   upgrades: ModuleUpgrade[]
+  priorities: Record<string, number>
 }
 const names = bySaveName(data.modules)
 // `ModuleUpgrades.MakeUpgrades` (`system/modules/ModuleUpgrades.as:15-18`): the screens fill the
@@ -214,4 +217,37 @@ console.log('gg_save.py agrees on the 32 material counts and on priority_and_lev
   assert.ok(diff[0].endsWith(':u'))
   assert.equal(moduleBits(one.module).level, 11)
   console.log(`a level set from the row writes ${diff[0]} alone`)
+}
+
+// ------------------------------------------------------- priorities
+
+// The game sheds modules by priority when the draw passes what the plant makes, so the editor
+// writes the priority the game itself would give each category.
+{
+  makePriorities(data.priorities)
+  assert.equal(priorityFor('ShieldsBooster'), 3, 'a booster goes first')
+  assert.equal(priorityFor('PlanetScanner'), 3)
+  assert.equal(priorityFor('CannonWeapon'), 2, 'a weapon goes next')
+  assert.equal(priorityFor('Shields'), DEFAULT_PRIORITY, 'and the shields go last')
+  assert.equal(priorityFor('Thrusters'), DEFAULT_PRIORITY)
+
+  const sv4 = decode(bytes)
+  const moved = setPriorities(moduleVector(sv4).items)
+  const seen = moduleVector(sv4).items
+    .filter((m): m is AmfObject => m instanceof AmfObject)
+    .map((m) => [extUtf(m, 0), moduleBits(m).priority] as const)
+  for (const [subtype, priority] of seen) assert.equal(priority, priorityFor(subtype), subtype)
+  assert.ok(moved > 0, 'the save arrived with the flat default')
+  prepareDownload(sv4)
+
+  // A priority writes its own bits: the level and the modification stay where they were.
+  const one = upgradeables(sv4, names)[0]
+  const bits = moduleBits(one.module)
+  const before = leaves(sv4)
+  setPriority(one.module, 3)
+  const diff = changed(before, leaves(sv4))
+  assert.equal(diff.length, 1, `a priority wrote ${diff.length} leaves`)
+  assert.equal(moduleBits(one.module).level, bits.level)
+  assert.equal(moduleBits(one.module).upgradeType, bits.upgradeType)
+  console.log(`${moved} modules take the game's own priority; a priority writes ${diff[0]} alone`)
 }

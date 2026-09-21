@@ -17,7 +17,7 @@ import {
   saveSpecs, specCells, type ModuleStats, type ShipSpecs, type Upgrade,
 } from '../../../lib/save/specs'
 import { Engineer } from '../engineer'
-import { engineerLabel, makeUpgrades, moduleBits, type ModuleUpgrade } from '../../../lib/save/engineer'
+import { engineerLabel, makePriorities, makeUpgrades, moduleBits, type ModuleUpgrade } from '../../../lib/save/engineer'
 import { Wand } from '../wand'
 import { repairHull, setSlotBest, slotAtBest } from '../../../lib/save/best'
 import type { ScreenProps } from './types'
@@ -28,6 +28,7 @@ interface Data {
   ships: ShipSpecs[]
   moduleCards: Record<string, ModuleCard>
   upgrades: (Upgrade & ModuleUpgrade)[]
+  priorities: Record<string, number>
 }
 
 function useSaveData() {
@@ -35,7 +36,7 @@ function useSaveData() {
   React.useEffect(() => {
     void fetch(`${import.meta.env.BASE_URL}data/save-data.json`)
       .then((r) => r.json())
-      .then((d: Data) => { makeUpgrades(d.upgrades); setData(d) })
+      .then((d: Data) => { makeUpgrades(d.upgrades); makePriorities(d.priorities); setData(d) })
       .catch(() => setData(null))
   }, [])
   return data
@@ -51,12 +52,23 @@ const hide = (e: { currentTarget: HTMLImageElement }) => { e.currentTarget.style
 function Specs({ sv, ship, fitted, upgrades }: {
   sv: Save; ship: ShipSpecs; fitted: (ModuleStats | null)[]; upgrades: Upgrade[]
 }) {
-  const cells = specCells(saveSpecs(sv, ship, fitted, upgrades))
+  const specs = saveSpecs(sv, ship, fitted, upgrades)
+  const cells = specCells(specs)
+  const over = specs.power > specs.powerMax
   return (
-    <div className="shspecs">
-      <div className="ovrow">{cells.map(([l]) => <div key={l} className="ovgold shspeclabel">{l.toUpperCase()}</div>)}</div>
-      <div className="ovrow">{cells.map(([l, v]) => <div key={l} className="ovval">{v.toUpperCase()}</div>)}</div>
-    </div>
+    <>
+      <div className="shspecs">
+        <div className="ovrow">{cells.map(([l]) => <div key={l} className="ovgold shspeclabel">{l.toUpperCase()}</div>)}</div>
+        <div className="ovrow">{cells.map(([l, v]) => <div key={l} className="ovval">{v.toUpperCase()}</div>)}</div>
+      </div>
+      {/* The game prints no power budget and enforces it silently: on load it switches modules
+          off by priority until the draw fits (`system/modules/Modules.as:327-346`), and a shields
+          module switched off reads as broken (`system/modules/Module.as:225-232`). */}
+      <div className={`shpower${over ? ' shover' : ''}`}>
+        POWER {Math.round(specs.power * 100) / 100} / {Math.round(specs.powerMax * 100) / 100} MW
+        {over && ' · the game will switch modules off, by priority, until this fits'}
+      </div>
+    </>
   )
 }
 

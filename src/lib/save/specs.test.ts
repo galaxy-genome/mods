@@ -106,6 +106,22 @@ for (const [file, want] of [
     + `rotation ${want.rotationSpeed} deg/s, ${want.rotation} deg/s2  cargo ${want.cargo}/${want.cargoMax} T`)
 }
 
+// ------------------------------------------------------- the power budget
+
+// What the plant makes and what the fit draws (`system/modules/Modules.as:249-272`). The plant's
+// own modification raises what it makes, so the budget is not the rating printed on the module.
+for (const [file, draw, made] of [['nemesis-explorer.SOL', 42.26, 50.4], ['nemesis-maxed.SOL', 31.71, 50.4]] as const) {
+  const sv = decode(new Uint8Array(readFileSync(join(repo, 'saves/fixtures', file))))
+  const ship = ships.find((s) => s.key === shipKey(sv))!
+  const fitted = fittedModules(sv, names) as (ModuleStats | null)[]
+  const s = saveSpecs(sv, ship, fitted, upgrades)
+  assert.equal(Math.round(s.powerMax * 100) / 100, made, `${file}: available power`)
+  assert.equal(Math.round(s.power * 100) / 100, draw, `${file}: the draw`)
+  // An 8A Power Plant is rated 36 MW and Power Generation at level 25 adds two fifths of it.
+  assert.equal(fitted[1]!.stats.powerGen, 36)
+  console.log(`${file} draws ${draw} MW of the ${made} MW its plant makes`)
+}
+
 // A jump whose raw value passes 150 is 30, whatever it was (`ShipInfo.as:870-873`).
 {
   const ion = ships.find((s) => s.var === 'ION')!

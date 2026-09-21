@@ -6,6 +6,7 @@
  */
 import { AmfObject, AmfVector, SHIP, STORAGE, type AmfValue, type ExtField, type Save } from './codec'
 import { extUtf } from './safety'
+import { priorityFor } from './engineer'
 
 // ------------------------------------------------------- the data tables
 
@@ -31,6 +32,10 @@ export interface ModuleRec {
   integrity?: number
   /** `BaseModule.mass`, the term `MassCalc` sums (`objects/Ships/ShipInfo.as:425`). */
   mass: number
+  /** `BaseModule.power`, drawn while the module is on (`system/modules/Modules.as:269`). */
+  power: number
+  /** A module the power budget can switch off (`Modules.as:265`). */
+  switchable: boolean
   /** The per-category figures `ShipInfo`'s formulas read (`lib/save/specs.ts`). */
   stats: Record<string, number>
 }
@@ -254,7 +259,7 @@ export function makeModule(mod: ModuleRec): AmfObject {
     ['B', new Uint8Array([0])],                  // shieldsIsBroken
     ['B', new Uint8Array([1])],                  // IsOnManual
     ['B', new Uint8Array([1])],                  // IsOnAuto
-    ['u', u32(1)],                               // priority_and_level, `Module.as:44`
+    ['u', u32(priorityFor(mod.subtype))],        // priority_and_level, `Module.as:44`
   ] as ExtField[]
   return o
 }

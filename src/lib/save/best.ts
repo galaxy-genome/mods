@@ -9,7 +9,7 @@ import {
   ARENA_LEVELS, BATTLE, DISCOVERY, ELITE, KARMA_MAX, REPUTATION_MAX, TRADE, arena, karma,
   progressOf, reputationOf, setKarma, setArena, setProgress, setReputation, stationRows,
 } from './record'
-import { MATERIAL_COUNT, MATERIAL_MAX, applyBest, atBest, setMaterial } from './engineer'
+import { MATERIAL_COUNT, MATERIAL_MAX, applyBest, atBest, setMaterial, setPriorities } from './engineer'
 import {
   bestModule, buildSlots, canPlace, fittedModules, install, moduleVector,
   type ModuleRec, type ShipRec, type Slot,
@@ -191,6 +191,9 @@ export function setShipBest(sv: Save, ship: ShipRec, mods: ModuleRec[], keys: Ma
     }
   }
 
+  // The game switches modules off by priority when the draw passes what the plant makes, so the
+  // ship leaves with the priorities the game itself would give it.
+  setPriorities(moduleVector(sv).items)
   repairHull(sv, ship, fittedModules(sv, names))
 }
 

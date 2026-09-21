@@ -203,6 +203,35 @@ export function atBest(m: AmfObject): boolean {
   return levelOf(v) === MAX_LEVEL && upgradeTypeOf(v) > 0
 }
 
+/** `ShipsManager.ApplyShipModulesByLevel` (`universe/Managers/ShipsManager.as:842-889`) gives
+ * each category the priority the game sheds it at when the draw passes what the plant makes: 3
+ * goes first, then 2, then 1 (`system/modules/Modules.as:327-346`). A category the game does not
+ * name keeps the `Module` default (`system/modules/Module.as:44`). */
+let PRIORITIES: Record<string, number> = {}
+export const DEFAULT_PRIORITY = 1
+
+export const makePriorities = (table: Record<string, number>) => { PRIORITIES = table }
+
+export const priorityFor = (category: string) => PRIORITIES[category] ?? DEFAULT_PRIORITY
+
+/** Writes the priority the game would give this module, keeping its level and modification. */
+export function setPriority(m: AmfObject, priority: number): boolean {
+  const v = raw(m)
+  if (priorityOf(v) === priority) return false
+  write(m, packLevel(priority, levelOf(v), upgradeTypeOf(v)))
+  return true
+}
+
+/** Every fitted module at the priority its category carries, so the game sheds a scanner or a
+ * booster before it sheds the shields. */
+export function setPriorities(items: unknown[]): number {
+  let moved = 0
+  for (const m of items) {
+    if (m instanceof AmfObject && setPriority(m, priorityFor(extUtf(m, 0)))) moved++
+  }
+  return moved
+}
+
 /** A module row's engineer state, in the game's own words: the level and the modification's name
  * in square brackets, and nothing at all where the module carries no modification. */
 export function engineerLabel(category: string, level: number, upgradeType: number): string {
