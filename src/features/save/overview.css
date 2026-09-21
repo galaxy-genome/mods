@@ -59,10 +59,6 @@
 .ggclose2{right:6px;width:40px}
 .ggreturn:hover,.ggclose2:hover,.ggreturn:focus-visible,.ggclose2:focus-visible{color:#fff}
 
-/* Portrait shows the rotate prompt instead of the screen. */
-.ggrotate{position:fixed;inset:0;display:grid;place-items:center;gap:10px;align-content:center;
-  background:#05080c;color:#bff3ff;text-align:center;padding:24px;
-  font:14px/1.5 "DejaVu Sans",Verdana,sans-serif}
 .ggstart{display:grid;gap:14px;place-content:center;justify-items:center;height:100%;text-align:center;color:#bff3ff}
 .ggstart p{max-width:420px;color:#cbfafd;font-size:12px;line-height:1.5;margin:0}
 .ggbutton{border:1px solid #3b8fb0;border-bottom-color:#35e0f5;padding:8px 22px;cursor:pointer;

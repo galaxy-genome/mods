@@ -1,5 +1,4 @@
 import * as React from 'react'
-import { useMediaQuery } from '@/hooks/use-media-query'
 import './overview.css'
 
 /** The screen is authored at 820x369 and scaled to whatever the stage measures. */
@@ -17,21 +16,31 @@ function useScale(ref: React.RefObject<HTMLDivElement | null>) {
   return scale
 }
 
-export function RotatePrompt() {
-  return (
-    <div className="ggrotate">
-      <div>Rotate your device</div>
-      <div>The save editor uses the game's landscape screens.</div>
-    </div>
-  )
+/** The device turns the page, so pointer coordinates, the keyboard and scrolling
+ * stay in one frame of reference. A browser that refuses the lock letterboxes
+ * the same frame into the portrait viewport, which stays usable. The lock needs
+ * a user gesture, so the first interaction arms it. */
+function useLandscape() {
+  React.useEffect(() => {
+    const lock = () => {
+      void (screen.orientation as ScreenOrientation & {
+        lock?: (o: string) => Promise<void>
+      }).lock?.('landscape').catch(() => {})
+    }
+    lock()
+    addEventListener('pointerdown', lock, { once: true })
+    return () => {
+      removeEventListener('pointerdown', lock)
+      screen.orientation.unlock?.()
+    }
+  }, [])
 }
 
-/** The fixed landscape frame: centred and letterboxed, dark backdrop, portrait asks for a rotation. */
+/** The fixed landscape frame: centred and letterboxed on a dark backdrop. */
 export function SaveFrame({ children }: { children: React.ReactNode }) {
   const frame = React.useRef<HTMLDivElement>(null)
   const scale = useScale(frame)
-  const portrait = useMediaQuery('(orientation: portrait) and (max-width: 899px)')
-  if (portrait) return <RotatePrompt />
+  useLandscape()
   return (
     <div className="ggstage">
       <div className="ggframe" ref={frame}>
