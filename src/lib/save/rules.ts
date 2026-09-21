@@ -25,6 +25,10 @@ export interface ModuleRec {
   grade: string
   singleton: boolean
   name: string
+  /** `fullAmmo`: the reserve a full module holds, or its time or materials where those stand in. */
+  fullAmmo?: number
+  /** `ammoPack`: the rounds a cannon or mine layer loads at once. */
+  ammoPack?: number
   icon: string
   price: string
   params: [string, string][]
@@ -290,15 +294,42 @@ export function fittedModules(sv: Save, names: Map<string, ModuleRec>): (ModuleR
  */
 export const FRESH_INTEGRITY = 1e6
 
+/** What a module carries when the game sets its type (`system/modules/Module.as:84-180`): the
+ * rounds loaded and the rounds in reserve. Beam weapons count one of each; launchers load one
+ * and hold the rest; cells, heatsinks, chaff, the turret and the hangar hold everything in
+ * reserve; cannons and mines load a pack. Anything else keeps the field defaults, 60 and 2100
+ * (`Module.as:20-24`). */
+export function ammoOf(mod: ModuleRec): [ammo: number, total: number] {
+  const full = mod.fullAmmo ?? 0
+  switch (mod.category) {
+    case 'LaserWeapon': case 'ZenLaserWeapon': case 'MiningWeapon': case 'PulseLaserWeapon':
+    case 'PlasmaGunWeapon': case 'GaussWeapon': case 'TitanLanceWeapon':
+      return [1, 1]
+    case 'MissileWeapon': case 'TorpedoWeapon': case 'SeismicCharges': case 'RailgunWeapon':
+    case 'LifeSupport': case 'RepairModule':
+      return [1, full]
+    case 'DefenceTurret': case 'ChaffLauncher': case 'Heatsink': case 'ShieldCellBank':
+    case 'FighterHangar':
+      return [0, full]
+    case 'CannonWeapon': case 'FragmentCannonWeapon': case 'MineWeapon':
+      return [mod.ammoPack ?? 0, full]
+    case 'CargoDroneController':
+      return [full, full]
+    default:
+      return [60, 2100]
+  }
+}
+
 export function makeModule(mod: ModuleRec): AmfObject {
   const o = new AmfObject('Module', false, true)
+  const [ammo, total] = ammoOf(mod)
   o.raw = [
     ['U', utf(mod.subtype)],
     ['U', utf(mod.className)],
     ['D', f64(mod.integrity ?? FRESH_INTEGRITY)],
-    ['I', i32(1)],                               // ammo
+    ['I', i32(ammo)],                            // ammo
     ['s', u16(9)],                               // weaponGroups, `Module.as:42`
-    ['s', u16(0)],                               // totalAmmo
+    ['s', u16(total)],                           // totalAmmo
     ['B', new Uint8Array([0])],                  // needReset
     ['D', f64(-1)],                              // fuel, `Module.as:30`
     ['D', f64(1)],                               // shields, `Module.as:32`

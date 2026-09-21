@@ -11,6 +11,7 @@ import {
 } from './record'
 import { MATERIAL_COUNT, MATERIAL_MAX, allUpgrades, applyBest, atBest, levelOf, setMaterial, setPriorities, upgradeTypeOf } from './engineer'
 import {
+  ammoOf,
   bestModule, buildSlots, byKey, bySaveName, canPlace, cloneShipData, fittedIn, install,
   installIn, moduleVector, modulesOf, sameModules,
   type ModuleRec, type ShipRec, type Slot,
@@ -267,17 +268,26 @@ function normalise(vector: AmfVector, slots: Slot[], names: Map<string, ModuleRe
 }
 
 /** Every module whole: its own full integrity, its shields charged and not broken
- * (`system/modules/Module.as:192-193`, `:30-32`). */
+ * (`system/modules/Module.as:192-193`, `:30-32`), and its rounds loaded and in reserve as the
+ * game gives a module of its type (`ammoOf`), which is what buying supplies restores. */
 export function repairModules(vector: AmfVector, names: Map<string, ModuleRec>) {
   const fitted = fittedIn(vector, names)
   vector.items.forEach((m: unknown, i: number) => {
     if (!(m instanceof AmfObject) || i === 0) return
     const mod = fitted[i]
     if (mod?.integrity !== undefined) m.raw[2] = ['D', double(mod.integrity)]
+    if (mod) {
+      const [ammo, total] = ammoOf(mod)
+      m.raw[3] = ['I', int32(ammo)]
+      m.raw[5] = ['s', uint16(total)]
+    }
     m.raw[8] = ['D', double(1)]
     m.raw[9] = ['B', new Uint8Array([0])]
   })
 }
+
+const int32 = (n: number) => { const d = new DataView(new ArrayBuffer(4)); d.setInt32(0, n); return new Uint8Array(d.buffer) }
+const uint16 = (n: number) => { const d = new DataView(new ArrayBuffer(2)); d.setUint16(0, n); return new Uint8Array(d.buffer) }
 
 const double = (n: number) => {
   const d = new DataView(new ArrayBuffer(8))

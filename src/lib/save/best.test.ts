@@ -13,6 +13,7 @@ import {
   moduleBits, priorityFor, upgradesFor, type ModuleUpgrade,
 } from './engineer.ts'
 import { hullMax, saveSpecs } from './specs.ts'
+import { ammoOf } from './rules.ts'
 import { addToHangar } from './ships.ts'
 import { AmfVector, HANGAR } from './codec.ts'
 import { extUtf } from './safety.ts'
@@ -76,6 +77,16 @@ for (const file of ['Save1.SOL', 'Save2.SOL', 'Save3.SOL']) {
   const capacity = saveSpecs(sv, ship, fittedNow, upgrades).shields
   assert.ok(capacity > 1, `${file}: the ship has shields to charge`)
   assert.equal(charge, capacity, `${file}: shields charged to their capacity`)
+  // Every module loaded as the game loads one of its type, so no supplies are owed.
+  ;(shipData(sv).raw[2][1] as AmfVector).items.forEach((m: unknown, i: number) => {
+    const mod = fittedNow[i]
+    // The hull is the ship's armour, repaired by its own rule (`setHullFull`).
+    if (!(m instanceof AmfObject) || !mod || i === 0) return
+    const [ammo, total] = ammoOf(mod)
+    const view = (b: Uint8Array) => new DataView(b.buffer, b.byteOffset, b.byteLength)
+    assert.equal(view(m.raw[3][1] as Uint8Array).getInt32(0), ammo, `${file}: slot ${i} ${mod.key} loaded`)
+    assert.equal(view(m.raw[5][1] as Uint8Array).getUint16(0), total, `${file}: slot ${i} ${mod.key} in reserve`)
+  })
 
   const fitted = fittedModules(sv, names)
   const slots = buildSlots(ship, keys)
