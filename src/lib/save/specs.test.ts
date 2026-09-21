@@ -7,7 +7,7 @@ import { decode } from './codec.ts'
 import { bySaveName, fittedModules, shipKey } from './rules.ts'
 import { MAX_LEVEL, makePriorities, makeUpgrades, priorityFor } from './engineer.ts'
 import {
-  boostOf, computeSpecs, saveSpecs, shedOrder, specCells,
+  boostOf, computeSpecs, powerLine, saveSpecs, shedOrder, specCells,
   type ModuleStats, type ShipSpecs, type Upgrade,
 } from './specs.ts'
 
@@ -112,6 +112,18 @@ for (const [file, want] of [
 }
 
 // ------------------------------------------------------- the power budget
+
+// The third fixture, read back in the game after a force-stop and a fresh load: its SPECS screen
+// printed SHIELDS 6725 MW and its module screen USED 52.06 of 67.19 MW.
+{
+  const sv = decode(new Uint8Array(readFileSync(join(repo, 'saves/fixtures/hyperion-explorer.SOL'))))
+  const ship = ships.find((s) => s.key === shipKey(sv))!
+  const fitted = fittedModules(sv, names) as (ModuleStats | null)[]
+  const s = saveSpecs(sv, ship, fitted, upgrades)
+  assert.equal(Math.floor(s.shields), 6725, 'shields')
+  assert.equal(powerLine(s), '52.06 of 67.19 MW', 'the power line')
+  console.log(`hyperion-explorer.SOL  shields ${Math.floor(s.shields)} MW  power ${powerLine(s)}  (the game's own figures)`)
+}
 
 // What the plant makes and what the fit draws (`system/modules/Modules.as:249-272`). The plant's
 // own modification raises what it makes, so the budget is not the rating printed on the module.

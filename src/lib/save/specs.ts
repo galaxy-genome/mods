@@ -47,7 +47,11 @@ export interface Specs {
 export const GAME_DYNAMIC = 1
 
 /** `Modules.AvailablePower` (`system/modules/Modules.as:249-258`): what the power plant makes,
- * scaled by its integrity and its engineer boost. A ship with no plant makes nothing. */
+ * raised by its engineer boost. A ship with no plant makes nothing.
+ *
+ * The game also scales this by the plant's `integrityPercent`, which reads 1 for a module the
+ * save carries: `saves/fixtures/hyperion-explorer.SOL`, written here and loaded in the game after
+ * a force-stop, reports 67.19 MW available, which is this figure with no reduction. */
 export function availablePower(mods: (ModuleStats | null)[], boosts: (Record<string, number> | null)[]): number {
   const i = MAIN_CATEGORIES.indexOf('PowerPlant')
   const plant = mods[i]
@@ -227,6 +231,11 @@ export function saveSpecs(sv: Save, ship: ShipSpecs, fitted: (ModuleStats | null
   const boosts = boostsOf(sv, fitted, upgrades)
   return computeSpecs({ ship, mods: fitted, boosts, cargo: cargoTotal(sv), fuel: tankFuel(sv) })
 }
+
+/** The power line as the game's own module screen prints it (`ui/screens/ModulesScreen.as:517`):
+ * the draw, the word "of", and what the plant makes, each cut to two decimals. */
+export const powerLine = (s: Specs) =>
+  `${Math.floor(s.power * 100) / 100} of ${Math.floor(s.powerMax * 100) / 100} MW`
 
 /** The strip's own wording and rounding (`ModulesShopScreen.as:198`; the units are
  * `Unit_shields`, `Unit_distanceYears`, `Unit_mass` and `Unit_speed` in `lang_en.json`). */

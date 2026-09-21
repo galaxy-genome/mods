@@ -40,8 +40,14 @@ export const MATERIAL_COUNT = 32
 export interface ModuleUpgrade { category: string; type: number; name: string; boost: Record<string, number> }
 
 /** A table the game builds once at start-up and every caller then reads. Reading one before it
- * is filled is a caller that forgot, not an empty answer: a save written from an empty table
- * looks right and carries modules no engineer ever touched, so the read throws instead. */
+ * is filled is a caller that forgot, not an empty answer, so the read throws.
+ *
+ * What an empty answer costs, from the save that made the rule: a fit built with neither table
+ * filled left every module at level 0 and at priority 1. With no Power Generation modification
+ * the plant made its base rating instead of the boosted one, the draw passed it, and the game
+ * shed modules by priority (`system/modules/Modules.as:327-346`) with nothing to tell them
+ * apart, so it took the shields, which then read as broken (`Module.as:225-232`). That save
+ * decoded, passed every safety assertion and loaded, and left the ship defenceless. */
 function table<T>(name: string) {
   let held: T | null = null
   return {

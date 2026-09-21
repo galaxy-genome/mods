@@ -14,7 +14,8 @@ import {
 } from '../../../lib/save/rules'
 import { ModulePanel, type ModuleCard } from '../panels'
 import {
-  boostsOf, saveSpecs, shedOrder, specCells, type ModuleStats, type ShipSpecs, type Upgrade,
+  boostsOf, powerLine, saveSpecs, shedOrder, specCells,
+  type ModuleStats, type ShipSpecs, type Upgrade,
 } from '../../../lib/save/specs'
 import { Engineer } from '../engineer'
 import {
@@ -68,7 +69,7 @@ function Specs({ sv, ship, fitted, upgrades }: {
           off by priority until the draw fits (`system/modules/Modules.as:327-346`), and a shields
           module switched off reads as broken (`system/modules/Module.as:225-232`). */}
       <div className={`shpower${over ? ' shover' : ''}`}>
-        POWER {Math.round(specs.power * 100) / 100} / {Math.round(specs.powerMax * 100) / 100} MW
+        POWER {powerLine(specs)}
         {over && ` · the game switches off ${shed.map((m) => m.name).join(', ')} until this fits`}
       </div>
     </>
