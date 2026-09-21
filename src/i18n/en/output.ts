@@ -172,6 +172,7 @@ export default {
   qgKindMine: 'This mod',
   qgKindFavorite: 'Favourite mod',
   qgKindUnknown: 'Not installed',
+  qgMainStory: 'Main story, past step 68',
   qgThisQuest: 'This quest',
   qgHint: 'Each quest sits below everything the game checks before offering it. Tap a quest to see what it needs.',
   qgNothing: 'Nothing comes first',

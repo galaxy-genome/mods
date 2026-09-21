@@ -36,6 +36,8 @@ const KIND_KEY = {
   unknown: 'output.qgKindUnknown',
 } as const
 
+const LEGEND = [['game', undefined], ['story', 'amber'], ['favorite', 'success'], ['mine', undefined], ['unknown', 'dim']] as const
+
 /**
  * Every quest the graph may draw: the game's own side quests, the quests of favorited mods, and the quest being
  * viewed whether or not its mod is favorited. A mod that takes a game quest's ID replaces it.
@@ -59,8 +61,17 @@ function universe(parts: ModPart[], viewedModId?: string): DagInput[] {
 }
 
 function Graph({ dag, focus, onOpen }: { dag: Dag; focus: number; onOpen: (n: DagNode) => void }) {
-  const { box, view, zoom, reset, handlers, tapped } = usePanZoom()
+  const { box, view, setView, zoom, handlers, tapped } = usePanZoom()
   const at = new Map(dag.nodes.map((n) => [n.id, n]))
+
+  // The whole ancestry is the answer, so it starts scaled to fit rather than at the top of a graph taller than the box.
+  const fit = React.useCallback(() => {
+    const el = box.current
+    if (!el) return
+    const k = Math.min(1, (el.clientWidth - 16) / dag.width, (el.clientHeight - 16) / dag.height)
+    setView({ k, x: 0, y: (el.clientHeight - dag.height * k) / 2 })
+  }, [box, dag.width, dag.height, setView])
+  React.useEffect(fit, [fit])
   return (
     <div className="relative">
       <div
@@ -96,7 +107,7 @@ function Graph({ dag, focus, onOpen }: { dag: Dag; focus: number; onOpen: (n: Da
 
           {dag.nodes.map((n) => {
             const isFocus = n.id === focus
-            const label = n.label || (n.id === MAIN_STORY ? t('output.flMainStory') : t('output.flUnknownQuest', { id: n.id }))
+            const label = n.label || (n.id === MAIN_STORY ? t('output.qgMainStory') : t('output.flUnknownQuest', { id: n.id }))
             return (
               <g
                 key={n.id}
@@ -110,7 +121,7 @@ function Graph({ dag, focus, onOpen }: { dag: Dag; focus: number; onOpen: (n: Da
                 opacity={n.source === 'unknown' ? 0.45 : 1}
               >
                 <rect width={NODE_W} height={NODE_H} rx={4} fill="var(--color-panel)" stroke={isFocus ? 'var(--color-cyan)' : STROKE[n.source]} strokeWidth={isFocus ? 2 : 1} strokeDasharray={n.source === 'unknown' ? '5 4' : undefined} />
-                <text x={12} y={26} fontSize={13} fontWeight={600} className="fill-white">{clip(label, 22)}</text>
+                <text x={12} y={26} fontSize={13} fontWeight={600} className="fill-white">{clip(label, 24)}</text>
                 <text x={12} y={46} fontSize={11} className="fill-dim font-mono">{n.id ? n.id : ''} {t(KIND_KEY[n.source])}</text>
               </g>
             )
@@ -120,7 +131,7 @@ function Graph({ dag, focus, onOpen }: { dag: Dag; focus: number; onOpen: (n: Da
       <div className="absolute bottom-2 right-2 flex flex-col gap-1">
         <Button variant="secondary" size="icon-sm" aria-label={t('output.flZoomIn')} onClick={() => zoom(1.2)}><Plus className="size-4" /></Button>
         <Button variant="secondary" size="icon-sm" aria-label={t('output.flZoomOut')} onClick={() => zoom(1 / 1.2)}><Minus className="size-4" /></Button>
-        <Button variant="secondary" size="icon-sm" aria-label={t('output.flReset')} onClick={reset}><Maximize2 className="size-4" /></Button>
+        <Button variant="secondary" size="icon-sm" aria-label={t('output.flReset')} onClick={fit}><Maximize2 className="size-4" /></Button>
       </div>
     </div>
   )
@@ -157,10 +168,10 @@ export function QuestGraphPage() {
         ) : (
           <>
             <div className="flex flex-wrap items-center gap-1.5">
-              <Badge>{t('output.qgKindGame')}</Badge>
-              <Badge tone="amber">{t('output.qgKindStory')}</Badge>
-              <Badge tone="success">{t('output.qgKindFavorite')}</Badge>
               <Badge tone="cyan">{t('output.qgThisQuest')}</Badge>
+              {LEGEND.filter(([kind]) => dag.nodes.some((n) => n.id !== focus && n.source === kind)).map(([kind, tone]) => (
+                <Badge key={kind} tone={tone}>{t(KIND_KEY[kind])}</Badge>
+              ))}
             </div>
             <Graph dag={dag} focus={focus} onOpen={open} />
             <p className="text-[13px] text-dim">{t('output.qgHint')}</p>
