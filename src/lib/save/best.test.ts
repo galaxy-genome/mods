@@ -19,9 +19,9 @@ import { getPosition } from './position.ts'
 import {
   ARENA_MAX, CREDITS_BEST, RANK_FIELDS, ZENTARK, creditsAtBest, hullAtBest, materialsAtBest,
   rankAtBest, recordAtBest, setCreditsBest, setMaterialsBest, setRecordBest, setShipBest,
-  setSystemBest, shipAtBest, slotAtBest, systemAtBest,
+  setSystemBest, shipAtBest, slotAtBest, systemAtBest, FILLER,
 } from './best.ts'
-import { KARMA_MAX, REPUTATION_MAX, arena, karma } from './record.ts'
+import { REPUTATION_MAX, arena, karma } from './record.ts'
 
 const repo = resolve(import.meta.dirname, '../../../..')
 const { modules, ships, upgrades } = JSON.parse(readFileSync(join(repo, 'editor/public/data/save-data.json'), 'utf8')) as
@@ -58,10 +58,11 @@ for (const file of ['Save1.SOL', 'Save2.SOL', 'Save3.SOL']) {
   assert.equal(getCredits(sv), CREDITS_BEST)
   assert.ok(materialsAtBest(materialCounts(sv)), `${file}: craft materials`)
   assert.ok(materialCounts(sv).every((c) => c === MATERIAL_MAX))
-  assert.ok(recordAtBest(sv), `${file}: reputation, karma, the arena and the three ranks`)
+  assert.ok(recordAtBest(sv), `${file}: reputation, the arena and the three ranks`)
   for (const f of RANK_FIELDS) assert.ok(rankAtBest(sv, f), `${file}: rank field ${f}`)
-  assert.equal(karma(sv), KARMA_MAX)
   assert.equal(arena(sv), ARENA_MAX)
+  // Karma is not part of the record's best, and the wand leaves it where the reader put it.
+  assert.equal(karma(sv), karma(decode(new Uint8Array(readFileSync(join(repo, 'saves', file))))), `${file}: karma`)
   assert.ok(systemAtBest(sv, at), `${file}: the system the save sits in`)
   assert.ok(shipAtBest(sv, ship, modules, keys, names), `${file}: every slot of the ship`)
 
@@ -138,10 +139,8 @@ for (const file of ['Save1.SOL', 'Save2.SOL', 'Save3.SOL']) {
 // ------------------------------------------------------- the ship's best may move a module
 
 // The wand's reach is the thing it sits beside: a slot's wand improves that slot, the ship's
-// wand may move a module to a slot that takes more of it.
+// wand may move a module to a slot that takes more of it. Nothing but filler moves down.
 {
-  const ceiling = (category: string) =>
-    modules.reduce((n, m) => (m.category === category ? Math.max(n, m.mClass) : n), 0)
   const count = (fit: (ModuleRec | null)[]) => {
     const out = new Map<string, number>()
     for (const m of fit) if (m) out.set(m.category, (out.get(m.category) ?? 0) + 1)
@@ -151,11 +150,9 @@ for (const file of ['Save1.SOL', 'Save2.SOL', 'Save3.SOL']) {
   let moved = 0
   for (const ship of ships) {
     const sv = decode(new Uint8Array(readFileSync(join(repo, 'saves/Save1.SOL'))))
-    const item = ships.find((s) => s.key === 'Ion')!
     addToHangar(sv, ship as never, modules)
     useShip(sv, (sv.objs[3] as AmfVector).items.length - 1)
     assert.equal(shipKey(sv), ship.key, `${ship.key}: in use`)
-    void item
 
     const slots = buildSlots(ship, keys)
     const before = fittedModules(sv, names)
@@ -181,22 +178,21 @@ for (const file of ['Save1.SOL', 'Save2.SOL', 'Save3.SOL']) {
       assert.ok(m.mClass <= s.sizeMax, `${ship.key}: ${m.name} is too big for slot ${s.index}`)
     }
 
-    // Nothing is left in a smaller slot while a bigger one holds a category that can use it less.
-    for (const a of shuffled) {
-      const mine = after[a.index]
-      if (!mine || mine.mClass >= ceiling(mine.category)) continue
-      for (const b of shuffled) {
-        const theirs = after[b.index]
-        if (!theirs || b.sizeMax <= a.sizeMax) continue
-        assert.ok(ceiling(theirs.category) >= ceiling(mine.category),
-          `${ship.key}: ${mine.name} sits in slot ${a.index} (max ${a.sizeMax}) while `
-          + `${theirs.name} holds slot ${b.index} (max ${b.sizeMax})`)
-      }
+    // Nothing but filler ends in a slot smaller than the one it started in.
+    for (const category of new Set(was.keys())) {
+      if (FILLER.includes(category)) continue
+      const sizes = (fit: (ModuleRec | null)[]) => shuffled.filter((s) => fit[s.index]?.category === category)
+        .map((s) => s.sizeMax).sort((a, b) => a - b)
+      const from = sizes(before), to = sizes(after)
+      assert.equal(from.length, to.length, `${ship.key}: ${category} lost a module`)
+      from.forEach((size, i) => assert.ok(to[i] >= size,
+        `${ship.key}: ${category} went from a class ${size} slot to a class ${to[i]} one`))
     }
 
     if (shuffled.some((s) => before[s.index]?.key !== after[s.index]?.key)) moved++
   }
-  console.log(`${ships.length} ships take a ship-level best; ${moved} of them move a module`)
+  console.log(`${ships.length} ships take a ship-level best; ${moved} of them move a module, `
+    + `and only ${FILLER.join(', ')} may be pushed down`)
 }
 
 // The case that showed it: a Nemesis whose shields were stuck at 4A in its class 4 slot.

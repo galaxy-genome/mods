@@ -6,8 +6,8 @@
  */
 import { AmfObject, getCredits, setCredits, type Save } from './codec'
 import {
-  ARENA_LEVELS, BATTLE, DISCOVERY, ELITE, KARMA_MAX, REPUTATION_MAX, TRADE, arena, karma,
-  progressOf, reputationOf, setKarma, setArena, setProgress, setReputation, stationRows,
+  ARENA_LEVELS, BATTLE, DISCOVERY, ELITE, REPUTATION_MAX, TRADE, arena, progressOf, reputationOf,
+  setArena, setProgress, setReputation, stationRows,
 } from './record'
 import { MATERIAL_COUNT, MATERIAL_MAX, applyBest, atBest, setMaterial, setPriorities } from './engineer'
 import {
@@ -47,11 +47,13 @@ export const RANK_FIELDS = [TRADE, BATTLE, DISCOVERY]
 export const rankAtBest = (sv: Save, field: number) => progressOf(sv, field) >= eliteBest(field)
 export const setRankBest = (sv: Save, field: number) => setProgress(sv, field, eliteBest(field))
 
-export const karmaAtBest = (sv: Save) => karma(sv) >= KARMA_MAX
+/** Karma has no best. A pirate station refuses an Idolized or Liked pilot and an anarchy system
+ * refuses an Idolized one, while high security refuses a Despised one
+ * (`ui/screens/MissionsScreen.as:899-909`, bands at `system/Ranks/MoralityRanks.as:8-16`), so
+ * each end of the ladder is better at something and the choice is the reader's. */
 export const arenaAtBest = (sv: Save) => arena(sv) >= ARENA_MAX
 export const reputationAtBest = (row: AmfObject) => reputationOf(row) >= REPUTATION_MAX
 
-export const setKarmaBest = (sv: Save) => setKarma(sv, KARMA_MAX)
 export const setArenaBest = (sv: Save) => setArena(sv, ARENA_MAX)
 export const setReputationBest = (row: AmfObject) => setReputation(row, REPUTATION_MAX)
 
@@ -59,11 +61,10 @@ export const setReputationBest = (row: AmfObject) => setReputation(row, REPUTATI
 export const ARENA_MAX = ARENA_LEVELS - 1
 
 export const recordAtBest = (sv: Save) =>
-  karmaAtBest(sv) && arenaAtBest(sv) && stationRows(sv).every(reputationAtBest)
+  arenaAtBest(sv) && stationRows(sv).every(reputationAtBest)
   && RANK_FIELDS.every((f) => rankAtBest(sv, f))
 
 export function setRecordBest(sv: Save) {
-  setKarmaBest(sv)
   setArenaBest(sv)
   stationRows(sv).forEach(setReputationBest)
   RANK_FIELDS.forEach((f) => setRankBest(sv, f))
@@ -126,6 +127,11 @@ export function shipAtBest(sv: Save, ship: ShipRec, mods: ModuleRec[], keys: Map
 const ceiling = (mods: ModuleRec[], category: string) =>
   mods.reduce((n, m) => (m.category === category ? Math.max(n, m.mClass) : n), 0)
 
+/** Filler: the categories whose job is to occupy whatever room is left rather than to hold a
+ * particular slot, so they are the ones that yield when another module can use their slot. Every
+ * other module keeps its slot or moves up. */
+export const FILLER = ['CargoRack', 'HullReinforcement', 'ShieldsBooster']
+
 /** The slots a ship-level best reassigns: everything a category can move between. A main slot
  * takes one category and a weapon slot has its own settled best, the Zentarks cannon, so neither
  * is part of the shuffle. */
@@ -137,11 +143,10 @@ const movableSlots = (slots: Slot[]) =>
  * shields sits in one slot only, so the ship carries the best shields its biggest slot takes
  * rather than the best the slot it happened to be in allowed.
  *
- * Only the categories the ship already carries are placed, each in the smallest slot that lets
- * it reach as far as it can, singletons first and the categories with the most room to grow
- * after them, so a category that cannot grow leaves the big slots to one that can. An empty slot
- * stays empty, because cargo, shields and hull reinforcement are each better at something and
- * that choice is the reader's.
+ * A module never lands in a slot smaller than the one it came from, so the wand only improves;
+ * the exception is filler, which yields its slot to a module that can use it. Only the categories
+ * the ship already carries are placed, so an empty slot stays empty: cargo, shields and hull
+ * reinforcement are each better at something and that choice is the reader's.
  *
  * The slots being reassigned are cleared first: `canPlace` refuses a second singleton
  * (`ui/screens/BuySellModuleScreen.as:510-520`), which is what stops a module moving while its
@@ -161,34 +166,43 @@ export function setShipBest(sv: Save, ship: ShipRec, mods: ModuleRec[], keys: Ma
   for (const group of [['External'], ['Optional', 'Military']] as const) {
     const fitted = fittedModules(sv, names)
     const here = movableSlots(slots).filter((s) => group.includes(s.restriction as never) && fitted[s.index])
-    const held = here.map((s) => fitted[s.index]!)
+    const held = here.map((slot) => ({ slot, mod: fitted[slot.index]! }))
     const vector = moduleVector(sv)
     for (const slot of here) vector.items[slot.index] = null
 
-    // The category with the most room to grow takes the biggest slot, so nothing sits below its
-    // ceiling while a category that can use less holds a larger slot. A singleton goes first
-    // among equals, because it sits in one slot only and has one chance at that slot.
-    const order = [...held].sort((a, b) =>
-      ceiling(mods, b.category) - ceiling(mods, a.category)
-      || Number(b.singleton) - Number(a.singleton)
-      || b.mClass - a.mClass)
+    // The module that held the biggest slot picks first, so nothing is pushed down by a module
+    // that had less to begin with; a singleton goes first among equals, having one slot only.
+    const real = held.filter((h) => !FILLER.includes(h.mod.category))
+      .sort((a, b) => b.slot.sizeMax - a.slot.sizeMax
+        || Number(b.mod.singleton) - Number(a.mod.singleton)
+        || ceiling(mods, b.mod.category) - ceiling(mods, a.mod.category))
+    const filler = held.filter((h) => FILLER.includes(h.mod.category))
+      .sort((a, b) => b.slot.sizeMax - a.slot.sizeMax)
+
     const free = [...here].sort((a, b) => b.sizeMax - a.sizeMax)
     const after: (ModuleRec | null)[] = fittedModules(sv, names)
 
-    for (const mod of order) {
-      // The biggest slot left that this category can use, which is the slot it gains most from.
+    const place = (mod: ModuleRec, floor: number) => {
+      // The biggest slot left this category can use, and never one smaller than `floor`.
       const at = free.findIndex((slot) => {
+        if (slot.sizeMax < floor) return false
         const best = bestModule(mods, mod.category, slot.sizeMax)
         return !!best && canPlace(best, slot, ship, after, keys)
       })
-      if (at < 0) continue
+      if (at < 0) return false
       const [slot] = free.splice(at, 1)
       const best = bestModule(mods, mod.category, slot.sizeMax)!
       install(sv, slot, best)
       after[slot.index] = best
       const m = vector.items[slot.index]
       if (m instanceof AmfObject) applyBest(m)
+      return true
     }
+
+    // A module that is not filler keeps at least the slot it came from; filler takes what is
+    // left, and takes a smaller slot where a module that can use more has claimed its own.
+    for (const { mod, slot } of real) if (!place(mod, slot.sizeMax)) place(mod, 0)
+    for (const { mod } of filler) place(mod, 0)
   }
 
   // The game switches modules off by priority when the draw passes what the plant makes, so the
