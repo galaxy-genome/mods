@@ -218,6 +218,52 @@ const f64 = (n: number) => { const b = new DataView(new ArrayBuffer(8)); b.setFl
 const utf = (s: string) => { const b = new TextEncoder().encode(s); const o = new Uint8Array(b.length + 2); o.set(u16(b.length)); o.set(b, 2); return o }
 
 export const shipData = (sv: Save) => sv.objs[SHIP] as AmfObject
+
+/** A ship's own module vector, whether it is the ship being flown or one in the hangar: both are
+ * `ShipData`, and `Modules` is its third field (`system/Save/ShipData.as:12-18`). */
+export const modulesOf = (entry: AmfObject) => entry.raw[2][1] as AmfVector
+
+/** The module fitted in each slot of one ship, by the table record. */
+export const fittedIn = (vector: AmfVector, names: Map<string, ModuleRec>): (ModuleRec | null)[] =>
+  vector.items.map((m) => (m instanceof AmfObject ? names.get(`${extUtf(m, 0)}.${extUtf(m, 1)}`) ?? null : null))
+
+/** Installs `mod` in `slot` of one ship, and hands back the module it displaced. */
+export function installIn(vector: AmfVector, slot: Slot, mod: ModuleRec): AmfValue | null {
+  const old = vector.items[slot.index] ?? null
+  vector.items[slot.index] = makeModule(mod)
+  return old instanceof AmfObject ? old : null
+}
+
+/** A copy of one ship, deep enough that fitting the copy leaves the original alone. */
+export function cloneShipData(entry: AmfObject): AmfObject {
+  const copy = new AmfObject(entry.cls, entry.dynamic, entry.ext)
+  const vector = modulesOf(entry)
+  copy.raw = entry.raw.map(([tag, v], i) => (i === 2
+    ? [tag, new AmfVector(vector.kind, vector.items.map(cloneModule), vector.fixed, vector.cls)]
+    : [tag, v])) as ExtField[]
+  return copy
+}
+
+const cloneModule = (m: AmfValue): AmfValue => {
+  if (!(m instanceof AmfObject)) return m
+  const copy = new AmfObject(m.cls, m.dynamic, m.ext)
+  copy.raw = m.raw.map(([tag, v]) => [tag, v]) as ExtField[]
+  return copy
+}
+
+/** Whether two ships carry the same modules, field for field. */
+export function sameModules(a: AmfVector, b: AmfVector): boolean {
+  if (a.items.length !== b.items.length) return false
+  return a.items.every((x, i) => {
+    const y = b.items[i]
+    if (!(x instanceof AmfObject) || !(y instanceof AmfObject)) return (x instanceof AmfObject) === (y instanceof AmfObject)
+    return x.raw.every(([, v], f) => {
+      const w = y.raw[f][1]
+      if (v instanceof Uint8Array && w instanceof Uint8Array) return v.length === w.length && v.every((n, k) => n === w[k])
+      return v === w
+    })
+  })
+}
 /** `ShipData.Modules` (`system/Save/ShipData.as:16`), one entry per slot, null where empty. */
 export const moduleVector = (sv: Save) => shipData(sv).raw[2][1] as AmfVector
 export const shipKey = (sv: Save) => extUtf(shipData(sv), 0)

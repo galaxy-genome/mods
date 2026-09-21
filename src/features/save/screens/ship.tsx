@@ -14,10 +14,12 @@ import {
 } from '../../../lib/save/rules'
 import { ModulePanel, type ModuleCard } from '../panels'
 import {
-  saveSpecs, specCells, type ModuleStats, type ShipSpecs, type Upgrade,
+  boostsOf, saveSpecs, shedOrder, specCells, type ModuleStats, type ShipSpecs, type Upgrade,
 } from '../../../lib/save/specs'
 import { Engineer } from '../engineer'
-import { engineerLabel, makePriorities, makeUpgrades, moduleBits, type ModuleUpgrade } from '../../../lib/save/engineer'
+import {
+  engineerLabel, makePriorities, makeUpgrades, moduleBits, priorityFor, type ModuleUpgrade,
+} from '../../../lib/save/engineer'
 import { Wand } from '../wand'
 import { repairHull, setSlotBest, slotAtBest } from '../../../lib/save/best'
 import type { ScreenProps } from './types'
@@ -55,6 +57,7 @@ function Specs({ sv, ship, fitted, upgrades }: {
   const specs = saveSpecs(sv, ship, fitted, upgrades)
   const cells = specCells(specs)
   const over = specs.power > specs.powerMax
+  const shed = over ? shedOrder(fitted, boostsOf(sv, fitted, upgrades), priorityFor) : []
   return (
     <>
       <div className="shspecs">
@@ -66,7 +69,7 @@ function Specs({ sv, ship, fitted, upgrades }: {
           module switched off reads as broken (`system/modules/Module.as:225-232`). */}
       <div className={`shpower${over ? ' shover' : ''}`}>
         POWER {Math.round(specs.power * 100) / 100} / {Math.round(specs.powerMax * 100) / 100} MW
-        {over && ' · the game will switch modules off, by priority, until this fits'}
+        {over && ` · the game switches off ${shed.map((m) => m.name).join(', ')} until this fits`}
       </div>
     </>
   )

@@ -13,10 +13,10 @@ import { askPersist, drop, keep, kept } from '../../lib/save/kept'
 import en from '../../i18n/en/start'
 import { Wand } from './wand'
 import {
-  creditsAtBest, materialsAtBest, recordAtBest, setCreditsBest, setMaterialsBest, setRecordBest,
-  setShipBest, setSystemBest, shipAtBest, systemAtBest,
+  creditsAtBest, fitShip, materialsAtBest, recordAtBest, setCreditsBest, setMaterialsBest,
+  setRecordBest, setSystemBest, shipAtBest, systemAtBest, tablesOf,
 } from '../../lib/save/best'
-import { byKey, bySaveName, shipKey, type ModuleRec, type ShipRec } from '../../lib/save/rules'
+import { shipData, shipKey, type ModuleRec, type ShipRec } from '../../lib/save/rules'
 import { makePriorities, makeUpgrades, materialCounts, type ModuleUpgrade } from '../../lib/save/engineer'
 import { getPosition } from '../../lib/save/position'
 import './overview.css'
@@ -69,10 +69,10 @@ function cardWand(key: string, sv: Save, data: SaveData | null): { atBest: boole
   if (key === 'ship' && data) {
     const ship = data.ships.find((s) => s.key === shipKey(sv))
     if (!ship) return null
-    const keys = byKey(data.modules), names = bySaveName(data.modules)
+    const tables = tablesOf(data.modules)
     return {
-      atBest: shipAtBest(sv, ship, data.modules, keys, names),
-      set: () => setShipBest(sv, ship, data.modules, keys, names),
+      atBest: shipAtBest(shipData(sv), ship, tables),
+      set: () => fitShip(shipData(sv), ship, tables),
     }
   }
   return null

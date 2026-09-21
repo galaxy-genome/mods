@@ -61,6 +61,28 @@ export function usingPower(mods: (ModuleStats | null)[], boosts: (Record<string,
   return mods.reduce((n, m, i) => n + (m?.switchable ? m.power * (1 + at(boosts[i], 'power')) : 0), 0)
 }
 
+/** The walk the game does when the draw passes what the plant makes
+ * (`system/modules/Modules.as:327-346`): from priority 3 down to 1 it switches off the first
+ * module of that priority it finds, and tries again, until the draw fits. A module it switches
+ * off reads as broken, and a shields module switched off reads as no shields at all
+ * (`system/modules/Module.as:225-232`). The power plant is never switched off.
+ */
+export function shedOrder(mods: (ModuleStats | null)[], boosts: (Record<string, number> | null)[],
+  priority: (category: string) => number): ModuleStats[] {
+  const made = availablePower(mods, boosts)
+  const on = mods.map((m) => !!m?.switchable)
+  const draw = () => mods.reduce((n, m, i) => n + (on[i] && m ? m.power * (1 + at(boosts[i], 'power')) : 0), 0)
+  const out: ModuleStats[] = []
+  const plant = MAIN_CATEGORIES.indexOf('PowerPlant')
+  for (let level = 3; level >= 1 && draw() > made;) {
+    const i = mods.findIndex((m, k) => on[k] && m && k !== plant && priority(m.subtype) === level)
+    if (i < 0) { level--; continue }
+    on[i] = false
+    out.push(mods[i]!)
+  }
+  return out
+}
+
 /** `MathE.erf`, with the game's own constants (0.25482952, not the textbook 0.254829592). */
 function erf(x: number): number {
   const sign = x < 0 ? -1 : 1
@@ -188,16 +210,21 @@ function tankFuel(sv: Save): number | null {
 const cargoTotal = (sv: Save) =>
   ((sv.objs[CARGO] as AmfObject).raw[2][1] as AmfVector).items.reduce((n: number, c) => n + Number(c), 0)
 
-/** The specs of the ship the save is flying, with each module's engineer level applied. */
-export function saveSpecs(sv: Save, ship: ShipSpecs, fitted: (ModuleStats | null)[], upgrades: Upgrade[]): Specs {
+/** Each fitted module's engineer boost, read from the save. */
+export function boostsOf(sv: Save, fitted: (ModuleStats | null)[], upgrades: Upgrade[]) {
   const items = moduleVector(sv).items
-  const boosts = fitted.map((mod, i) => {
+  return fitted.map((mod, i) => {
     const m = items[i]
     if (!(m instanceof AmfObject)) return null
     const b = m.raw[12][1] as Uint8Array
     const v = new DataView(b.buffer, b.byteOffset, b.byteLength).getUint32(0)
     return boostOf(mod, levelOf(v), upgradeTypeOf(v), upgrades)
   })
+}
+
+/** The specs of the ship the save is flying, with each module's engineer level applied. */
+export function saveSpecs(sv: Save, ship: ShipSpecs, fitted: (ModuleStats | null)[], upgrades: Upgrade[]): Specs {
+  const boosts = boostsOf(sv, fitted, upgrades)
   return computeSpecs({ ship, mods: fitted, boosts, cargo: cargoTotal(sv), fuel: tankFuel(sv) })
 }
 

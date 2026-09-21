@@ -4,18 +4,19 @@
  * there. Nothing here trades one advantage against another, which is why the hull, the cargo and
  * shield choices and the ship itself have no entry.
  */
-import { AmfObject, getCredits, setCredits, type Save } from './codec'
+import { AmfObject, AmfVector, getCredits, setCredits, type Save } from './codec'
 import {
   ARENA_LEVELS, BATTLE, DISCOVERY, ELITE, REPUTATION_MAX, TRADE, arena, progressOf, reputationOf,
   setArena, setProgress, setReputation, stationRows,
 } from './record'
 import { MATERIAL_COUNT, MATERIAL_MAX, applyBest, atBest, setMaterial, setPriorities } from './engineer'
 import {
-  bestModule, buildSlots, canPlace, fittedModules, install, moduleVector,
+  bestModule, buildSlots, byKey, bySaveName, canPlace, cloneShipData, fittedIn, install,
+  installIn, moduleVector, modulesOf, sameModules,
   type ModuleRec, type ShipRec, type Slot,
 } from './rules'
 import { markExplored, visitedCells, cellOf, type Position } from './position'
-import { setHullFull } from './ships'
+import { defaultLoadout, setHullFull, type ShipItem } from './ships'
 import { hullMax } from './specs'
 
 /** Below the `uint` ceiling on purpose: a balance near 2^31 goes negative as soon as the player
@@ -114,14 +115,6 @@ export function setSlotBest(sv: Save, slot: Slot, ship: ShipRec, fitted: (Module
   return true
 }
 
-/** Every slot of the ship in use at its best. */
-export function shipAtBest(sv: Save, ship: ShipRec, mods: ModuleRec[], keys: Map<string, ModuleRec>,
-  names: Map<string, ModuleRec>): boolean {
-  const fitted = fittedModules(sv, names)
-  return hullAtBest(sv, ship, fitted)
-    && buildSlots(ship, keys).every((slot) => slotAtBest(sv, slot, ship, fitted, mods, keys))
-}
-
 /** The largest class this category reaches anywhere in the table, which is how much room a
  * module of it can use. */
 const ceiling = (mods: ModuleRec[], category: string) =>
@@ -132,42 +125,49 @@ const ceiling = (mods: ModuleRec[], category: string) =>
  * other module keeps its slot or moves up. */
 export const FILLER = ['CargoRack', 'HullReinforcement', 'ShieldsBooster']
 
-/** The slots a ship-level best reassigns: everything a category can move between. A main slot
- * takes one category and a weapon slot has its own settled best, the Zentarks cannon, so neither
- * is part of the shuffle. */
-const movableSlots = (slots: Slot[]) =>
-  slots.filter((s) => s.restriction !== 'Main' && s.restriction !== 'Weapon')
+/** The tables a fit reads, gathered once so a caller passes one thing. */
+export interface Tables {
+  mods: ModuleRec[]
+  keys: Map<string, ModuleRec>
+  names: Map<string, ModuleRec>
+}
+
+export const tablesOf = (mods: ModuleRec[]): Tables => ({ mods, keys: byKey(mods), names: bySaveName(mods) })
 
 /**
- * The whole ship at its best. Unlike a slot's own wand this may move a module: a singleton like
- * shields sits in one slot only, so the ship carries the best shields its biggest slot takes
- * rather than the best the slot it happened to be in allowed.
+ * One ship, made the best it can be: the ship being flown or an entry in the hangar, since both
+ * are `ShipData` and the fit writes into that entry's own module vector.
  *
- * A module never lands in a slot smaller than the one it came from, so the wand only improves;
- * the exception is filler, which yields its slot to a module that can use it. Only the categories
- * the ship already carries are placed, so an empty slot stays empty: cargo, shields and hull
- * reinforcement are each better at something and that choice is the reader's.
+ * Each category the ship carries moves to the largest slot that can use it, every empty slot is
+ * filled with the ship's own default for it or with filler, each module becomes the best of its
+ * category the slot allows, the engineer's ladder is applied wherever an engineer works, each
+ * module takes its category's priority, and the hull, the integrity and the shields are made
+ * whole. Nothing but filler ever moves to a smaller slot.
  *
- * The slots being reassigned are cleared first: `canPlace` refuses a second singleton
- * (`ui/screens/BuySellModuleScreen.as:510-520`), which is what stops a module moving while its
- * own copy still stands in the old slot.
+ * Running it twice changes nothing the second time, which is what makes the wand disappear.
  */
-export function setShipBest(sv: Save, ship: ShipRec, mods: ModuleRec[], keys: Map<string, ModuleRec>,
-  names: Map<string, ModuleRec>) {
+export function fitShip(entry: AmfObject, ship: ShipRec, t: Tables) {
+  const { mods, keys, names } = t
   const slots = buildSlots(ship, keys)
+  const vector = modulesOf(entry)
+
+  // A main slot takes one category and a weapon slot has its own settled best, the Zentarks
+  // cannon, so neither is part of the shuffle.
   for (const slot of slots) {
-    if (slot.restriction === 'Main' || slot.restriction === 'Weapon') {
-      setSlotBest(sv, slot, ship, fittedModules(sv, names), mods, keys)
-    }
+    if (slot.restriction !== 'Main' && slot.restriction !== 'Weapon') continue
+    const best = slotBest(slot, ship, fittedIn(vector, names), mods, keys)
+    if (!best) continue
+    if (fittedIn(vector, names)[slot.index]?.key !== best.key) installIn(vector, slot, best)
+    const m = vector.items[slot.index]
+    if (m instanceof AmfObject) applyBest(m)
   }
 
   // The slots a category can move between only reach the slots of their own kind: an external
   // module has nowhere else to go, and a military slot takes less than an optional one.
   for (const group of [['External'], ['Optional', 'Military']] as const) {
-    const fitted = fittedModules(sv, names)
-    const here = movableSlots(slots).filter((s) => group.includes(s.restriction as never) && fitted[s.index])
-    const held = here.map((slot) => ({ slot, mod: fitted[slot.index]! }))
-    const vector = moduleVector(sv)
+    const fitted = fittedIn(vector, names)
+    const here = slots.filter((s) => group.includes(s.restriction as never))
+    const held = here.filter((s) => fitted[s.index]).map((slot) => ({ slot, mod: fitted[slot.index]! }))
     for (const slot of here) vector.items[slot.index] = null
 
     // The module that held the biggest slot picks first, so nothing is pushed down by a module
@@ -180,35 +180,95 @@ export function setShipBest(sv: Save, ship: ShipRec, mods: ModuleRec[], keys: Ma
       .sort((a, b) => b.slot.sizeMax - a.slot.sizeMax)
 
     const free = [...here].sort((a, b) => b.sizeMax - a.sizeMax)
-    const after: (ModuleRec | null)[] = fittedModules(sv, names)
+    const after: (ModuleRec | null)[] = fittedIn(vector, names)
 
-    const place = (mod: ModuleRec, floor: number) => {
-      // The biggest slot left this category can use, and never one smaller than `floor`.
-      const at = free.findIndex((slot) => {
-        if (slot.sizeMax < floor) return false
-        const best = bestModule(mods, mod.category, slot.sizeMax)
-        return !!best && canPlace(best, slot, ship, after, keys)
-      })
-      if (at < 0) return false
-      const [slot] = free.splice(at, 1)
-      const best = bestModule(mods, mod.category, slot.sizeMax)!
-      install(sv, slot, best)
+    const put = (category: string, slot: Slot) => {
+      const best = bestModule(mods, category, slot.sizeMax)
+      if (!best || !canPlace(best, slot, ship, after, keys)) return false
+      free.splice(free.indexOf(slot), 1)
+      installIn(vector, slot, best)
       after[slot.index] = best
       const m = vector.items[slot.index]
       if (m instanceof AmfObject) applyBest(m)
       return true
     }
 
+    /** The biggest slot left this category can use, never one smaller than `floor`. */
+    const place = (category: string, floor: number) => {
+      const slot = free.find((s) => s.sizeMax >= floor && put(category, s))
+      return !!slot
+    }
+
     // A module that is not filler keeps at least the slot it came from; filler takes what is
     // left, and takes a smaller slot where a module that can use more has claimed its own.
-    for (const { mod, slot } of real) if (!place(mod, slot.sizeMax)) place(mod, 0)
-    for (const { mod } of filler) place(mod, 0)
+    for (const { mod, slot } of real) if (!place(mod.category, slot.sizeMax)) place(mod.category, 0)
+    for (const { mod } of filler) place(mod.category, 0)
+
+    // An empty slot takes the ship's own default for it (`objects/Ships/ShipType.as`), and
+    // filler where the ship names none: a slot with nothing in it is a slot doing no work.
+    const defaults = defaultLoadout(ship as ShipItem, slots, mods)
+    for (const slot of free.slice()) {
+      const own = defaults[slot.index]?.category
+      if (own && put(own, slot)) continue
+      FILLER.some((category) => put(category, slot))
+    }
   }
+
+  // Two slots of the same kind and size are interchangeable, so the modules in them are put in
+  // one settled order. Without it a fit could swap them for another and never look finished.
+  normalise(vector, slots, names)
 
   // The game switches modules off by priority when the draw passes what the plant makes, so the
   // ship leaves with the priorities the game itself would give it.
-  setPriorities(moduleVector(sv).items)
-  repairHull(sv, ship, fittedModules(sv, names))
+  setPriorities(vector.items)
+  repairModules(vector, names)
+  const hull = vector.items[0]
+  if (hull instanceof AmfObject) setHullFull(hull, ship, fittedIn(vector, names))
+}
+
+/** Slots of one kind and size hold their modules in name order, which is what makes a fit land
+ * in the same place every time it is run. */
+function normalise(vector: AmfVector, slots: Slot[], names: Map<string, ModuleRec>) {
+  const buckets = new Map<string, Slot[]>()
+  for (const slot of slots) {
+    if (slot.restriction === 'Main') continue
+    const key = `${slot.restriction}.${slot.sizeMax}`
+    buckets.set(key, [...(buckets.get(key) ?? []), slot])
+  }
+  for (const group of buckets.values()) {
+    if (group.length < 2) continue
+    const fitted = fittedIn(vector, names)
+    const held = group.map((s) => vector.items[s.index])
+    const order = group.map((s, i) => ({ at: i, key: fitted[s.index]?.key ?? '' }))
+      .sort((a, b) => a.key.localeCompare(b.key))
+    order.forEach(({ at }, i) => { vector.items[group[i].index] = held[at] })
+  }
+}
+
+/** Every module whole: its own full integrity, its shields charged and not broken
+ * (`system/modules/Module.as:192-193`, `:30-32`). */
+export function repairModules(vector: AmfVector, names: Map<string, ModuleRec>) {
+  const fitted = fittedIn(vector, names)
+  vector.items.forEach((m: unknown, i: number) => {
+    if (!(m instanceof AmfObject) || i === 0) return
+    const mod = fitted[i]
+    if (mod?.integrity !== undefined) m.raw[2] = ['D', double(mod.integrity)]
+    m.raw[8] = ['D', double(1)]
+    m.raw[9] = ['B', new Uint8Array([0])]
+  })
+}
+
+const double = (n: number) => {
+  const d = new DataView(new ArrayBuffer(8))
+  d.setFloat64(0, n)
+  return new Uint8Array(d.buffer)
+}
+
+/** A ship already at its best, which is a ship a fit would leave alone. */
+export function shipAtBest(entry: AmfObject, ship: ShipRec, t: Tables): boolean {
+  const copy = cloneShipData(entry)
+  fitShip(copy, ship, t)
+  return sameModules(modulesOf(entry), modulesOf(copy))
 }
 
 /** The hull module's integrity is the ship's hull points (`objects/Ships/ShipInfo.as:306`,

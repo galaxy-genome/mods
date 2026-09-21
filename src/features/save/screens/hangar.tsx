@@ -14,18 +14,26 @@ import {
   shopShips, useShip, type ShipItem,
 } from '../../../lib/save/ships'
 import { OverviewPanel, type ShipOverview } from '../panels'
+import { Wand } from '../wand'
+import { fitShip, shipAtBest, tablesOf } from '../../../lib/save/best'
+import { makePriorities, makeUpgrades, type ModuleUpgrade } from '../../../lib/save/engineer'
 import type { ScreenProps } from './types'
 import './hangar.css'
 
 type ShopShip = ShipItem & { overview: ShipOverview }
-interface Data { modules: ModuleRec[]; ships: ShopShip[] }
+interface Data {
+  modules: ModuleRec[]
+  ships: ShopShip[]
+  upgrades: ModuleUpgrade[]
+  priorities: Record<string, number>
+}
 
 function useSaveData() {
   const [data, setData] = React.useState<Data | null>(null)
   React.useEffect(() => {
     void fetch(`${import.meta.env.BASE_URL}data/save-data.json`)
       .then((r) => r.json())
-      .then((d: Data) => setData(d))
+      .then((d: Data) => { makeUpgrades(d.upgrades); makePriorities(d.priorities); setData(d) })
       .catch(() => setData(null))
   }, [])
   return data
@@ -38,15 +46,16 @@ const spec = (ship: ShopShip, name: string) => String(ship.overview.specs.find((
 
 /** One card of the shop grid: artwork, the name and purpose, the cost, then Hull, Speed and
  * Steering (`shipyard-new-main.png`). */
-function ShipCard({ ship, cost, children, onOpen }: {
-  ship: ShopShip; cost: string; children?: React.ReactNode; onOpen?: () => void
+function ShipCard({ ship, cost, wand, children, onOpen }: {
+  ship: ShopShip; cost: string; wand?: React.ReactNode
+  children?: React.ReactNode; onOpen?: () => void
 }) {
   const stats: [string, string][] = [['Hull', spec(ship, 'Hull')], ['Speed', spec(ship, 'Speed')], ['Steering', spec(ship, 'Steering')]]
   return (
     <div className="hgcard" role={onOpen ? 'button' : undefined} tabIndex={onOpen ? 0 : undefined} onClick={onOpen}>
       <img className="hgart" src={sprite(ship.overview.icon)} alt="" onError={hide} />
       <div className="hgcardtext">
-        <div className="hgname">{`${ship.overview.name} [${ship.overview.purpose}]`}</div>
+        <div className="hgname">{`${ship.overview.name} [${ship.overview.purpose}]`}{wand}</div>
         <div className="hgcost">{cost}</div>
         <div className="ovrow">{stats.map(([l]) => <div key={l} className="ovgold hglabel">{l}</div>)}</div>
         <div className="ovrow">{stats.map(([l, v]) => <div key={l} className="ovgold hgval">{v}</div>)}</div>
@@ -91,6 +100,7 @@ export default function Screen({ sv, redraw }: ScreenProps) {
 
   if (!data) return null
   const { modules, ships } = data
+  const tables = tablesOf(modules)
   const names = bySaveName(modules)
   const mine = currentShip(sv, ships) as ShopShip | null
   const owned = hangarShips(sv)
@@ -165,7 +175,17 @@ export default function Screen({ sv, redraw }: ScreenProps) {
           const worth = hangarValue(entry, ships, modules, names)
           if (!rec) return null
           return (
-            <ShipCard key={i} ship={rec} cost={`Cost: ${cr(worth)}`}>
+            <ShipCard
+              key={i} ship={rec} cost={`Cost: ${cr(worth)}`}
+              wand={(
+                // The wand fits a ship where it lies: a hangar entry carries its own modules.
+                <Wand
+                  atBest={shipAtBest(entry, rec, tables)}
+                  what={rec.overview.name}
+                  onSet={() => { fitShip(entry, rec, tables); finish(`${rec.overview.name} is at its best`) }}
+                />
+              )}
+            >
               <div className="hgstation">{extUtf(entry, 1) || fakeStation(sv)}</div>
               <div className="hgactions">
                 <button

@@ -5,14 +5,19 @@ import { readFileSync } from 'node:fs'
 import { join, resolve } from 'node:path'
 import { decode } from './codec.ts'
 import { bySaveName, fittedModules, shipKey } from './rules.ts'
-import { MAX_LEVEL } from './engineer.ts'
-import { boostOf, computeSpecs, saveSpecs, specCells, type ModuleStats, type ShipSpecs, type Upgrade } from './specs.ts'
+import { MAX_LEVEL, makePriorities, makeUpgrades, priorityFor } from './engineer.ts'
+import {
+  boostOf, computeSpecs, saveSpecs, shedOrder, specCells,
+  type ModuleStats, type ShipSpecs, type Upgrade,
+} from './specs.ts'
 
 const repo = resolve(import.meta.dirname, '../../../..')
 const { modules, ships, upgrades } = JSON.parse(readFileSync(join(repo, 'editor/public/data/save-data.json'), 'utf8')) as
   { modules: ModuleStats[]; ships: ShipSpecs[]; upgrades: Upgrade[] }
 const byKey = new Map(modules.map((m) => [m.key, m]))
 const names = bySaveName(modules)
+makeUpgrades(upgrades as never)
+makePriorities(JSON.parse(readFileSync(join(repo, 'editor/public/data/save-data.json'), 'utf8')).priorities)
 
 // ------------------------------------------------------- the Python oracle
 
@@ -120,6 +125,23 @@ for (const [file, draw, made] of [['nemesis-explorer.SOL', 42.26, 50.4], ['nemes
   // An 8A Power Plant is rated 36 MW and Power Generation at level 25 adds two fifths of it.
   assert.equal(fitted[1]!.stats.powerGen, 36)
   console.log(`${file} draws ${draw} MW of the ${made} MW its plant makes`)
+}
+
+// What the game would switch off when the draw is over: priority 3 first, then 2, then 1
+// (`system/modules/Modules.as:327-346`), and never the power plant.
+{
+  const sv = decode(new Uint8Array(readFileSync(join(repo, 'saves/fixtures/nemesis-explorer.SOL'))))
+  const fitted = fittedModules(sv, names) as (ModuleStats | null)[]
+  // The same fit with a plant the engineer never touched: 36 MW against a 42.26 MW draw.
+  const plain = fitted.map(() => null)
+  const shed = shedOrder(fitted, plain, priorityFor)
+  assert.ok(shed.length, 'something has to go')
+  assert.equal(priorityFor(shed[0].subtype), 3, `the first to go is ${shed[0].name}`)
+  const levels = shed.map((m) => priorityFor(m.subtype))
+  assert.deepEqual(levels, [...levels].sort((a, b) => b - a), `shed out of order: ${levels}`)
+  assert.ok(!shed.some((m) => m.category === 'PowerPlant'), 'the plant is never switched off')
+  assert.ok(!shed.some((m) => m.category === 'Shields'), 'and the shields go last of all')
+  console.log(`over budget, the game switches off ${shed.map((m) => `${m.name} (p${priorityFor(m.subtype)})`).join(', ')}`)
 }
 
 // A jump whose raw value passes 150 is 30, whatever it was (`ShipInfo.as:870-873`).
