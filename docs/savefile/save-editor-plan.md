@@ -356,10 +356,16 @@ module to a different slot: a singleton like shields goes to the largest slot
 that takes it, which is how a ship with a class 6 slot free ends up carrying
 6A shields rather than the 4A its old slot allowed.
 
-Ship level reassigns and upgrades the categories the ship already carries. It
-does not fill an empty slot with a category the ship does not have, because
-cargo, shields and hull reinforcement are each better at something and that
-choice is the reader's.
+**One wand per ship**, and it appears on the flown ship and on every ship in the
+hangar, so a hangar ship is fitted without flying it first. In one action it
+reassigns the categories the ship carries so each sits in the largest slot that
+can use it, fills every empty slot, upgrades each module to the best of its
+category that its slot allows, applies the engineer's ladder wherever an
+engineer works, stamps each module with its category's priority, and makes the
+hull, the integrity and the shields whole. An empty slot takes the ship's own
+default for it (`objects/Ships/ShipType.as`), and filler where the ship names
+none. Running it twice changes nothing the second time, which is how the wand
+knows it is finished and disappears.
 
 **A module never lands in a slot smaller than the one it came from**, so the
 ship-level wand only ever improves and never trades one figure for another. The
