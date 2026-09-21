@@ -70,6 +70,9 @@ export const upgradesReady = () => TABLE.filled
 /** What some engineer can do to this module category, in the table's order. */
 export const upgradesFor = (category: string) => TABLE.get().filter((u) => u.category === category)
 
+/** Every modification some engineer makes, as `makeUpgrades` filled it. */
+export const allUpgrades = () => TABLE.get()
+
 /** The game's name for one modification, or nothing where the module carries none. */
 export const upgradeName = (category: string, type: number) =>
   TABLE.get().find((u) => u.category === category && u.type === type)?.name ?? ''

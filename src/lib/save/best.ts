@@ -9,7 +9,7 @@ import {
   ARENA_LEVELS, BATTLE, DISCOVERY, ELITE, REPUTATION_MAX, TRADE, arena, progressOf, reputationOf,
   setArena, setProgress, setReputation, stationRows,
 } from './record'
-import { MATERIAL_COUNT, MATERIAL_MAX, applyBest, atBest, setMaterial, setPriorities } from './engineer'
+import { MATERIAL_COUNT, MATERIAL_MAX, allUpgrades, applyBest, atBest, levelOf, setMaterial, setPriorities, upgradeTypeOf } from './engineer'
 import {
   bestModule, buildSlots, byKey, bySaveName, canPlace, cloneShipData, fittedIn, install,
   installIn, moduleVector, modulesOf, sameModules,
@@ -17,7 +17,7 @@ import {
 } from './rules'
 import { markExplored, visitedCells, cellOf, type Position } from './position'
 import { defaultLoadout, setHullFull, type ShipItem } from './ships'
-import { hullMax } from './specs'
+import { boostOf, computeSpecs, hullMax } from './specs'
 
 /** Below the `uint` ceiling on purpose: a balance near 2^31 goes negative as soon as the player
  * earns more. */
@@ -222,8 +222,29 @@ export function fitShip(entry: AmfObject, ship: ShipRec, t: Tables) {
   // ship leaves with the priorities the game itself would give it.
   setPriorities(vector.items)
   repairModules(vector, names)
+  chargeShields(vector, ship, names)
   const hull = vector.items[0]
   if (hull instanceof AmfObject) setHullFull(hull, ship, fittedIn(vector, names))
+}
+
+/** The shield generator full. Its `shields` field is the charge in points, not a fraction
+ * (`objects/Ships/ShipInfo.as:557`), and the game fills it to `ShieldMax` when a generator is
+ * fitted (`system/modules/Modules.as:386`). Nothing clamps a larger charge outside a shield cell
+ * (`universe/Managers/ShipsManager.as:4675`), so it is set to exactly the capacity the specs
+ * give, with every module's engineer level applied. */
+function chargeShields(vector: AmfVector, ship: ShipRec, names: Map<string, ModuleRec>) {
+  const fitted = fittedIn(vector, names)
+  const index = fitted.findIndex((m) => m?.category === 'Shields')
+  const generator = vector.items[index]
+  if (index < 0 || !(generator instanceof AmfObject)) return
+  const boosts = vector.items.map((m: unknown, i: number) => {
+    if (!(m instanceof AmfObject)) return null
+    const b = m.raw[12][1] as Uint8Array
+    const v = new DataView(b.buffer, b.byteOffset, b.byteLength).getUint32(0)
+    return boostOf(fitted[i], levelOf(v), upgradeTypeOf(v), allUpgrades())
+  })
+  const { shields } = computeSpecs({ ship, mods: fitted, boosts, cargo: 0, fuel: null })
+  generator.raw[8] = ['D', double(shields)]
 }
 
 /** Slots of one kind and size hold their modules in name order, which is what makes a fit land

@@ -12,7 +12,7 @@ import {
   MATERIAL_MAX, MAX_LEVEL, applyBest, atBest, makePriorities, makeUpgrades, materialCounts,
   moduleBits, priorityFor, upgradesFor, type ModuleUpgrade,
 } from './engineer.ts'
-import { hullMax } from './specs.ts'
+import { hullMax, saveSpecs } from './specs.ts'
 import { addToHangar } from './ships.ts'
 import { AmfVector, HANGAR } from './codec.ts'
 import { extUtf } from './safety.ts'
@@ -68,6 +68,14 @@ for (const file of ['Save1.SOL', 'Save2.SOL', 'Save3.SOL']) {
   assert.equal(karma(sv), karma(decode(new Uint8Array(readFileSync(join(repo, 'saves', file))))), `${file}: karma`)
   assert.ok(systemAtBest(sv, at), `${file}: the system the save sits in`)
   assert.ok(shipAtBest(shipData(sv), ship, tables), `${file}: every slot of the ship`)
+  // The generator's `shields` is its charge in points (`ShipInfo.as:557`), so a fitted ship
+  // leaves with it full rather than at 1 point.
+  const fittedNow = fittedModules(sv, tables.names)
+  const generator = (shipData(sv).raw[2][1] as AmfVector).items[fittedNow.findIndex((m) => m?.category === 'Shields')]
+  const charge = new DataView((generator as AmfObject).raw[8][1].buffer, (generator as AmfObject).raw[8][1].byteOffset, 8).getFloat64(0)
+  const capacity = saveSpecs(sv, ship, fittedNow, upgrades).shields
+  assert.ok(capacity > 1, `${file}: the ship has shields to charge`)
+  assert.equal(charge, capacity, `${file}: shields charged to their capacity`)
 
   const fitted = fittedModules(sv, names)
   const slots = buildSlots(ship, keys)
