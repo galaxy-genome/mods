@@ -29,7 +29,7 @@ print(json.dumps([
  {"key": "cargo", "stats": [["Credits", n(struct.unpack('>I', o[2].raw[0][1])[0])], ["Cargo", n(sum(vec(o[2], 2)))], ["Goods", n(len(vec(o[2], 1)))]]},
  {"key": "materials", "stats": [["Materials", n(sum(mat))], ["Kinds", n(len([m for m in mat if m]))]]},
  {"key": "galaxy", "stats": [["Position", f"{f64(o[0], 0):.1f}, {f64(o[0], 1):.1f}"], ["Explored systems", n(len(vec(o[1], 0)) + len(vec(o[1], 1)))], ["System", utf(o[6], 46)]]},
- {"key": "quests", "stats": [["Quests", n(len(vec(o[8], 1)))], ["Active", n(len(vec(o[8], 2)))], ["Main job", n(i32(o[5], 5))]]},
+ {"key": "quests", "stats": [["Quests", n(len(vec(o[8], 1)))], ["Active", n(len([q for q in vec(o[8], 2) if q != 0xffffffff]))], ["Main job", n(i32(o[5], 5))]]},
  {"key": "station", "stats": [["Station", utf(o[9], 1) or "None"], ["System", utf(o[9], 0) or "None"], ["Ships", n(len(vec(o[9], 8)))]]},
  {"key": "record", "stats": [["Reputation", n(len(vec(o[5], 0)))], ["Fines", n(len(vec(o[5], 3)))], ["Karma Level", n(i8(o[6], 32))]]},
 ]))

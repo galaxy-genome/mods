@@ -27,7 +27,9 @@ export interface ModuleCard {
 }
 
 const up = (v: Cell) => String(v).toUpperCase()
-const sprite = (icon: string) => `${import.meta.env.BASE_URL}sprites/${encodeURIComponent(icon)}`
+/** Sprite names in `save-data.json` carry no extension. */
+const sprite = (icon: string) =>
+  `${import.meta.env.BASE_URL}sprites/${encodeURIComponent(icon.endsWith('.svg') ? icon : `${icon}.svg`)}`
 const hide = (e: { currentTarget: HTMLImageElement }) => { e.currentTarget.style.visibility = 'hidden' }
 
 const Bar = ({ children }: { children: Cell }) => <div className="ovbar">{up(children)}</div>

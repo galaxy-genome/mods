@@ -21,6 +21,11 @@ const vec = (o: AmfObject, i: number) => o.raw[i][1] as AmfVector
 const len = (o: AmfObject, i: number) => vec(o, i).items.length
 const sum = (items: AmfValue[]) => items.reduce((n: number, v) => n + Number(v), 0)
 
+/** `questsActiveID` is three fixed slots; an empty one holds `uint.MAX_VALUE`
+ * (`system/Save/QuestsSave.as:23-26`). */
+const activeQuests = (o: AmfObject, i: number) =>
+  vec(o, i).items.filter((v) => Number(v) !== 0xffffffff).length
+
 /** `ShipData` is `Type`, `Station`, `Modules`, `color` (`system/Save/ShipData.as:12-18`). */
 const shipModules = (s: AmfValue) => len(s as AmfObject, 2)
 
@@ -59,7 +64,7 @@ export function cardFigures(sv: Save): HomeCard[] {
         ['System', utf(extra, LAST_SYSTEM)],
       ],
     },
-    { key: 'quests', stats: [['Quests', n(len(quests, 1))], ['Active', n(len(quests, 2))], ['Main job', n(i32(progress, 5))]] },
+    { key: 'quests', stats: [['Quests', n(len(quests, 1))], ['Active', n(activeQuests(quests, 2))], ['Main job', n(i32(progress, 5))]] },
     { key: 'station', stats: [['Station', stationName || 'None'], ['System', utf(station, 0) || 'None'], ['Ships', n(len(station, 8))]] },
     {
       key: 'record',
