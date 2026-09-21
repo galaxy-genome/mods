@@ -9,6 +9,8 @@ import { cardFigures } from '../../lib/save/home'
 import type { ScreenProps } from './screens/types'
 import { SaveUnsafe, prepareDownload } from '../../lib/save/safety'
 import { SaveFrame, ScreenHeader, StartScreen } from './shell'
+import { askPersist, drop, keep, kept } from '../../lib/save/kept'
+import en from '../../i18n/en/start'
 import { Wand } from './wand'
 import {
   creditsAtBest, materialsAtBest, recordAtBest, setCreditsBest, setMaterialsBest, setRecordBest,
@@ -91,13 +93,18 @@ function Card({ meta, stats, credits, wand, onOpen }: {
   )
 }
 
-function Home({ sv, file, onClose }: { sv: Save; file: string; onClose: () => void }) {
+function Home({ sv, file, open, setOpen, onEdit, onClose }: {
+  sv: Save; file: string; open: string
+  setOpen: (key: string) => void; onEdit: () => void; onClose: () => void
+}) {
   const data = useSaveData()
   const meta = data?.homeCards ?? []
-  const [, redraw] = React.useReducer((n: number) => n + 1, 0)
+  const [, bump] = React.useReducer((n: number) => n + 1, 0)
   const [error, setError] = React.useState('')
-  const [open, setOpen] = React.useState('')
   const cards = cardFigures(sv)
+
+  // Every edit redraws and is kept, so a refresh finds the save exactly as the reader left it.
+  const redraw = () => { bump(); onEdit() }
 
   const edit = (text: string) => {
     const v = Number(text.replace(/\D/g, ''))
@@ -175,24 +182,96 @@ function Home({ sv, file, onClose }: { sv: Save; file: string; onClose: () => vo
 
 export default function HomePage() {
   const [loaded, setLoaded] = React.useState<{ sv: Save; file: string } | null>(null)
+  const [open, setOpen] = React.useState('')
+  const [edited, setEdited] = React.useState(false)
   const [error, setError] = React.useState('')
+  const [asking, setAsking] = React.useState(false)
+  const [refused, setRefused] = React.useState(false)
+
+  // The save kept last comes back on its own; a file is asked for only when there is none.
+  React.useEffect(() => {
+    const held = kept()
+    if (!held) return
+    setLoaded({ sv: held.sv, file: held.name })
+    setOpen(held.open)
+    setEdited(held.edited)
+  }, [])
+
+  const store = React.useCallback((sv: Save, file: string, where: string, dirty: boolean) => {
+    keep(sv, file, where, dirty)
+  }, [])
 
   const pick = (f: File) => {
     void f.arrayBuffer().then((b) => {
       try {
-        setLoaded({ sv: decode(new Uint8Array(b)), file: f.name })
+        const sv = decode(new Uint8Array(b))
+        setLoaded({ sv, file: f.name })
+        setOpen('')
+        setEdited(false)
+        store(sv, f.name, '', false)
         setError('')
+        void askPersist().then((ok) => setRefused(!ok))
       } catch (e) {
         setError((e as Error).message)
       }
     })
   }
 
+  const close = () => {
+    if (edited) { setAsking(true); return }
+    drop()
+    setLoaded(null)
+    setOpen('')
+  }
+
+  const discard = () => {
+    drop()
+    setLoaded(null)
+    setOpen('')
+    setEdited(false)
+    setAsking(false)
+  }
+
   return (
     <SaveFrame>
       {loaded
-        ? <Home sv={loaded.sv} file={loaded.file} onClose={() => setLoaded(null)} />
-        : <><StartScreen onPick={pick} />{error && <div className="ggtitle">{error}</div>}</>}
+        ? (
+          <>
+            <Home
+              sv={loaded.sv}
+              file={loaded.file}
+              open={open}
+              setOpen={(key) => { setOpen(key); store(loaded.sv, loaded.file, key, edited) }}
+              onEdit={() => { setEdited(true); store(loaded.sv, loaded.file, open, true) }}
+              onClose={close}
+            />
+            {asking && (
+              <div className="ggask">
+                <div className="ggaskbox">
+                  <div className="ovhead">Close this save</div>
+                  <p>{loaded.file} has edits that have not been downloaded. Closing it drops them.</p>
+                  <div className="ggaskbtns">
+                    <button type="button" className="ggbutton" onClick={discard}>Close and drop the edits</button>
+                    <button type="button" className="ggbutton" onClick={() => setAsking(false)}>Keep editing</button>
+                  </div>
+                </div>
+              </div>
+            )}
+          </>
+        )
+        : (
+          <>
+            <StartScreen onPick={pick} />
+            {error && <div className="ggtitle">{error}</div>}
+          </>
+        )}
+      {refused && (
+        // `src/i18n/en/start.ts:28-29`, the words the editor already uses for a refused request.
+        <div className="ggpersist">
+          <b>{en.persistRefused}</b> {en.persistRefusedHelp}
+          <button type="button" className="ggbutton" onClick={() => setRefused(false)}>{en.dismiss}</button>
+        </div>
+      )}
     </SaveFrame>
   )
 }

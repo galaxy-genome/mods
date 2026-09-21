@@ -93,3 +93,14 @@
 .ggnum{width:100%;min-width:40px;background:#0c1014;border:1px solid #2a3b44;color:#dff6ff;
   font:inherit;font-size:11px;text-align:center;padding:1px 2px}
 .ggnum:focus{outline:0;border-color:#35e0f5;color:#fff}
+
+/* Closing a save that has edits, and the browser's answer on keeping it. */
+/* Fixed, like the screens' own modals: the containing block is the transformed screen, so this
+   centres on what the reader can see. */
+.ggask{position:fixed;inset:0;display:grid;place-items:center;background:#0009}
+.ggaskbox{width:60%;padding:10px 14px;background:linear-gradient(#22333b,#1a272e);
+  border:1px solid #35e0f5;text-align:center;font-size:11px;color:#dff6ff}
+.ggaskbtns{display:flex;gap:6px;justify-content:center;margin-top:8px}
+.ggpersist{position:fixed;left:0;right:0;bottom:0;display:flex;gap:6px;align-items:center;
+  justify-content:center;padding:4px 8px;font-size:10px;color:#dff6ff;background:#1a272ecc}
+.ggpersist b{color:#ffd479}
