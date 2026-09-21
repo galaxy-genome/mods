@@ -349,6 +349,18 @@ The wand only appears where the best is settled and nothing trades against it.
 Where two options are each better at something, there is no wand and the reader
 chooses.
 
+**What the wand may change is what it sits beside.** A wand on a module row
+improves that slot and touches nothing else, so a class 4 slot gets the best
+class 4 module. A wand on the ship improves the whole ship, and may move a
+module to a different slot: a singleton like shields goes to the largest slot
+that takes it, which is how a ship with a class 6 slot free ends up carrying
+6A shields rather than the 4A its old slot allowed.
+
+Ship level reassigns and upgrades the categories the ship already carries. It
+does not fill an empty slot with a category the ship does not have, because
+cargo, shields and hull reinforcement are each better at something and that
+choice is the reader's.
+
 ### The engineer, on the module panel
 
 Engineer levels work the way the grade tiles do. A module the engineer has never
