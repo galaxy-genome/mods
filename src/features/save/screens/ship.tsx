@@ -14,6 +14,8 @@ import {
 } from '../../../lib/save/rules'
 import { ModulePanel, type ModuleCard } from '../panels'
 import { Engineer } from '../engineer'
+import { Wand } from '../wand'
+import { setSlotBest, slotAtBest } from '../../../lib/save/best'
 import type { ScreenProps } from './types'
 import './ship.css'
 
@@ -74,7 +76,9 @@ const hullIntegrity = (sv: Save) => {
   return new DataView(b.buffer, b.byteOffset, b.byteLength).getFloat64(0)
 }
 
-function Row({ slot, mod, onOpen }: { slot: Slot; mod: ModuleRec | null; onOpen: () => void }) {
+function Row({ slot, mod, wand, onOpen }: {
+  slot: Slot; mod: ModuleRec | null; wand: React.ReactNode; onOpen: () => void
+}) {
   return (
     <button type="button" className={`shrow${mod ? '' : ' shempty'}`} onClick={onOpen}>
       <img src={sprite(mod?.icon || mod?.line || '')} alt="" onError={hide} />
@@ -83,14 +87,16 @@ function Row({ slot, mod, onOpen }: { slot: Slot; mod: ModuleRec | null; onOpen:
         <div className="shname">{mod ? mod.name : 'Empty'}</div>
         <div className="shslot">{SLOT_NAME[slot.restriction]}</div>
       </div>
+      {wand}
     </button>
   )
 }
 
 /** The fitted-module list: the specs strip, then one section per slot class. */
-function Fitted({ sv, ship, slots, fitted, onOpen, onMax }: {
+function Fitted({ sv, ship, slots, fitted, mods, keys, onOpen, onMax, onBest }: {
   sv: Save; ship: ShipRec; slots: Slot[]; fitted: (ModuleRec | null)[]
-  onOpen: (slot: Slot) => void; onMax: (name: string) => void
+  mods: ModuleRec[]; keys: Map<string, ModuleRec>
+  onOpen: (slot: Slot) => void; onMax: (name: string) => void; onBest: (slot: Slot) => void
 }) {
   const sections: [string, Slot[]][] = (['Main', 'Weapon', 'External', 'Military', 'Optional'] as const)
     .map((t) => [SLOT_NAME[t], slots.filter((s) => s.restriction === t)])
@@ -107,7 +113,19 @@ function Fitted({ sv, ship, slots, fitted, onOpen, onMax }: {
         <section key={name}>
           <div className="ovbar shbar">{name}</div>
           <div className="shgrid">
-            {list.map((slot) => <Row key={slot.index} slot={slot} mod={fitted[slot.index]} onOpen={() => onOpen(slot)} />)}
+            {list.map((slot) => (
+              <Row
+                key={slot.index} slot={slot} mod={fitted[slot.index]}
+                wand={(
+                  <Wand
+                    atBest={slotAtBest(sv, slot, ship, fitted, mods, keys)}
+                    what={`${SLOT_NAME[slot.restriction]} slot ${slot.index}`}
+                    onSet={() => onBest(slot)}
+                  />
+                )}
+                onOpen={() => onOpen(slot)}
+              />
+            ))}
           </div>
         </section>
       ))}
@@ -187,6 +205,11 @@ export default function Screen({ sv, redraw }: ScreenProps) {
           <button type="button" className="ggbutton" onClick={() => (pick ? setPick(null) : setOpen(null))}>Back</button>
           <div className="ovgold shslotline">
             {SLOT_NAME[open.restriction]} slot {open.index} · class {open.sizeMax} maximum
+            <Wand
+              atBest={slotAtBest(sv, open, ship, fitted, data.modules, keys)}
+              what={`${SLOT_NAME[open.restriction]} slot ${open.index}`}
+              onSet={() => { setSlotBest(sv, open, ship, fitted, data.modules, keys); setPick(null); redraw() }}
+            />
           </div>
           {chosen && chosen !== current && (canPlace(chosen, open, ship, fitted, keys)
             ? <button type="button" className="ggbutton" onClick={() => (current ? setModal(chosen) : fitModule(chosen, true))}>Purchase</button>
@@ -235,7 +258,11 @@ export default function Screen({ sv, redraw }: ScreenProps) {
   return (
     <div className="shbody">
       {note && <div className="shnote">{note}</div>}
-      <Fitted sv={sv} ship={ship} slots={slots} fitted={fitted} onOpen={(s) => { setPick(null); setOpen(s) }} onMax={onMax} />
+      <Fitted
+        sv={sv} ship={ship} slots={slots} fitted={fitted} mods={data.modules} keys={keys}
+        onOpen={(s) => { setPick(null); setOpen(s) }} onMax={onMax}
+        onBest={(slot) => { setSlotBest(sv, slot, ship, fitted, data.modules, keys); redraw() }}
+      />
     </div>
   )
 }

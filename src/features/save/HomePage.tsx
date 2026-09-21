@@ -9,6 +9,14 @@ import { cardFigures } from '../../lib/save/home'
 import type { ScreenProps } from './screens/types'
 import { SaveUnsafe, prepareDownload } from '../../lib/save/safety'
 import { SaveFrame, ScreenHeader, StartScreen } from './shell'
+import { Wand } from './wand'
+import {
+  creditsAtBest, materialsAtBest, recordAtBest, setCreditsBest, setMaterialsBest, setRecordBest,
+  setShipBest, setSystemBest, shipAtBest, systemAtBest,
+} from '../../lib/save/best'
+import { byKey, bySaveName, shipKey, type ModuleRec, type ShipRec } from '../../lib/save/rules'
+import { materialCounts } from '../../lib/save/engineer'
+import { getPosition } from '../../lib/save/position'
 import './overview.css'
 
 /** One sub-screen per card, keyed by the card key in `homeCards`. Each is its own chunk. */
@@ -25,26 +33,52 @@ const SCREENS: Record<string, React.LazyExoticComponent<React.ComponentType<Scre
 }
 
 interface CardMeta { key: string; name: string; sprite: string }
+interface SaveData { homeCards: CardMeta[]; modules: ModuleRec[]; ships: ShipRec[] }
 
 const sprite = (name: string) => `${import.meta.env.BASE_URL}sprites/${encodeURIComponent(name)}.svg`
 
-function useCardMeta() {
-  const [meta, setMeta] = React.useState<CardMeta[]>([])
+function useSaveData() {
+  const [data, setData] = React.useState<SaveData | null>(null)
   React.useEffect(() => {
     void fetch(`${import.meta.env.BASE_URL}data/save-data.json`)
       .then((r) => r.json())
-      .then((d: { homeCards: CardMeta[] }) => setMeta(d.homeCards))
-      .catch(() => setMeta([]))
+      .then((d: SaveData) => setData(d))
+      .catch(() => setData(null))
   }, [])
-  return meta
+  return data
 }
 
-function Card({ meta, stats, credits, onOpen }: { meta: CardMeta; stats: [string, string][]; credits?: React.ReactNode; onOpen?: () => void }) {
+/** A card's wand, where its subject has a settled best. The cards with none, the hangar, storage,
+ * the quest list and the station, are the ones where the reader chooses. */
+function cardWand(key: string, sv: Save, data: SaveData | null): { atBest: boolean; set: () => void } | null {
+  if (key === 'cargo') return { atBest: creditsAtBest(sv), set: () => setCreditsBest(sv) }
+  if (key === 'materials') return { atBest: materialsAtBest(materialCounts(sv)), set: () => setMaterialsBest(sv) }
+  if (key === 'record') return { atBest: recordAtBest(sv), set: () => setRecordBest(sv) }
+  if (key === 'galaxy') {
+    const at = getPosition(sv)
+    return { atBest: systemAtBest(sv, at), set: () => { setSystemBest(sv, at) } }
+  }
+  if (key === 'ship' && data) {
+    const ship = data.ships.find((s) => s.key === shipKey(sv))
+    if (!ship) return null
+    const keys = byKey(data.modules), names = bySaveName(data.modules)
+    return {
+      atBest: shipAtBest(sv, ship, data.modules, keys, names),
+      set: () => setShipBest(sv, ship, data.modules, keys, names),
+    }
+  }
+  return null
+}
+
+function Card({ meta, stats, credits, wand, onOpen }: {
+  meta: CardMeta; stats: [string, string][]; credits?: React.ReactNode
+  wand?: React.ReactNode; onOpen?: () => void
+}) {
   return (
     <div className="ggcard" role={onOpen ? 'button' : undefined} tabIndex={onOpen ? 0 : undefined} onClick={onOpen}>
       <img className="ggcardart" src={sprite(meta.sprite)} alt="" onError={(e) => { e.currentTarget.style.visibility = 'hidden' }} />
       <div className="ggcardtext">
-        <div className="ovbar ggcardtitle">{meta.name.toUpperCase()}</div>
+        <div className="ovbar ggcardtitle">{meta.name.toUpperCase()}{wand}</div>
         <div className="ovgold ggrule" aria-hidden />
         <div className="ovrow">{stats.map(([l]) => <div key={l} className="ovwhite ggcardlabel">{l.toUpperCase()}</div>)}</div>
         <div className="ovrow">
@@ -58,7 +92,8 @@ function Card({ meta, stats, credits, onOpen }: { meta: CardMeta; stats: [string
 }
 
 function Home({ sv, file, onClose }: { sv: Save; file: string; onClose: () => void }) {
-  const meta = useCardMeta()
+  const data = useSaveData()
+  const meta = data?.homeCards ?? []
   const [, redraw] = React.useReducer((n: number) => n + 1, 0)
   const [error, setError] = React.useState('')
   const [open, setOpen] = React.useState('')
@@ -121,7 +156,17 @@ function Home({ sv, file, onClose }: { sv: Save; file: string; onClose: () => vo
       <div className="ggbody ggcards">
         {cards.map((c) => {
           const m = meta.find((x) => x.key === c.key)
-          return m ? <Card key={c.key} meta={m} stats={c.stats} credits={c.key === 'cargo' ? credits : undefined} onOpen={() => setOpen(c.key)} /> : null
+          const w = cardWand(c.key, sv, data)
+          return m
+            ? (
+              <Card
+                key={c.key} meta={m} stats={c.stats}
+                credits={c.key === 'cargo' ? credits : undefined}
+                wand={w && <Wand atBest={w.atBest} what={m.name} onSet={() => { w.set(); redraw() }} />}
+                onOpen={() => setOpen(c.key)}
+              />
+            )
+            : null
         })}
       </div>
     </>

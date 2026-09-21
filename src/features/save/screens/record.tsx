@@ -4,8 +4,14 @@
  * Read-only. Reputation, fines and bounty claims are the vectors the game keeps them in; the rank
  * beside each progress figure is the game's own `GetRank`.
  */
+import * as React from 'react'
 import { AmfObject, AmfVector, EXTRA, PROGRESS } from '../../../lib/save/codec'
 import { extUtf } from '../../../lib/save/safety'
+import {
+  ARENA_MAX, KARMA_MAX, REPUTATION_MAX, reputationAtBest, setArenaBest, setKarmaBest,
+  setReputationBest,
+} from '../../../lib/save/best'
+import { Wand } from '../wand'
 import type { ScreenProps } from './types'
 import '../overview.css'
 
@@ -53,25 +59,25 @@ const EXPLORATION: [number, string][] = [
 const rank = (bands: [number, string][], v: number) =>
   bands.reduce((best, [from, name], i) => (i && v >= from ? name : best), bands[0][1])
 
-/** `ArenaLevels.as` builds 83 levels; the game reads `arenaLVL` only inside that range
- * (`ui/screens/ShipInfoScreen.as:230`). */
-const ARENA_LEVELS = 83
-
 const playTime = (seconds: number) => `${Math.floor(seconds / 3600)}h ${Math.floor(seconds / 60) % 60}m`
 
-function Table({ heads, rows, empty }: { heads: string[]; rows: (string | number)[][]; empty: string }) {
+type Row = (string | number | React.ReactNode)[]
+
+function Table({ heads, rows, empty }: { heads: string[]; rows: Row[]; empty: string }) {
   if (!rows.length) return <div className="ovdesc">{empty}</div>
   return (
     <div className="ovtab">
       <div className="ovrow">{heads.map((h) => <div key={h} className="ovwhite">{up(h)}</div>)}</div>
       {rows.map((r, i) => (
-        <div key={i} className="ovrow ovsmall">{r.map((c, j) => <div key={j}>{up(c)}</div>)}</div>
+        <div key={i} className="ovrow ovsmall">
+          {r.map((c, j) => <div key={j}>{React.isValidElement(c) ? c : up(c as string | number)}</div>)}
+        </div>
       ))}
     </div>
   )
 }
 
-export default function Screen({ sv }: ScreenProps) {
+export default function Screen({ sv, redraw }: ScreenProps) {
   const p = sv.objs[PROGRESS] as AmfObject
   const extra = sv.objs[EXTRA] as AmfObject
   const karma = view(extra, KARMA).getInt8(0)
@@ -79,7 +85,14 @@ export default function Screen({ sv }: ScreenProps) {
 
   const reputation = vec(p, REPUTATION).map((r) => {
     const o = r as AmfObject
-    return [extUtf(o, 0), n(f64(o, 1))]
+    return [
+      extUtf(o, 0),
+      n(f64(o, 1)),
+      <Wand
+        key="w" atBest={reputationAtBest(o)} what={extUtf(o, 0)}
+        onSet={() => { setReputationBest(o); redraw() }}
+      />,
+    ]
   })
   const fines = vec(p, FINES).map((r) => {
     const o = r as AmfObject
@@ -96,14 +109,14 @@ export default function Screen({ sv }: ScreenProps) {
       <div>
         <div className="ovbar">RECORD</div>
         <Table
-          heads={['Property', 'Value']}
+          heads={['Property', 'Value', '']}
           empty=""
           rows={[
             ['Main job', i32(p, STORY_QUEST) < 0 ? 'Not started' : n(i32(p, STORY_QUEST))],
             ['Play time', playTime(i32(p, PLAY_TIME))],
-            ['Karma Points', n(karma)],
+            ['Karma Points', n(karma), <Wand key="k" atBest={karma >= KARMA_MAX} what="Karma" onSet={() => { setKarmaBest(sv); redraw() }} />],
             ['Karma Level', morality(karma)],
-            ['Rating battles level', `${arena} / ${ARENA_LEVELS - 1}`],
+            ['Rating battles level', `${arena} / ${ARENA_MAX}`, <Wand key="a" atBest={arena >= ARENA_MAX} what="Rating battles level" onSet={() => { setArenaBest(sv); redraw() }} />],
           ]}
         />
         <div className="ovbar">RANKS</div>
@@ -121,7 +134,7 @@ export default function Screen({ sv }: ScreenProps) {
       </div>
       <div>
         <div className="ovbar">REPUTATION</div>
-        <Table heads={['Station', 'Reputation']} rows={reputation} empty="No reputation yet." />
+        <Table heads={['Station', `Reputation / ${REPUTATION_MAX}`, '']} rows={reputation} empty="No reputation yet." />
         <div className="ovbar">BOUNTY CLAIMS</div>
         <Table heads={['Pirate', 'System', 'Bounty']} rows={bounty} empty="No bounty claims." />
       </div>

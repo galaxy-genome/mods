@@ -7,7 +7,7 @@
  * `startX`/`startY` (`GalaxyMap.as:78-80`). Loading calls `Init(secXf, secYf)`
  * (`Game.as:1578`), which selects the star nearest that point.
  */
-import { PLAYER, SCAN, type AmfObject, type AmfVector, type Save } from './codec'
+import { AmfObject, PLAYER, SCAN, type AmfVector, type ExtField, type Save } from './codec'
 
 export const LY_PER_PIXEL = 43.74
 export const SOL_X = 1025, SOL_Y = 1591
@@ -20,6 +20,12 @@ const player = (sv: Save) => sv.objs[PLAYER] as AmfObject
 const double = (n: number) => {
   const v = new DataView(new ArrayBuffer(8))
   v.setFloat64(0, n)
+  return new Uint8Array(v.buffer)
+}
+
+const u32 = (n: number) => {
+  const v = new DataView(new ArrayBuffer(4))
+  v.setUint32(0, n >>> 0)
   return new Uint8Array(v.buffer)
 }
 
@@ -77,4 +83,23 @@ export function visitedCells(sv: Save): Set<string> {
 export function scannedCount(sv: Save): number {
   const scan = sv.objs[SCAN] as AmfObject
   return (scan.raw[0][1] as AmfVector).items.length + (scan.raw[1][1] as AmfVector).items.length
+}
+
+/** `VisitedStarSystem.GetSystemID` (`system/Save/VisitedStarSystem.as:21-27`): the cell in the
+ * upper bits and the planet in the lowest eight. */
+export const systemId = (cellX: number, cellY: number, planet = 0) =>
+  ((((cellX & 0xfff) << 20) >>> 0) + ((cellY & 0xfff) << 8) + (planet & 0xff)) >>> 0
+
+/** Records a cell as explored, with every planet discovered and scanned: `discovered` and
+ * `scanned` are per-planet bit masks (`ui/inGameUI.as:3237`, `:3282`), and `ScanData.Visited`
+ * is what the map filter draws from (`ui/screens/MAP_FILTER_SCREEN.as:184-191`).
+ */
+export function markExplored(sv: Save, at: Position): boolean {
+  const cell = cellOf(at)
+  if (visitedCells(sv).has(cell)) return false
+  const [x, y] = cell.split(',').map(Number)
+  const entry = new AmfObject('VisitedStarSystem', false, true)
+  entry.raw = [['u', u32(systemId(x, y))], ['u', u32(0xffffffff)], ['u', u32(0xffffffff)]] as ExtField[]
+  ;((sv.objs[SCAN] as AmfObject).raw[0][1] as AmfVector).items.push(entry)
+  return true
 }

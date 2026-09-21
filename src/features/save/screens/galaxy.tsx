@@ -9,6 +9,8 @@ import * as React from 'react'
 import { StarMap } from '@/features/map/StarMap'
 import { type SystemRow, loadGalaxy, useGalaxy } from '@/features/map/galaxy'
 import { LY_PER_PIXEL, cellOf, getPosition, scannedCount, visitedCells, setPosition, type Position } from '../../../lib/save/position'
+import { setSystemBest } from '../../../lib/save/best'
+import { Wand } from '../wand'
 import type { ScreenProps } from './types'
 import './galaxy.css'
 
@@ -69,19 +71,27 @@ export default function Screen({ sv, redraw }: ScreenProps) {
           onChange={(e) => setQuery(e.target.value)}
         />
         <div className="gggallist">
-          {rows.map((s) => (
-            <button
-              key={s[0]}
-              type="button"
-              className={`gggalrow${here && s[0] === here[0] ? ' on' : ''}`}
-              onClick={() => pick(s[0])}
-            >
-              <span className="gggalname">{s[0]}</span>
-              <span className="gggalmeta">
-                {s[4] ?? '-'} · {distance(s, at).toFixed(1)} ly · {visited.has(cellOf({ x: s[1], z: s[2] })) ? 'Discovered' : 'Undiscovered'}
-              </span>
-            </button>
-          ))}
+          {rows.map((s) => {
+            const where = { x: s[1], z: s[2] }
+            return (
+              <button
+                key={s[0]}
+                type="button"
+                className={`gggalrow${here && s[0] === here[0] ? ' on' : ''}`}
+                onClick={() => pick(s[0])}
+              >
+                <span className="gggalname">{s[0]}</span>
+                <span className="gggalmeta">
+                  {s[4] ?? '-'} · {distance(s, at).toFixed(1)} ly · {visited.has(cellOf(where)) ? 'Discovered' : 'Undiscovered'}
+                </span>
+                <Wand
+                  atBest={visited.has(cellOf(where))}
+                  what={s[0]}
+                  onSet={() => { setSystemBest(sv, where); redraw() }}
+                />
+              </button>
+            )
+          })}
           {!rows.length && <p className="gggalempty">{galaxy ? 'No system' : 'Loading'}</p>}
         </div>
       </div>

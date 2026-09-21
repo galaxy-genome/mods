@@ -82,3 +82,9 @@
   font:inherit;font-size:11px;color:#e4f7ff;background:linear-gradient(#3c4650,#2b333d);
   border-bottom:1px solid #35e0f5}
 .ggdl:hover,.ggdl:focus-visible{color:#fff}
+
+/* The magic wand: set this to the best there is. */
+.ggwand{display:inline-grid;place-items:center;width:18px;height:18px;padding:0;border:0;
+  background:none;color:#d0e8a9;cursor:pointer;flex:none}
+.ggwand:hover,.ggwand:focus-visible{color:#9febff;outline:none}
+.ggwand svg{width:100%;height:100%}
