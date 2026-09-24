@@ -145,11 +145,12 @@ export function fitsType(mod: ModuleRec, slot: Slot): boolean {
 }
 
 /** `ModulesAvailableScreen.as:316-325`: a fighter hangar needs a hull that carries one, of at
- * least this class. */
-export function fitsHangar(mod: ModuleRec, ship: ShipRec, mods: Map<string, ModuleRec>): boolean {
+ * least this class. The class cap is the interface's alone (nothing in play reads
+ * `maxFighterHangar` for the player's ship), so `anySize` lifts it. */
+export function fitsHangar(mod: ModuleRec, ship: ShipRec, mods: Map<string, ModuleRec>, anySize = false): boolean {
   if (mod.category !== 'FighterHangar') return true
   if (!ship.maxFighterHangar) return false
-  return mod.mClass <= (mods.get(ship.maxFighterHangar)?.mClass ?? 0)
+  return anySize || mod.mClass <= (mods.get(ship.maxFighterHangar)?.mClass ?? 0)
 }
 
 /** `BuySellModuleScreen.as:510-520`: a singleton module may sit in one slot only. */
@@ -159,7 +160,8 @@ export const singletonFree = (mod: ModuleRec, fitted: (ModuleRec | null)[], slot
 /** Every test the game applies before it installs a module. Power is not one of them: it is a
  * runtime budget (`Modules.as:249,:260`), and mass moves speed only (`ShipInfo.as:670`). */
 export function canPlace(mod: ModuleRec, slot: Slot, ship: ShipRec, fitted: (ModuleRec | null)[], mods: Map<string, ModuleRec>) {
-  return fitsSize(mod, slot) && fitsType(mod, slot) && fitsHangar(mod, ship, mods) && singletonFree(mod, fitted, slot)
+  return fitsSize(mod, slot) && fitsType(mod, slot) && fitsHangar(mod, ship, mods, slot.sizeMax === ANY_SIZE)
+    && singletonFree(mod, fitted, slot)
 }
 
 // ------------------------------------------------------- the best module a slot can hold
