@@ -100,10 +100,17 @@ export const bySaveName = (mods: ModuleRec[]) => new Map(mods.map((m) => [`${m.s
 // ------------------------------------------------------- slots
 
 /** The flat slot array the `Modules` constructor builds (`Modules.as:48-190`). */
-export function buildSlots(ship: ShipRec, mods: Map<string, ModuleRec>): Slot[] {
+/** A class limit no module reaches. */
+export const ANY_SIZE = 99
+
+/**
+ * The ship's slots in save order. `anySize` lifts every slot's class limit but the hull's: the
+ * game loads a module of any class in any slot from a save.
+ */
+export function buildSlots(ship: ShipRec, mods: Map<string, ModuleRec>, anySize = false): Slot[] {
   const out: Slot[] = []
   const add = (restriction: SlotType, sizeMax: number, category?: string) =>
-    out.push({ index: out.length, restriction, sizeMax, category })
+    out.push({ index: out.length, restriction, sizeMax: anySize && out.length > 0 ? ANY_SIZE : sizeMax, category })
 
   const mClass = (key: string | null) => (key && mods.get(key)?.mClass) || 1
   // `Modules.as:102-117`: the hull slot is size one, life support and sensors take their own class.

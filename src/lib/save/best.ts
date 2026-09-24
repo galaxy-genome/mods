@@ -147,9 +147,9 @@ export const tablesOf = (mods: ModuleRec[]): Tables => ({ mods, keys: byKey(mods
  *
  * Running it twice changes nothing the second time, which is what makes the wand disappear.
  */
-export function fitShip(entry: AmfObject, ship: ShipRec, t: Tables) {
+export function fitShip(entry: AmfObject, ship: ShipRec, t: Tables, anySize = false) {
   const { mods, keys, names } = t
-  const slots = buildSlots(ship, keys)
+  const slots = buildSlots(ship, keys, anySize)
   const vector = modulesOf(entry)
 
   // A main slot takes one category and a weapon slot has its own settled best, the Zentarks
@@ -183,9 +183,12 @@ export function fitShip(entry: AmfObject, ship: ShipRec, t: Tables) {
     const free = [...here].sort((a, b) => b.sizeMax - a.sizeMax)
     const after: (ModuleRec | null)[] = fittedIn(vector, names)
 
+    // The biggest module of the category the ship accepts here: a fighter hangar, say, can be
+    // capped below the slot by the ship's own limit, so a refused class steps down to the next.
     const put = (category: string, slot: Slot) => {
-      const best = bestModule(mods, category, slot.sizeMax)
-      if (!best || !canPlace(best, slot, ship, after, keys)) return false
+      let best = bestModule(mods, category, slot.sizeMax)
+      while (best && !canPlace(best, slot, ship, after, keys)) best = bestModule(mods, category, best.mClass - 1)
+      if (!best) return false
       free.splice(free.indexOf(slot), 1)
       installIn(vector, slot, best)
       after[slot.index] = best
