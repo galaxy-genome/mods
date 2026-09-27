@@ -1,6 +1,6 @@
 import data from '@/data/reference.json'
 import { t } from '@/i18n'
-import type { Lang, ShipLevel } from './types'
+import type { Lang, ShipLevel, ShipOrder, Step } from './types'
 
 export interface RefSystem { name: string; x: number; y: number; security: string | null; starType: string }
 export interface RefStation { name: string; system: string; type: string; faction: string; planetIndex: number }
@@ -165,6 +165,23 @@ export const BEHAVIOURS: Behaviour[] = [
   behaviour('Zentarks', 'Special', true),
   behaviour('Angler', 'Special', true),
 ]
+
+/** The only behaviours NO_ENEMY counts (ShipsManager.as:3380, 3652). */
+export const COUNTED_ENEMIES = ['Enemy', 'Angler']
+
+/** Behaviour of the ship the quest last spawned as `pilot` by step `i`; undefined when it spawns none. */
+export const spawnedBehaviour = (steps: Step[], i: number, pilot: string) =>
+  steps.slice(0, i + 1).flatMap((s) => s.ships).findLast((s) => s.pilot === pilot)?.behaviour
+
+/**
+ * shipBehavior an order writes. The game sets it on every order and reads blank or unknown as Trader
+ * (StoryMod.as:558, ShipsManager.as:1903), so an order that keeps behaviour writes the ship's own.
+ */
+export function orderBehaviour(o: ShipOrder, steps: Step[], i: number) {
+  if (o.changeBehaviour) return o.behaviour
+  if (o.ship === 'player') return 'Player'
+  return spawnedBehaviour(steps, i, o.ship) ?? ''
+}
 
 export const MISSION_TYPES: { key: string; name: string; description: string; focus: 'ship' | 'goods' | 'target' }[] = [
   missionType('PirateHunt', 'ship'),

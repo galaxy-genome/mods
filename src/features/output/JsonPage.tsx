@@ -21,7 +21,7 @@ export function JsonPage() {
 
   const labels = jumpLabels(q.steps)
   const stepIndex = q.steps.findIndex((s) => s.id === tab)
-  const text = pretty(stepIndex >= 0 ? stepJson(q.steps[stepIndex], labels) : toGameJson(q))
+  const text = pretty(stepIndex >= 0 ? stepJson(q.steps[stepIndex], labels, q.steps) : toGameJson(q))
   let error: string | null = null
   if (editing) {
     try { JSON.parse(draft) } catch (e) { error = (e as Error).message }

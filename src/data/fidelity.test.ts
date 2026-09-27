@@ -22,6 +22,14 @@ function walk(dir: string): string[] {
 const write = (part: ModPart, lang?: string) =>
   JSON.stringify(part.meta.type === 'stars' ? toStarsJson(part as StarsView) : toGameJson((part as QuestView).versions[(lang ?? (part as QuestView).primaryLang) as 'en']!))
 const parsed = (text: string) => JSON.stringify(JSON.parse(text.replace(/^﻿/, '')))
+/** `written` with each order whose file behaviour is blank blanked too: export writes the ship's own there on purpose. */
+function blankOrders(written: string, text: string) {
+  type Part = { shipControl?: { shipBehavior?: unknown }[] }
+  const w = JSON.parse(written), f = JSON.parse(text.replace(/^﻿/, ''))
+  const parts = (o: Record<string, unknown>) => (o[Object.keys(o).find((k) => k.toLowerCase() === 'questparts') ?? ''] ?? []) as Part[]
+  parts(f).forEach((p, i) => p.shipControl?.forEach((o, j) => { if (o.shipBehavior === '') parts(w)[i].shipControl![j].shipBehavior = '' }))
+  return JSON.stringify(w)
+}
 
 const files = existsSync(MODS) ? walk(MODS) : []
 
@@ -32,7 +40,7 @@ test('every quest and stars file under local/ round-trips with key order', { ski
   for (const f of files) {
     const text = readFileSync(f, 'utf8')
     const r = importText(text)
-    if (r.kind !== 'ok' || write(r.mod) !== parsed(text)) failed.push(f)
+    if (r.kind !== 'ok' || blankOrders(write(r.mod), text) !== parsed(text)) failed.push(f)
   }
   assert.deepEqual(failed, [])
 })
@@ -49,7 +57,7 @@ test('community library entries round-trip, each language version through the mo
       const lang = String(data.settings.Lang).toLowerCase()
       const quest = partsOf(mod).find((p) => p.meta.type === 'quest' && (p as QuestView).versions[lang as 'en']?.settings.questId === data.settings.ID)
       assert.ok(quest, `${entry.id} ${file.name}`)
-      assert.equal(write(quest!, lang), parsed(file.text), `${entry.id} ${file.name} (${lang})`)
+      assert.equal(blankOrders(write(quest!, lang), file.text), parsed(file.text), `${entry.id} ${file.name} (${lang})`)
     }
   }
 })
@@ -103,4 +111,12 @@ test('a follow order keeps its target', () => {
   assert.equal(content.steps[0].orders[0].target, 'player')
   const made = toGameJson({ ...content, steps: [{ ...content.steps[0], _layout: undefined, _extra: undefined, _kept: undefined }] }) as { questParts: { shipControl: Record<string, unknown>[] }[] }
   assert.equal(made.questParts[0].shipControl[0].SetTarget, 'player')
+})
+
+test('an imported order with a blank behaviour writes the ship its spawn gave it', () => {
+  const r = importText('{"settings":{"QuestName":"A","ID":8,"Lang":"en"},"questParts":[{"name":"One","shipSpawn":[{"Name":"D","shipModel":"viking","shipBehavior":"Enemy"}],"shipControl":[{"ShipName":"D","SetTarget":"player","Attack":true,"Destroy":false,"shipBehavior":""},{"ShipName":"Stranger","SetTarget":"player","Attack":true,"Destroy":false,"shipBehavior":""}]}]}')
+  assert.ok(r.kind === 'ok')
+  const out = toGameJson((r.mod as QuestView).versions.en!) as { questParts: { shipControl: { shipBehavior: string }[] }[] }
+  assert.deepEqual(out.questParts[0].shipControl.map((o) => o.shipBehavior), ['Enemy', ''])
+  assert.equal(r.fixed.filter((f) => f.includes('“D”')).length, 1)
 })

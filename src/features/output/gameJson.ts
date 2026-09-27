@@ -1,5 +1,5 @@
 import { toast } from 'sonner'
-import { RESERVED_JUMP_LABELS, shipByKey } from '@/lib/reference'
+import { RESERVED_JUMP_LABELS, orderBehaviour, shipByKey } from '@/lib/reference'
 import type { DialogLine, Kept, QuestContent, StarsView, Step } from '@/lib/types'
 import { t } from '@/i18n'
 
@@ -55,7 +55,8 @@ const line = (l: DialogLine, labels: Map<string, number>) => withKept(l, {
   options: l.choices.map((c) => `${c.targetStepId ? labels.get(c.targetStepId) ?? 0 : 0}=${c.text};`).join(''),
 })
 
-export function stepJson(step: Step, labels: Map<string, number>) {
+export function stepJson(step: Step, labels: Map<string, number>, steps: Step[]) {
+  const i = steps.indexOf(step)
   return withKept(step, {
     name: step.name,
     TODO: step.journal,
@@ -80,7 +81,7 @@ export function stepJson(step: Step, labels: Map<string, number>) {
     shipControl: step.orders.map((o) => withKept(o, {
       ShipName: o.ship,
       SetTarget: o.target,
-      shipBehavior: o.changeBehaviour ? o.behaviour : '',
+      shipBehavior: orderBehaviour(o, steps, i),
       Destroy: o.destroy,
       Attack: o.attack,
     })),
@@ -132,7 +133,7 @@ export function toGameJson(content: QuestContent) {
       KarmaReward: s.karmaReward,
     }),
     BarRumors: content.rumors.map((r) => withKept(r, { text: r.text, type: r.scope })),
-    questParts: content.steps.map((st) => stepJson(st, labels)),
+    questParts: content.steps.map((st) => stepJson(st, labels, content.steps)),
   })
 }
 

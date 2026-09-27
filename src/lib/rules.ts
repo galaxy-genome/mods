@@ -9,7 +9,7 @@ import { MAIN_STORY, type QuestSource, mixesMainStory } from './questDag'
 import { mapChecks } from '@/features/map/checks'
 import { type Galaxy, getGalaxy } from '@/features/map/galaxy'
 import { makeResolver } from '@/features/map/places'
-import { BEHAVIOURS, BODIES, gameQuest, GOODS, MISSION_TYPES, PLANET_TYPES, STAR_TYPE_GROUPS, GAME_QUEST_ID_MAX, GAME_QUEST_ID_MIN, PORTRAITS, STATIONS, SYSTEMS, shipByInternal, shipByKey } from './reference'
+import { BEHAVIOURS, BODIES, COUNTED_ENEMIES, gameQuest, GOODS, MISSION_TYPES, PLANET_TYPES, STAR_TYPE_GROUPS, GAME_QUEST_ID_MAX, GAME_QUEST_ID_MIN, PORTRAITS, STATIONS, SYSTEMS, shipByInternal, shipByKey } from './reference'
 import type { ModPart, Planet, Problem, QuestContent, QuestView, Requirement, StarsView, Step } from './types'
 
 export const MAX_CHOICES = 3
@@ -349,6 +349,25 @@ export function questProblems(mod: QuestView, all: ModPart[], galaxy = getGalaxy
       const exists = q.steps.slice(0, i + 1).some((st) => st.ships.some((sh) => sh.pilot === o.ship))
       if (!exists) add('warning', `order-${o.id}`, t('rules.shipMissing', { name: o.ship || '?' }), orderPath, label, 'ship')
     })
+    if (step.finishWhen === 'NO_ENEMY') {
+      const isHostile = (b: string) => !!BEHAVIOURS.find((x) => x.key === b)?.hostile && !COUNTED_ENEMIES.includes(b)
+      const now = new Map<string, string>()
+      q.steps.slice(0, i + 1).forEach((st) => {
+        st.ships.forEach((sh) => now.set(sh.pilot, sh.behaviour))
+        st.orders.forEach((o) => { if (o.changeBehaviour && now.has(o.ship)) now.set(o.ship, o.behaviour) })
+      })
+      const left = [...now.values()]
+      if (left.some(isHostile) && !left.some((b) => COUNTED_ENEMIES.includes(b))) {
+        const fixable = step.ships.some((sh) => isHostile(sh.behaviour)) || step.orders.some((o) => o.changeBehaviour && isHostile(o.behaviour))
+        add('warning', `no-enemy-${step.id}`, t('rules.noEnemyUncounted'), path, label, 'finishWhen', fixable ? {
+          label: t('rules.noEnemyMakeEnemy'),
+          apply: () => updateQuest(mod.meta.id, (d) => {
+            d.steps[i].ships.forEach((sh) => { if (isHostile(sh.behaviour)) sh.behaviour = 'Enemy' })
+            d.steps[i].orders.forEach((o) => { if (o.changeBehaviour && isHostile(o.behaviour)) o.behaviour = 'Enemy' })
+          }),
+        } : undefined)
+      }
+    }
     if (step.mission) {
       const m = step.mission
       const missionPath = `${path}/mission`

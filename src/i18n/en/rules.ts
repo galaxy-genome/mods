@@ -46,6 +46,8 @@ export default {
   systemHidden: '“{name}” is not on the galaxy map, so the player cannot travel there.',
   planetUnknown: 'No planet called “{name}” in this quest’s systems.',
   neverFires: 'Nothing named “None” exists, so this step never finishes. Only a step that destroys your ship may end this way.',
+  noEnemyUncounted: 'This step finishes when no enemies are left, but the game counts only Enemy and Angler ships, so its hostile ships never finish it.',
+  noEnemyMakeEnemy: 'Make this step’s hostile ships Enemy',
   shipMissing: 'No ship called “{name}” exists by this step.',
   failAll: 'The quest fails only when all of these have happened in this step.',
   journalEmpty: 'The journal is empty, so players aren’t told what to do in this step.',

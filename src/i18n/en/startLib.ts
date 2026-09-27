@@ -13,6 +13,7 @@ export default {
   fixOn: '{label}: read “{value}” as on',
   fixZh: 'Language “zh” written as “cn”, the code the game reads',
   fixButton: 'Removed BUTTON_ from the condition of {where}',
+  fixOrderBehaviour: '{where}: the order for “{ship}” had no behaviour, which the game reads as Trader; it now keeps the ship’s own',
   fixShipType: '{where}: target ship “{value}” written as the game’s name “{internal}”',
   causeEnd: 'The file ends too early. A closing bracket, brace or quote is probably missing.',
   causeLineBreak: 'A line break sits inside some text. Join the line, or write \\n.',

@@ -49,7 +49,7 @@ export const QUEST_TEMPLATES: QuestTemplate[] = [
         newStep({ name: 'Briefing', journal: 'Fly to Wolf 359.', finishWhen: 'ACTION_WARP_END_SYSTEM_Wolf 359' }),
         newStep({
           name: 'Ambush', journal: 'Destroy the pirates.', finishWhen: 'NO_ENEMY',
-          ships: [newShip({ pilot: 'Hunter', model: 'hawk' }), newShip({ pilot: 'Jackal', model: 'wasp', level: 'Novice' })],
+          ships: [newShip({ pilot: 'Hunter', model: 'hawk', behaviour: 'Enemy' }), newShip({ pilot: 'Jackal', model: 'wasp', level: 'Novice', behaviour: 'Enemy' })],
           orders: [newOrder({ ship: 'Hunter' }), newOrder({ ship: 'Jackal' })],
         }),
         newStep({ name: 'Report', journal: 'Report back.', finishWhen: `ACTION_CLICK_STATION_${station}` }),

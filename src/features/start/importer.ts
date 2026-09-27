@@ -1,5 +1,5 @@
 import { newLine, newMission, newOrder, newQuestView, newShip, newStarsView, newStep, uid } from '@/lib/factory'
-import { BEHAVIOURS, LANGS, SHIP_LEVELS, shipByInternal, shipByKey } from '@/lib/reference'
+import { BEHAVIOURS, LANGS, SHIP_LEVELS, shipByInternal, shipByKey, spawnedBehaviour } from '@/lib/reference'
 import type { Choice, DialogLine, Kept, Lang, ModPart, ModStation, QuestSettings, ShipLevel, Star, StarsView, Step } from '@/lib/types'
 import { WAIT_FOR_PLAYER } from '@/lib/types'
 import { t } from '@/i18n'
@@ -231,8 +231,10 @@ export function importText(raw: string): ImportOutcome {
     })
     step.orders = list(get(p, 'shipControl')).map((o) => {
       const behaviour = str(get(o, 'shipBehavior'))
+      const ship = str(get(o, 'ShipName'))
+      if (!behaviour && (ship === 'player' || spawnedBehaviour(steps, i, ship) !== undefined)) fixed.add(tr('fixOrderBehaviour', { where, ship }))
       return newOrder({
-        ship: str(get(o, 'ShipName')), target: str(get(o, 'SetTarget')), attack: bool(get(o, 'Attack'), tr('labelOrder', { where })),
+        ship, target: str(get(o, 'SetTarget')), attack: bool(get(o, 'Attack'), tr('labelOrder', { where })),
         destroy: bool(get(o, 'Destroy'), tr('labelOrder', { where })), changeBehaviour: !!behaviour, behaviour: behaviour || 'Enemy',
       })
     })
@@ -265,6 +267,8 @@ export function importText(raw: string): ImportOutcome {
   mod.meta.origin = 'import'
   const content = mod.versions[mod.primaryLang]!
   keepFromFile(content, data, toGameJson(content), QUEST_CHILDREN)
+  // A blank order behaviour is read by the game as Trader; export writes the ship's own instead of keeping the blank.
+  content.steps.forEach((st) => st.orders.forEach((o) => { if (!o.changeBehaviour) delete o._kept?.shipBehavior }))
   return { kind: 'ok', mod, fixed: [...fixed], look, kept }
 }
 

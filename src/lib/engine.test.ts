@@ -33,7 +33,7 @@ const { questProblems } = await import('./rules.ts')
 const { newMission, newQuestView, newStep } = await import('./factory.ts')
 import type { QuestView } from './types'
 
-const problems = (v: QuestView) => questProblems(v, [v]).filter((p) => /^(space-req|near-own|finish-joined|mission-(first|story|turnin))/.test(p.id))
+const problems = (v: QuestView) => questProblems(v, [v]).filter((p) => /^(space-req|near-own|finish-joined|mission-(first|story|turnin)|no-enemy)/.test(p.id))
 const ids = (v: QuestView) => problems(v).map((p) => `${p.id.replace(/-[0-9a-f-]{36}.*$/, '')}:${p.severity}`).sort()
 const quest = (steps: ReturnType<typeof newStep>[], settings = {}) => newQuestView('T', { settings: { stationName: 'Thunder Station', charName: 'A', ...settings }, steps, rumors: [] })
 const two = () => [newStep(), newStep()]
@@ -69,6 +69,23 @@ problems(noTurnIn)[0].fix!.apply()
 assert.deepEqual(noTurnIn.versions.en!.steps.map((s) => s.finishWhen), ['ACTION_DIALOG_COMPLETE', 'CLICK_ACCEPT_STORY_MISSION', 'GET_STORY_REWARD', 'ACTION_DIALOG_COMPLETE'])
 assert.deepEqual(ids(noTurnIn), [])
 assert.equal(problems(quest([newStep(), newStep({ mission: mission(), finishWhen: 'NO_ENEMY' })]))[0].fix, undefined)
+
+// NO_ENEMY counts only Enemy and Angler ships; the fix makes the step's hostile ships Enemy.
+const { newShip, newOrder } = await import('./factory.ts')
+const raid = (behaviour: string) => quest([newStep(), newStep({ finishWhen: 'NO_ENEMY', ships: [newShip({ pilot: 'Raider', behaviour })], orders: [newOrder({ ship: 'Raider' })] })])
+assert.deepEqual(ids(raid('Enemy')), [])
+const pirates = raid('Pirate')
+assert.deepEqual(ids(pirates), ['no-enemy:warning'])
+;(globalThis as any).applyFix = (recipe: (q: unknown) => void) => recipe(pirates.versions.en)
+problems(pirates)[0].fix!.apply()
+assert.equal(pirates.versions.en!.steps[1].ships[0].behaviour, 'Enemy')
+assert.deepEqual(ids(pirates), [])
+
+// An order that keeps behaviour writes the ship's own, since the game reads a blank one as Trader.
+const { toGameJson } = await import('../features/output/gameJson.ts')
+const written = (q: typeof pirates) => (toGameJson(q.versions.en!) as any).questParts[1].shipControl[0].shipBehavior
+assert.equal(written(pirates), 'Enemy')
+assert.equal(written(raid('Pirate')), 'Pirate')
 
 // Survey of the game's quests and the community library, when present locally.
 const { importText } = await import('../features/start/importer.ts')
