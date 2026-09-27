@@ -351,8 +351,10 @@ export function questProblems(mod: QuestView, all: ModPart[], galaxy = getGalaxy
     })
     if (step.finishWhen === 'NO_ENEMY') {
       const isHostile = (b: string) => !!BEHAVIOURS.find((x) => x.key === b)?.hostile && !COUNTED_ENEMIES.includes(b)
+      // Counted ships spawned before an earlier NO_ENEMY step were destroyed when it finished.
+      const from = q.steps.slice(0, i).findLastIndex((st) => st.finishWhen === 'NO_ENEMY') + 1
       const now = new Map<string, string>()
-      q.steps.slice(0, i + 1).forEach((st) => {
+      q.steps.slice(from, i + 1).forEach((st) => {
         st.ships.forEach((sh) => now.set(sh.pilot, sh.behaviour))
         st.orders.forEach((o) => { if (o.changeBehaviour && now.has(o.ship)) now.set(o.ship, o.behaviour) })
       })

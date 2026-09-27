@@ -229,15 +229,17 @@ export function importText(raw: string): ImportOutcome {
         placement: distance > 0 || (!x && !y) ? 'nearPlayer' : 'position', tint: hex(get(sh, 'color')),
       })
     })
+    const blank: string[] = []
     step.orders = list(get(p, 'shipControl')).map((o) => {
       const behaviour = str(get(o, 'shipBehavior'))
       const ship = str(get(o, 'ShipName'))
-      if (!behaviour && (ship === 'player' || spawnedBehaviour(steps, i, ship) !== undefined)) fixed.add(tr('fixOrderBehaviour', { where, ship }))
+      if (!behaviour && (ship === 'player' || spawnedBehaviour(steps, i, ship) !== undefined)) blank.push(ship)
       return newOrder({
         ship, target: str(get(o, 'SetTarget')), attack: bool(get(o, 'Attack'), tr('labelOrder', { where })),
         destroy: bool(get(o, 'Destroy'), tr('labelOrder', { where })), changeBehaviour: !!behaviour, behaviour: behaviour || 'Enemy',
       })
     })
+    if (blank.length) fixed.add(tr('fixOrderBehaviour', { where, ships: blank.map((x) => `“${x}”`).join(', ') }))
     const task = get(p, 'task_on_station')
     if (isObj(task)) {
       const w = tr('whereMission', { where })

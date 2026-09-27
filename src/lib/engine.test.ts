@@ -74,6 +74,9 @@ assert.equal(problems(quest([newStep(), newStep({ mission: mission(), finishWhen
 const { newShip, newOrder } = await import('./factory.ts')
 const raid = (behaviour: string) => quest([newStep(), newStep({ finishWhen: 'NO_ENEMY', ships: [newShip({ pilot: 'Raider', behaviour })], orders: [newOrder({ ship: 'Raider' })] })])
 assert.deepEqual(ids(raid('Enemy')), [])
+// Enemy ships an earlier NO_ENEMY step finished off don't hide later Pirates.
+const drones = [newShip({ pilot: 'Drone', behaviour: 'Enemy' })]
+assert.deepEqual(ids(quest([newStep({ finishWhen: 'NO_ENEMY', ships: drones }), newStep({ finishWhen: 'NO_ENEMY', ships: [newShip({ pilot: 'Raider' })] })])), ['no-enemy:warning'])
 const pirates = raid('Pirate')
 assert.deepEqual(ids(pirates), ['no-enemy:warning'])
 ;(globalThis as any).applyFix = (recipe: (q: unknown) => void) => recipe(pirates.versions.en)
