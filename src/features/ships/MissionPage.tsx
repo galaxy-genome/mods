@@ -48,9 +48,9 @@ export function MissionPage() {
   const [opened, setOpened] = React.useState<string | null>(null)
   React.useEffect(() => {
     if (field) setOpened(field)
-    // A "Choose a system" fix links here with ?pick=1 to open that field's picker.
+    // A "Choose a system" fix links here with ?open=1 to open that field's picker.
     const kind = ({ homeStation: 'home', targetSystem: 'system', targetStation: 'station' } as Record<string, PickerKind>)[field ?? '']
-    if (params.get('pick') && kind) setPicker(kind)
+    if (params.get('open') && kind) setPicker(kind)
   }, [field]) // eslint-disable-line react-hooks/exhaustive-deps
   const fp = useFieldProblems(r.modId, `steps/${r.stepId}/mission`)
   if (!r.step) return <StepMissing />

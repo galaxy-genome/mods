@@ -32,8 +32,8 @@ export function StepEditorPage() {
   const { list } = useProblems(modId)
   const [picker, setPicker] = React.useState<null | { kind: 'finish' } | { kind: 'fail'; index: number | null }>(null)
   usePulseField([step?.id])
-  // A "Choose a condition" fix links here with ?pick=finish or ?pick=<failure index>.
-  const pick = useSearchParams()[0].get('pick')
+  // A "Choose a condition" fix links here with ?open=finish or ?open=<failure index>.
+  const pick = useSearchParams()[0].get('open')
   React.useEffect(() => { if (pick) setPicker(pick === 'finish' ? { kind: 'finish' } : { kind: 'fail', index: Number(pick) }) }, [pick, step?.id])
 
   const total = quest?.steps.length ?? 0

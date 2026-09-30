@@ -76,10 +76,10 @@ export function OverviewPage() {
   const [portraitOpen, setPortraitOpen] = React.useState(false)
   const [params] = useSearchParams()
   const [stationOpen, setStationOpen] = React.useState(false)
-  // A "Choose a station" or "Choose a quest" fix links here with ?pick=1.
+  // A "Choose a station" or "Choose a quest" fix links here with ?open=1.
   const [questsOpen, setQuestsOpen] = React.useState(false)
   React.useEffect(() => {
-    if (!params.get('pick')) return
+    if (!params.get('open')) return
     if (params.get('field') === 'stationName') setStationOpen(true)
     if (params.get('field') === 'requiredQuestIds') setQuestsOpen(true)
   }, [params])

@@ -145,7 +145,7 @@ function sourcesOf(all: ModPart[]): PlaceSource[] {
 /** Opens the page holding a place or quest field with its picker open. */
 const choosePlace = (id: string, path: string, field: string, kind: 'system' | 'station' | 'quest'): Problem['fix'] => ({
   label: t(kind === 'system' ? 'rules.chooseSystem' : kind === 'station' ? 'rules.chooseStation' : 'rules.chooseQuest'),
-  apply: () => { history.pushState(null, '', `/mod/${id}/${path}?field=${field}&pick=1`); dispatchEvent(new PopStateEvent('popstate')) },
+  apply: () => { history.pushState(null, '', `/mod/${id}/${path}?field=${field}&open=1`); dispatchEvent(new PopStateEvent('popstate')) },
 })
 
 const requirementLabel = (r: Requirement) => (r.version ? `${r.title} v${r.version}` : r.title)
@@ -260,7 +260,7 @@ export function questProblems(mod: QuestView, all: ModPart[], galaxy = getGalaxy
       if (!def) {
         if (!raw.replace(/^BUTTON_/, '').startsWith('SHIP_STOP_')) warn('raw', t('rules.conditionUnknown', { name: raw }), {
           label: t('rules.chooseCondition'),
-          apply: () => { history.pushState(null, '', `/mod/${mod.meta.id}/${path}?field=${field}&pick=${field === 'finishWhen' ? 'finish' : key.split('-fail')[1]}`); dispatchEvent(new PopStateEvent('popstate')) },
+          apply: () => { history.pushState(null, '', `/mod/${mod.meta.id}/${path}?field=${field}&open=${field === 'finishWhen' ? 'finish' : key.split('-fail')[1]}`); dispatchEvent(new PopStateEvent('popstate')) },
         })
         return
       }
