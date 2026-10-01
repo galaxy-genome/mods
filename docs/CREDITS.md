@@ -6,6 +6,7 @@ The mods bundled with Galaxy Genome Quest Editor. Default mods preload on a new 
 | Mod | Role | Author | Licence | Source |
 | --- | --- | --- | --- | --- |
 | A Hard Choice | default | Galaxy Genome Quest Editor team | MIT | Editor template |
+| Drone Attack | library | Dy | MIT | [github.com](https://github.com/galaxy-genome/mods/issues/1) (2026-10-01) |
 | Humanity At War | both | Novian Fenrir | MIT | Posted on the Galaxy Genome Discord by Novian Fenrir; released under MIT with the author's permission. (2026-09-15) |
 | Owner of Record | both | Galaxy Genome Quest Editor team | MIT | Written for the editor |
 | Parcel for Sirius | library | Galaxy Genome Quest Editor team | MIT | Editor template |
